@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace changeResolution1
 {
@@ -15,9 +17,11 @@ namespace changeResolution1
         double maxVerticalImageSize = new double();
         int resolutionWidth = new int();
         int resolutionHeight = new int();
+        private DisplayManager displayManager;
         public Form1()
         {
             InitializeComponent();
+            displayManager = new DisplayManager();
             FillMonitorComboBox();
         }
 
@@ -45,7 +49,13 @@ namespace changeResolution1
         {
             ResolutionComboBox.Items.Clear();
             var selectedScreen = Screen.AllScreens[MonitorComboBox.SelectedIndex];
-            var resolutions = GetAvailableResolutions(selectedScreen.DeviceName);
+            var resolutions = GetAvailableResolutions(selectedScreen.DeviceName).OrderBy(r =>
+            {
+                var parts = r.Split('x');
+                int width = int.Parse(parts[0]);
+                int height = int.Parse(parts[1]);
+                return width * height;
+            }).ToList();
             foreach (var resolution in resolutions)
             {
                 ResolutionComboBox.Items.Add(resolution);
@@ -110,7 +120,6 @@ namespace changeResolution1
             }
         }
 
-        // Константы и функции для работы с разрешением экрана
         const int DISP_CHANGE_SUCCESSFUL = 0;
         const int CDS_UPDATEREGISTRY = 0x01;
         const int DM_PELSWIDTH = 0x80000;
@@ -212,121 +221,179 @@ namespace changeResolution1
 
 
 
-        /*private void GetMonitorNames()
+        private async Task GetMonitorNamesAsync()
         {
             StringBuilder st = new StringBuilder();
-            ManagementObjectSearcher searcher =
-                new ManagementObjectSearcher("root\\WMI",
-                "SELECT * FROM WmiMonitorBasicDisplayParams");
-
-            foreach (ManagementObject queryObj in searcher.Get())
-            {
-                st.AppendLine("InstanceName: " + queryObj["InstanceName"].ToString() + "\n");
-                st.AppendLine("Active:" + queryObj["Active"].ToString() + "\n");
-                st.AppendLine("DisplayTransferCharacteristic:" + queryObj["DisplayTransferCharacteristic"].ToString() + "\n");
-                maxHorizontalImageSize = Convert.ToDouble(queryObj["MaxHorizontalImageSize"]);
-                maxVerticalImageSize = Convert.ToDouble(queryObj["MaxVerticalImageSize"]);
-                st.AppendLine("MaxHorizontalImageSize:" + queryObj["MaxHorizontalImageSize"].ToString() + "\n");
-                st.AppendLine("MaxVerticalImageSize:" + queryObj["MaxVerticalImageSize"].ToString() + "\n");
-                st.AppendLine("SupportedDisplayFeatures:" + queryObj["SupportedDisplayFeatures"].ToString() + "\n");
-                st.AppendLine("VideoInputType:" + queryObj["VideoInputType"].ToString() + "\n");
-            }
-            label1.Text = st.ToString();
-        }
-
-        private void GetDisplayInfo1()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            DISPLAY_DEVICE d = new DISPLAY_DEVICE();
-            d.cb = Marshal.SizeOf(d);
-
-            int deviceIndex = 0;
-            while (EnumDisplayDevices(null, (uint)deviceIndex, ref d, 0))
-            {
-                sb.AppendLine($"Monitor {deviceIndex + 1}:");
-                sb.AppendLine($"Device Name: {d.DeviceName}");
-                sb.AppendLine($"Device String: {d.DeviceString}");
-
-                DEVMODE devMode = new DEVMODE();
-                devMode.dmSize = (ushort)Marshal.SizeOf(typeof(DEVMODE));
-
-                // Получаем текущее разрешение и частоту обновления (Active Signal Mode)
-                if (EnumDisplaySettings(d.DeviceName, -1, ref devMode))
-                {
-                    sb.AppendLine("Active Signal Mode:");
-                    sb.AppendLine($"Resolution: {devMode.dmPelsWidth} x {devMode.dmPelsHeight}");
-                    resolutionWidth = devMode.dmPelsWidth;
-                    resolutionHeight = devMode.dmPelsHeight;
-                    sb.AppendLine($"Frequency: {devMode.dmDisplayFrequency} Hz");
-                    sb.AppendLine($"Color Depth: {devMode.dmBitsPerPel} bits");
-                }
-
-                // Получаем разрешение рабочего стола
-                if (EnumDisplaySettings(d.DeviceName, 0, ref devMode))
-                {
-                    sb.AppendLine("Desktop Mode:");
-
-                    sb.AppendLine($"Resolution: {devMode.dmPelsWidth} x {devMode.dmPelsHeight}");
-
-                    sb.AppendLine($"Frequency: {devMode.dmDisplayFrequency} Hz");
-                    sb.AppendLine($"Color Depth: {devMode.dmBitsPerPel} bits");
-                }
-
-                sb.AppendLine();
-
-                deviceIndex++;
-                d.cb = Marshal.SizeOf(d);
-            }
-            label2.Text = sb.ToString();
-            
-        }
-
-        private void GetMonitorInfo()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-
             try
             {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity WHERE PNPClass = 'Monitor'");
-
-                foreach (ManagementObject queryObj in searcher.Get())
+                await Task.Run(() =>
                 {
-                    string deviceId = queryObj["DeviceID"].ToString();
-                    string description = queryObj["Description"].ToString();
-                    string manufacturer = queryObj["Manufacturer"].ToString();
-                    string name = queryObj["Name"].ToString();
-                    string pnpDeviceId = queryObj["PNPDeviceID"].ToString();
-                    string status = queryObj["Status"].ToString();
+                    ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBasicDisplayParams");
 
-                    stringBuilder.AppendLine("DeviceID: " + deviceId + Environment.NewLine);
-                    stringBuilder.AppendLine("Description: " + description + Environment.NewLine);
-                    stringBuilder.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
-                    stringBuilder.AppendLine("Name: " + name + Environment.NewLine);
-                    stringBuilder.AppendLine("PNPDeviceID: " + pnpDeviceId + Environment.NewLine);
-                    stringBuilder.AppendLine("Status: " + status + Environment.NewLine);
-
-                    // Извлечение модели из строки Name
-                    string model = ExtractModelFromName(name);
-                    stringBuilder.AppendLine("Model: " + model + Environment.NewLine);
-
-                    // Проверка и преобразование производителя
-                    if (name.Contains("LEN"))
+                    foreach (ManagementObject queryObj in searcher.Get())
                     {
-                        manufacturer = "Lenovo";
-                    }
-                    stringBuilder.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
 
-                    stringBuilder.AppendLine("================" + Environment.NewLine);
-                }
+                        foreach (PropertyData property in queryObj.Properties)
+                        {
+
+                            st.AppendLine($"{property.Name}: {property.Value}" + Environment.NewLine);
+                        }
+                        st.AppendLine("InstanceName: " + queryObj["InstanceName"].ToString() + "\n");
+                        st.AppendLine("Active: " + queryObj["Active"].ToString() + "\n");
+                        st.AppendLine("DisplayTransferCharacteristic: " + queryObj["DisplayTransferCharacteristic"].ToString() + "\n");
+                        maxHorizontalImageSize = Convert.ToDouble(queryObj["MaxHorizontalImageSize"]);
+                        maxVerticalImageSize = Convert.ToDouble(queryObj["MaxVerticalImageSize"]);
+                        st.AppendLine("MaxHorizontalImageSize: " + queryObj["MaxHorizontalImageSize"].ToString() + "\n");
+                        st.AppendLine("MaxVerticalImageSize: " + queryObj["MaxVerticalImageSize"].ToString() + "\n");
+                        st.AppendLine("SupportedDisplayFeatures: " + queryObj["SupportedDisplayFeatures"].ToString() + "\n");
+                        st.AppendLine("VideoInputType: " + queryObj["VideoInputType"].ToString() + "\n");
+                    }
+                });
             }
             catch (ManagementException ex)
             {
                 MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
             }
 
-            label3.Text = stringBuilder.ToString();
+            label3.Invoke((MethodInvoker)(() => label3.Text = st.ToString()));
         }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+        public struct DISPLAY_DEVICE
+        {
+            public int cb;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceString;
+            public int StateFlags;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceID;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceKey;
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
+
+        private async Task GetDisplayInfo1Async()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            await Task.Run(() =>
+            {
+                DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+                d.cb = Marshal.SizeOf(d);
+
+                int deviceIndex = 0;
+                while (EnumDisplayDevices(null, (uint)deviceIndex, ref d, 0))
+                {
+                    sb.AppendLine($"Monitor {deviceIndex + 1}:");
+                    sb.AppendLine($"Device Name: {d.DeviceName}");
+                    sb.AppendLine($"Device String: {d.DeviceString}");
+
+                    DEVMODE devMode = new DEVMODE();
+                    devMode.dmSize = (ushort)Marshal.SizeOf(typeof(DEVMODE));
+
+                    if (EnumDisplaySettings(d.DeviceName, -1, ref devMode))
+                    {
+                        sb.AppendLine("Active Signal Mode:");
+                        sb.AppendLine($"Resolution: {devMode.dmPelsWidth} x {devMode.dmPelsHeight}");
+                        resolutionWidth = (int)devMode.dmPelsWidth;
+                        resolutionHeight = (int)devMode.dmPelsHeight;
+                        sb.AppendLine($"Frequency: {devMode.dmDisplayFrequency} Hz");
+                        sb.AppendLine($"Color Depth: {devMode.dmBitsPerPel} bits");
+                    }
+
+                    if (EnumDisplaySettings(d.DeviceName, 0, ref devMode))
+                    {
+                        sb.AppendLine("Desktop Mode:");
+                        sb.AppendLine($"Resolution: {devMode.dmPelsWidth} x {devMode.dmPelsHeight}");
+                        sb.AppendLine($"Frequency: {devMode.dmDisplayFrequency} Hz");
+                        sb.AppendLine($"Color Depth: {devMode.dmBitsPerPel} bits");
+                    }
+
+                    sb.AppendLine();
+                    deviceIndex++;
+                    d.cb = Marshal.SizeOf(d);
+                }
+            });
+
+            label4.Invoke((MethodInvoker)(() => label4.Text = sb.ToString()));
+        }
+
+
+
+        private async Task GetMonitorInfoAsync()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity WHERE PNPClass = 'Monitor'");
+
+                    foreach (ManagementObject queryObj in searcher.Get())
+                    {
+                       
+                        string deviceId = queryObj["DeviceID"].ToString();
+                        string description = queryObj["Description"].ToString();
+                        string manufacturer = queryObj["Manufacturer"].ToString();
+                        string name = queryObj["Name"].ToString();
+                        string pnpDeviceId = queryObj["PNPDeviceID"].ToString();
+                        string status = queryObj["Status"].ToString();
+
+                        stringBuilder.AppendLine("DeviceID: " + deviceId + Environment.NewLine);
+                        stringBuilder.AppendLine("Description: " + description + Environment.NewLine);
+                        stringBuilder.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
+                        stringBuilder.AppendLine("Name: " + name + Environment.NewLine);
+                        stringBuilder.AppendLine("PNPDeviceID: " + pnpDeviceId + Environment.NewLine);
+                        stringBuilder.AppendLine("Status: " + status + Environment.NewLine);
+
+                        Dictionary<string, string> manufacturerDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                        {
+                            { "LEN", "Lenovo" },
+                            { "HP", "Hewlett-Packard" },
+                            { "DELL", "Dell" },
+                            { "ASUS", "ASUS" },
+                            { "ACER", "Acer" },
+                            { "MSI", "MSI" },
+                            { "SAMSUNG", "Samsung" },
+                            { "LG", "LG" },
+                            { "SONY", "Sony" },
+                            { "TOSHIBA", "Toshiba" },
+                            { "APPLE", "Apple" },
+                            { "HUAWEI", "Huawei" },
+                            { "MICROSOFT", "Microsoft" },
+                            { "XIAOMI", "Xiaomi" }
+                        };
+
+                        string model = ExtractModelFromName(name);
+
+                        foreach (var entry in manufacturerDictionary)
+                        {
+                            if (name.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                manufacturer = entry.Value;
+                                model = Regex.Replace(model, entry.Key, string.Empty, RegexOptions.IgnoreCase);
+                                break;
+                            }
+                        }
+
+                        stringBuilder.AppendLine("Model: " + model.Trim() + Environment.NewLine);
+                        stringBuilder.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
+                    }
+                });
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
+            }
+
+            label5.Invoke((MethodInvoker)(() => label5.Text = stringBuilder.ToString()));
+        }
+
 
         static string ExtractModelFromName(string name)
         {
@@ -356,11 +423,73 @@ namespace changeResolution1
             double averageDpi = (horizontalDpi + verticalDpi) / 2;
             double diagonalPixels = Math.Sqrt(Math.Pow(resolutionWidth, 2) + Math.Pow(resolutionHeight, 2));
             double diagonalInches = diagonalPixels / averageDpi;
-
             return diagonalInches;
         }
-*/
 
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            await Task.WhenAll(GetMonitorNamesAsync(), GetDisplayInfo1Async(), GetMonitorInfoAsync());
+
+            // GetMonitorNames();
+            // GetDisplayInfo1();
+            // GetMonitorInfoAsync();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("Diagonal: " + CalculateScreenDiagonal(maxHorizontalImageSize, maxVerticalImageSize) + Environment.NewLine);
+            stringBuilder.AppendLine("Diagonal2: " + CalculateDiagonalFromResolution(resolutionWidth, resolutionHeight, maxHorizontalImageSize, maxVerticalImageSize) + Environment.NewLine);
+            label6.Text = stringBuilder.ToString();
+        }
+
+
+
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                displayManager.SetDisplayMode(DisplayManager.DisplayMode.Duplicate);
+                MessageBox.Show("Display mode set to Duplicate.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                displayManager.SetDisplayMode(DisplayManager.DisplayMode.Extend);
+                MessageBox.Show("Display mode set to Extend.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                displayManager.SetDisplayMode(DisplayManager.DisplayMode.PrimaryOnly);
+                MessageBox.Show("Display mode set to Primary Only.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            
+
+        }
+
+
+        
     }
 }
 
