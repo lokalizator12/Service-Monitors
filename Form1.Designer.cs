@@ -34,6 +34,7 @@ namespace changeResolution1
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.fixDisplayButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MonitorComboBox
@@ -50,7 +51,7 @@ namespace changeResolution1
             // 
             this.ResolutionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ResolutionComboBox.FormattingEnabled = true;
-            this.ResolutionComboBox.Location = new System.Drawing.Point(127, 73);
+            this.ResolutionComboBox.Location = new System.Drawing.Point(127, 59);
             this.ResolutionComboBox.Name = "ResolutionComboBox";
             this.ResolutionComboBox.Size = new System.Drawing.Size(121, 21);
             this.ResolutionComboBox.TabIndex = 1;
@@ -87,7 +88,7 @@ namespace changeResolution1
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 76);
+            this.label2.Location = new System.Drawing.Point(12, 62);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 13);
             this.label2.TabIndex = 5;
@@ -133,7 +134,7 @@ namespace changeResolution1
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(27, 257);
+            this.label6.Location = new System.Drawing.Point(12, 172);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(13, 13);
             this.label6.TabIndex = 10;
@@ -141,7 +142,7 @@ namespace changeResolution1
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(262, 257);
+            this.button2.Location = new System.Drawing.Point(16, 226);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(112, 23);
             this.button2.TabIndex = 11;
@@ -151,7 +152,7 @@ namespace changeResolution1
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(262, 286);
+            this.button3.Location = new System.Drawing.Point(134, 226);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(112, 23);
             this.button3.TabIndex = 12;
@@ -161,7 +162,7 @@ namespace changeResolution1
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(262, 315);
+            this.button4.Location = new System.Drawing.Point(15, 255);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(112, 23);
             this.button4.TabIndex = 13;
@@ -171,7 +172,7 @@ namespace changeResolution1
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(262, 344);
+            this.button5.Location = new System.Drawing.Point(136, 255);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(112, 23);
             this.button5.TabIndex = 14;
@@ -179,9 +180,20 @@ namespace changeResolution1
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // fixDisplayButton
+            // 
+            this.fixDisplayButton.Location = new System.Drawing.Point(16, 296);
+            this.fixDisplayButton.Name = "fixDisplayButton";
+            this.fixDisplayButton.Size = new System.Drawing.Size(75, 23);
+            this.fixDisplayButton.TabIndex = 15;
+            this.fixDisplayButton.Text = "fix pixel";
+            this.fixDisplayButton.UseVisualStyleBackColor = true;
+            this.fixDisplayButton.Click += new System.EventHandler(this.fixDisplayButton_Click);
+            // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(1256, 576);
+            this.ClientSize = new System.Drawing.Size(1494, 576);
+            this.Controls.Add(this.fixDisplayButton);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -215,6 +227,7 @@ namespace changeResolution1
         private Button button3;
         private Button button4;
         private Button button5;
+        private Button fixDisplayButton;
     }
 }
 
