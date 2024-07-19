@@ -21,11 +21,11 @@ namespace changeResolution1
             this.StartPosition = FormStartPosition.Manual;
             this.Location = screen.Bounds.Location;
             this.Size = screen.Bounds.Size;
-        }
-
-            private void RegionSelectorForm_Load(object sender, EventArgs e)
-        {
-
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.WindowState = FormWindowState.Maximized;
+            this.MouseDown += RegionSelectorForm_MouseDown;
+            this.MouseMove += RegionSelectorForm_MouseMove;
+            this.MouseUp += RegionSelectorForm_MouseUp;
         }
 
         private void RegionSelectorForm_MouseDown(object sender, MouseEventArgs e)
@@ -56,26 +56,12 @@ namespace changeResolution1
             {
                 isSelecting = false;
                 Rectangle rect = GetRectangle(startPoint, e.Location);
-
-                if (IsValidRectangle(rect))
-                {
-                    SelectedRegions.Add(rect);
-                    this.DialogResult = DialogResult.OK;
-                }
-                else
-                {
-                    MessageBox.Show($"Некорректные параметры прямоугольника: {rect.X}, {rect.Y}, {rect.Width}, {rect.Height}");
-                }
+                SelectedRegions.Add(rect);
+                this.DialogResult = DialogResult.OK;
                 this.Close();
             }
         }
-        private bool IsValidRectangle(Rectangle rect)
-        {
-            return rect.X >= 0 && rect.Y >= 0 &&
-                   rect.Width > 0 && rect.Height > 0 &&
-                   rect.X + rect.Width <= this.ClientSize.Width &&
-                   rect.Y + rect.Height <= this.ClientSize.Height;
-        }
+
         private Rectangle GetRectangle(Point p1, Point p2)
         {
             return new Rectangle(

@@ -37,7 +37,6 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "RegionSelectorForm";
             this.Text = "RegionSelectorForm";
-            this.Load += new System.EventHandler(this.RegionSelectorForm_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.RegionSelectorForm_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.RegionSelectorForm_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.RegionSelectorForm_MouseUp);

@@ -102,7 +102,7 @@
             this.multi_colorCheckBox.TabIndex = 9;
             this.multi_colorCheckBox.Text = "Multicolor";
             this.multi_colorCheckBox.UseVisualStyleBackColor = true;
-            this.multi_colorCheckBox.CheckedChanged += new System.EventHandler(this.colorPickerButton_Click_1);
+            this.multi_colorCheckBox.CheckedChanged += new System.EventHandler(this.multi_colorCheckBox_CheckedChanged);
             // 
             // locateButton
             // 

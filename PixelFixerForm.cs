@@ -2,27 +2,22 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using TheArtOfDev.HtmlRenderer.Adapters;
 
 namespace changeResolution1
 {
     public partial class PixelFixerForm : Form
     {
-
         private bool isFlashing = false;
         private Color currentColor = Color.Black;
         private Overlay monitorForm;
         private List<Color> repairColors = new List<Color> { Color.Red, Color.Green, Color.Blue, Color.White, Color.Black };
-        private List<Rectangle> repairRegions = new List<Rectangle>();
-
+        private List<Rectangle> repairRegions = new List<Rectangle>(); // Список областей для ремонта
 
         public PixelFixerForm()
         {
             InitializeComponent();
             InitializeCustomComponents();
         }
-
-
         private void InitializeCustomComponents()
         {
             foreach (var screen in Screen.AllScreens)
@@ -49,7 +44,6 @@ namespace changeResolution1
             monitorForm.Show();
             monitorForm.StartFlashing();
         }
-
 
         private void intervalTrackBar_Scroll_1(object sender, EventArgs e)
         {
@@ -85,7 +79,6 @@ namespace changeResolution1
             else
             {
                 timer1.Stop();
-                this.BackColor = currentColor;
                 if (monitorForm != null)
                 {
                     monitorForm.StopFlashing();
@@ -97,7 +90,6 @@ namespace changeResolution1
 
         private void monitorComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private void locateButton_Click(object sender, EventArgs e)
@@ -110,6 +102,12 @@ namespace changeResolution1
                     repairRegions = regionSelector.SelectedRegions;
                 }
             }
+        }
+
+        private void multi_colorCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            colorPickerButton.Visible = !checkBox.Checked;
         }
     }
 }
