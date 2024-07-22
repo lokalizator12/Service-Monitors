@@ -35,6 +35,7 @@ namespace changeResolution1
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.fixDisplayButton = new System.Windows.Forms.Button();
+            this.testFormButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MonitorComboBox
@@ -190,9 +191,20 @@ namespace changeResolution1
             this.fixDisplayButton.UseVisualStyleBackColor = true;
             this.fixDisplayButton.Click += new System.EventHandler(this.fixDisplayButton_Click);
             // 
+            // testFormButton
+            // 
+            this.testFormButton.Location = new System.Drawing.Point(136, 296);
+            this.testFormButton.Name = "testFormButton";
+            this.testFormButton.Size = new System.Drawing.Size(75, 23);
+            this.testFormButton.TabIndex = 16;
+            this.testFormButton.Text = "test monitor";
+            this.testFormButton.UseVisualStyleBackColor = true;
+            this.testFormButton.Click += new System.EventHandler(this.testFormButton_Click);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1494, 576);
+            this.Controls.Add(this.testFormButton);
             this.Controls.Add(this.fixDisplayButton);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -228,6 +240,7 @@ namespace changeResolution1
         private Button button4;
         private Button button5;
         private Button fixDisplayButton;
+        private Button testFormButton;
     }
 }
 

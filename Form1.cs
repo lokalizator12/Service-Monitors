@@ -159,6 +159,11 @@ namespace changeResolution1
             pixelFixerForm.ShowDialog();
         }
 
+        private void testFormButton_Click(object sender, EventArgs e)
+        {
+            MonitorTestForm testForm = new MonitorTestForm();
+            testForm.ShowDialog();
+        }
     }
 }
 
