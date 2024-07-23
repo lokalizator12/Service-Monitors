@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -17,6 +18,8 @@ namespace changeResolution1
         private int resolutionHeight;
         private double maxHorizontalSizeCm;
         private double maxVerticalSizeCm;
+        private Dictionary<string, string> monitorNameToIdentifierMap = new Dictionary<string, string>();
+
         public async Task<string> GetMonitorNamesAsync()
         {
             StringBuilder st = new StringBuilder();
@@ -104,9 +107,13 @@ namespace changeResolution1
                                 break;
                             }
                         }
+                        string panelType = InferPanelType(name);
+
 
                         stringBuilder.AppendLine("Model: " + model.Trim() + Environment.NewLine);
                         stringBuilder.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
+                        stringBuilder.AppendLine("Panel Type: " + panelType + Environment.NewLine);
+
                     }
                 });
             }
@@ -117,6 +124,29 @@ namespace changeResolution1
 
             return stringBuilder.ToString();
         }
+
+        private string InferPanelType(string monitorName)
+        {
+            // Add logic here to infer the panel type based on monitor name or other properties
+            // This is a placeholder example
+            if (monitorName.IndexOf("IPS", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return "IPS";
+            }
+            else if (monitorName.IndexOf("TN", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return "TN";
+            }
+            else if (monitorName.IndexOf("VA", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return "VA";
+            }
+            else
+            {
+                return "Unknown";
+            }
+        }
+
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct DISPLAY_DEVICE
@@ -253,6 +283,167 @@ namespace changeResolution1
             double diagonalInches = diagonalPixels / averageDpi;
             stringBuilder.AppendLine("Diagonal from resolution:" + diagonalInches.ToString() + Environment.NewLine);
             return stringBuilder.ToString();
+        }
+
+
+        public async Task<string> GetEdidInfoAsync()
+        {
+            StringBuilder edidInfo = new StringBuilder();
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
+
+                    foreach (ManagementObject queryObj in searcher.Get())
+                    {
+                        var instanceName = queryObj["InstanceName"].ToString();
+                        var yearOfManufacture = queryObj["YearOfManufacture"].ToString();
+                        var weekOfManufacture = queryObj["WeekOfManufacture"].ToString();
+                        var serialNumberID = queryObj["SerialNumberID"];
+                        var userFriendlyName = queryObj["UserFriendlyName"];
+                        var manufacturerName = queryObj["ManufacturerName"];
+                        var productCodeID = queryObj["ProductCodeID"];
+
+                        edidInfo.AppendLine("Instance Name: " + instanceName + "\n");
+                        edidInfo.AppendLine("Year Of Manufacture: " + yearOfManufacture + "\n");
+                        edidInfo.AppendLine("Week Of Manufacture: " + weekOfManufacture + "\n");
+
+                        if (serialNumberID is string[] serialNumber)
+                        {
+                            edidInfo.AppendLine("Serial Number: " + string.Join("", serialNumber.Select(s => ((char)int.Parse(s)).ToString())) + "\n");
+                        }
+
+                        if (userFriendlyName is string[] name)
+                        {
+                            edidInfo.AppendLine("User Friendly Name: " + string.Join("", name.Select(s => ((char)int.Parse(s)).ToString())) + "\n");
+                        }
+
+                        if (manufacturerName is string[] manufacturer)
+                        {
+                            edidInfo.AppendLine("Manufacturer Name: " + string.Join("", manufacturer.Select(s => ((char)int.Parse(s)).ToString())) + "\n");
+                        }
+
+                        if (productCodeID is ushort[] productCode)
+                        {
+                            edidInfo.AppendLine("Product Code ID: " + string.Join("", productCode.Select(p => p.ToString("X"))) + "\n");
+                        }
+
+                        edidInfo.AppendLine("\n");
+                    }
+                });
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
+            }
+
+            return edidInfo.ToString();
+        }
+
+        public async Task<string> GetMonitorSerialNumberAsync()
+        {
+            StringBuilder serialNumberInfo = new StringBuilder();
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
+
+                    foreach (ManagementObject queryObj in searcher.Get())
+                    {
+                        var instanceName = queryObj["InstanceName"].ToString();
+                        var serialNumberID = (ushort[])queryObj["SerialNumberID"];
+
+                        serialNumberInfo.AppendLine("Instance Name: " + instanceName + "\n");
+
+                        if (serialNumberID != null && serialNumberID.Length > 0)
+                        {
+                            string serialNumber = DecodeEdidString(serialNumberID);
+                            serialNumberInfo.AppendLine("Serial Number: " + serialNumber + "\n");
+                        }
+                        else
+                        {
+                            serialNumberInfo.AppendLine("Serial Number: Not Available\n");
+                        }
+
+                        serialNumberInfo.AppendLine("\n");
+                    }
+                });
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
+            }
+
+            return serialNumberInfo.ToString();
+        }
+
+        private string DecodeEdidString(ushort[] rawData)
+        {
+            StringBuilder decodedString = new StringBuilder();
+            foreach (var data in rawData)
+            {
+                if (data > 0)
+                {
+                    decodedString.Append((char)data);
+                }
+            }
+            return decodedString.ToString();
+        }
+
+        public Screen SetScreenToComboBoxAndGetNonIntegred(ComboBox comboBox)
+        {
+            comboBox.Items.Clear();
+            monitorNameToIdentifierMap.Clear();
+
+            var monitorNames = Screen.AllScreens.Select(screen => screen.DeviceName).ToList();
+            var friendlyNames = GetFriendlyMonitorNames();
+
+            for (int i = 0; i < monitorNames.Count; i++)
+            {
+                var identifier = monitorNames[i];
+                var friendlyName = friendlyNames[i];
+                monitorNameToIdentifierMap[friendlyName] = identifier;
+                comboBox.Items.Add(friendlyName);
+            }
+
+            // Select the first non-integrated monitor
+            int nonIntegratedIndex = comboBox.Items.Count > 1 ? 1 : 0;
+            comboBox.SelectedIndex = nonIntegratedIndex;
+            return Screen.AllScreens[nonIntegratedIndex];
+        }
+
+        public List<string> GetFriendlyMonitorNames()
+        {
+            List<string> friendlyNames = new List<string>();
+
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT * FROM Win32_PnPEntity WHERE PNPClass = 'Monitor'");
+
+                foreach (ManagementObject queryObj in searcher.Get())
+                {
+                    string name = queryObj["Name"].ToString();
+                    friendlyNames.Add(name);
+                }
+            }
+            catch (ManagementException ex)
+            {
+                MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
+            }
+
+            return friendlyNames;
+        }
+        public string GetIdentifierFromFriendlyName(string friendlyName)
+        {
+            if (monitorNameToIdentifierMap.ContainsKey(friendlyName))
+            {
+                return monitorNameToIdentifierMap[friendlyName];
+            }
+            return null;
         }
     }
 }

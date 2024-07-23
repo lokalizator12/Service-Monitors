@@ -313,12 +313,16 @@ namespace changeResolution1
                     patternParameters["radius"] = Math.Max(5, patternParameters["radius"] - 5);
                     patternParameters["spacing"] = Math.Max(2, patternParameters["spacing"] - 2);
                     patternParameters["number cells"] = Math.Max(2, patternParameters["number cells"] - 1);
-                    patternParameters["number of lines"] = Math.Max(2, patternParameters["number cells"] - 1);
+                    patternParameters["number of lines"] = Math.Max(1, patternParameters["number of lines"] - 1);
 
                 }
                 this.Invalidate(); // Перерисовать форму
             }
         }
 
+        private void TestOverlay_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

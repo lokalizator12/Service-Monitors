@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PixelFixerForm));
             this.startStopButton = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.colorPickerButton = new System.Windows.Forms.Button();
@@ -53,16 +54,20 @@
             this.presetColorLabel = new System.Windows.Forms.Label();
             this.presetColorComboBox = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.siticoneTextBox1 = new Siticone.Desktop.UI.WinForms.SiticoneTextBox();
+            this.siticoneBorderlessForm1 = new Siticone.Desktop.UI.WinForms.SiticoneBorderlessForm(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.intervalTrackBar)).BeginInit();
             this.controlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hoursUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.secondsUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // startStopButton
             // 
-            this.startStopButton.Location = new System.Drawing.Point(100, 229);
+            this.startStopButton.Location = new System.Drawing.Point(118, 294);
             this.startStopButton.Name = "startStopButton";
             this.startStopButton.Size = new System.Drawing.Size(98, 23);
             this.startStopButton.TabIndex = 1;
@@ -162,6 +167,8 @@
             // controlPanel
             // 
             this.controlPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.controlPanel.Controls.Add(this.siticoneTextBox1);
+            this.controlPanel.Controls.Add(this.pictureBox1);
             this.controlPanel.Controls.Add(this.testModeComboBox);
             this.controlPanel.Controls.Add(this.timeLeftLabel);
             this.controlPanel.Controls.Add(this.label3);
@@ -185,7 +192,7 @@
             this.controlPanel.Controls.Add(this.intervalDescriptionLabel);
             this.controlPanel.Location = new System.Drawing.Point(12, 12);
             this.controlPanel.Name = "controlPanel";
-            this.controlPanel.Size = new System.Drawing.Size(372, 286);
+            this.controlPanel.Size = new System.Drawing.Size(372, 351);
             this.controlPanel.TabIndex = 0;
             // 
             // testModeComboBox
@@ -204,7 +211,7 @@
             // timeLeftLabel
             // 
             this.timeLeftLabel.AutoSize = true;
-            this.timeLeftLabel.Location = new System.Drawing.Point(261, 258);
+            this.timeLeftLabel.Location = new System.Drawing.Point(261, 333);
             this.timeLeftLabel.Name = "timeLeftLabel";
             this.timeLeftLabel.Size = new System.Drawing.Size(10, 13);
             this.timeLeftLabel.TabIndex = 23;
@@ -285,7 +292,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(15, 258);
+            this.progressBar.Location = new System.Drawing.Point(15, 323);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(240, 23);
             this.progressBar.TabIndex = 15;
@@ -313,13 +320,56 @@
             this.presetColorComboBox.TabIndex = 13;
             this.presetColorComboBox.SelectedIndexChanged += new System.EventHandler(this.presetColorComboBox_SelectedIndexChanged);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(3, 209);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(79, 77);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 25;
+            this.pictureBox1.TabStop = false;
+            // 
+            // siticoneTextBox1
+            // 
+            this.siticoneTextBox1.BackColor = System.Drawing.Color.Khaki;
+            this.siticoneTextBox1.BorderColor = System.Drawing.Color.Yellow;
+            this.siticoneTextBox1.BorderRadius = 4;
+            this.siticoneTextBox1.BorderStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            this.siticoneTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.siticoneTextBox1.DefaultText = "";
+            this.siticoneTextBox1.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.siticoneTextBox1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.siticoneTextBox1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.siticoneTextBox1.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.siticoneTextBox1.Enabled = false;
+            this.siticoneTextBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.siticoneTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.siticoneTextBox1.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.siticoneTextBox1.Location = new System.Drawing.Point(100, 209);
+            this.siticoneTextBox1.Multiline = true;
+            this.siticoneTextBox1.Name = "siticoneTextBox1";
+            this.siticoneTextBox1.PasswordChar = '\0';
+            this.siticoneTextBox1.PlaceholderText = "";
+            this.siticoneTextBox1.ReadOnly = true;
+            this.siticoneTextBox1.SelectedText = "";
+            this.siticoneTextBox1.Size = new System.Drawing.Size(255, 81);
+            this.siticoneTextBox1.TabIndex = 27;
+            // 
+            // siticoneBorderlessForm1
+            // 
+            this.siticoneBorderlessForm1.ContainerControl = this;
+            this.siticoneBorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            this.siticoneBorderlessForm1.TransparentWhileDrag = true;
+            // 
             // PixelFixerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 310);
+            this.ClientSize = new System.Drawing.Size(396, 375);
             this.Controls.Add(this.controlPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "PixelFixerForm";
             this.Text = "PixelFixerForm";
             ((System.ComponentModel.ISupportInitialize)(this.intervalTrackBar)).EndInit();
@@ -328,6 +378,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.hoursUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.secondsUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -357,5 +408,8 @@
         private System.Windows.Forms.Label timeLeftLabel;
         private System.Windows.Forms.ComboBox testModeComboBox;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private Siticone.Desktop.UI.WinForms.SiticoneTextBox siticoneTextBox1;
+        private Siticone.Desktop.UI.WinForms.SiticoneBorderlessForm siticoneBorderlessForm1;
     }
 }

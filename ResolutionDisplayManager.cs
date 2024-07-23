@@ -59,14 +59,13 @@ namespace changeResolution1
             public uint dmPanningHeight;
         }
 
-        public List<string> GetAvailableResolutions(int screenIndex)
+        public List<string> GetAvailableResolutions(string displayIdentifier)
         {
-            var screen = Screen.AllScreens[screenIndex];
             var resolutions = new List<string>();
             DEVMODE devMode = new DEVMODE();
             int modeIndex = 0;
 
-            while (EnumDisplaySettings(screen.DeviceName, modeIndex, ref devMode))
+            while (EnumDisplaySettings(displayIdentifier, modeIndex, ref devMode))
             {
                 string resolution = $"{devMode.dmPelsWidth}x{devMode.dmPelsHeight}";
                 if (!resolutions.Contains(resolution))
@@ -79,16 +78,15 @@ namespace changeResolution1
             return resolutions;
         }
 
-        public void SetResolution(int screenIndex, int width, int height)
+        public void SetResolution(string displayIdentifier, int width, int height)
         {
-            var screen = Screen.AllScreens[screenIndex];
             DEVMODE devMode = new DEVMODE();
             devMode.dmSize = (ushort)Marshal.SizeOf(devMode);
             devMode.dmPelsWidth = (uint)width;
             devMode.dmPelsHeight = (uint)height;
             devMode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
 
-            int result = ChangeDisplaySettingsEx(screen.DeviceName, ref devMode, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
+            int result = ChangeDisplaySettingsEx(displayIdentifier, ref devMode, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)
             {
                 MessageBox.Show($"Failed to change display settings. Error code: {result}");
@@ -99,10 +97,9 @@ namespace changeResolution1
             }
         }
 
-        public (int Width, int Height) GetMaxResolution(int screenIndex)
+        public (int Width, int Height) GetMaxResolution(string displayIdentifier)
         {
-            var screen = Screen.AllScreens[screenIndex];
-            var resolutions = GetAvailableResolutions(screenIndex);
+            var resolutions = GetAvailableResolutions(displayIdentifier);
 
             var maxResolution = resolutions
                 .Select(r => r.Split('x'))

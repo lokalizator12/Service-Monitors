@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,7 +14,7 @@ namespace changeResolution1
         private DisplayManager displayManager;
         private MonitorInfoManager monitorInfoManager;
         private ResolutionDisplayManager resolutionManager;
-
+        private Dictionary<string, string> monitorNameToIdentifierMap;
         public Form1()
         {
             InitializeComponent();
@@ -26,11 +27,17 @@ namespace changeResolution1
         private void FillMonitorComboBox()
         {
             MonitorComboBox.Items.Clear();
+            monitorNameToIdentifierMap = new Dictionary<string, string>();
 
             var monitorNames = resolutionManager.GetMonitorNames();
-            foreach (var name in monitorNames)
+            var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames(); // This method should return a list of friendly names in the same order as `monitorNames`
+
+            for (int i = 0; i < monitorNames.Count; i++)
             {
-                MonitorComboBox.Items.Add(name);
+                var identifier = monitorNames[i];
+                var friendlyName = friendlyNames[i];
+                monitorNameToIdentifierMap[friendlyName] = identifier;
+                MonitorComboBox.Items.Add(friendlyName);
             }
 
             if (MonitorComboBox.Items.Count > 0)
@@ -47,17 +54,23 @@ namespace changeResolution1
         private void UpdateResolutionComboBox()
         {
             ResolutionComboBox.Items.Clear();
-            var resolutions = resolutionManager.GetAvailableResolutions(MonitorComboBox.SelectedIndex).OrderBy(r =>
+
+            var selectedFriendlyName = MonitorComboBox.SelectedItem.ToString();
+            var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
+
+            var resolutions = resolutionManager.GetAvailableResolutions(identifier).OrderBy(r =>
             {
                 var parts = r.Split('x');
                 int width = int.Parse(parts[0]);
                 int height = int.Parse(parts[1]);
                 return width * height;
             }).ToList();
+
             foreach (var resolution in resolutions)
             {
                 ResolutionComboBox.Items.Add(resolution);
             }
+
             if (ResolutionComboBox.Items.Count > 0)
             {
                 ResolutionComboBox.SelectedIndex = 0;
@@ -75,18 +88,23 @@ namespace changeResolution1
                 int width = int.Parse(parts[0].Trim());
                 int height = int.Parse(parts[1].Trim());
 
-                resolutionManager.SetResolution(MonitorComboBox.SelectedIndex, width, height);
+                var selectedFriendlyName = MonitorComboBox.SelectedItem.ToString();
+                var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
+
+                resolutionManager.SetResolution(identifier, width, height);
             }
         }
 
         private void SetMaxResolution_Click(object sender, EventArgs e)
         {
-            var maxResolution = resolutionManager.GetMaxResolution(MonitorComboBox.SelectedIndex);
+            var selectedFriendlyName = MonitorComboBox.SelectedItem.ToString();
+            var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
+            var maxResolution = resolutionManager.GetMaxResolution(identifier);
 
             if (maxResolution != default)
             {
                 MessageBox.Show($"Max resolution: {maxResolution.Width}x{maxResolution.Height}");
-                resolutionManager.SetResolution(MonitorComboBox.SelectedIndex, maxResolution.Width, maxResolution.Height);
+                resolutionManager.SetResolution(identifier, maxResolution.Width, maxResolution.Height);
             }
             else
             {
@@ -102,10 +120,14 @@ namespace changeResolution1
             var monitorNames = await monitorInfoManager.GetMonitorNamesAsync();
             var monitorInfo = await monitorInfoManager.GetMonitorInfoAsync();
             var monitorInfo1 = await monitorInfoManager.GetDisplayInfo1Async();
+            var edidInfo = await monitorInfoManager.GetEdidInfoAsync();
+            var serialNumber = await monitorInfoManager.GetMonitorSerialNumberAsync();
             label3.Text = monitorNames;
             label4.Text = monitorInfo;
             label5.Text = monitorInfo1;
             label6.Text = monitorInfoManager.GetDiagonal();
+            label7.Text = edidInfo;
+            label8.Text = serialNumber;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -163,6 +185,12 @@ namespace changeResolution1
         {
             MonitorTestForm testForm = new MonitorTestForm();
             testForm.ShowDialog();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            BrightnessContrastForm brightness = new BrightnessContrastForm();
+            brightness.ShowDialog();    
         }
     }
 }

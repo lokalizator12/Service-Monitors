@@ -41,6 +41,7 @@ namespace changeResolution1
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.colorChangeTimer = new System.Windows.Forms.Timer(this.components);
             this.colorPanel = new System.Windows.Forms.Panel();
+            this.brightnessContrastButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // monitorLabel
@@ -125,11 +126,21 @@ namespace changeResolution1
             this.colorPanel.Size = new System.Drawing.Size(800, 128);
             this.colorPanel.TabIndex = 6;
             // 
+            // brightnessContrastButton
+            // 
+            this.brightnessContrastButton.Location = new System.Drawing.Point(25, 193);
+            this.brightnessContrastButton.Name = "brightnessContrastButton";
+            this.brightnessContrastButton.Size = new System.Drawing.Size(75, 23);
+            this.brightnessContrastButton.TabIndex = 7;
+            this.brightnessContrastButton.Text = "jsnosc";
+            this.brightnessContrastButton.UseVisualStyleBackColor = true;
+            // 
             // MonitorTestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.brightnessContrastButton);
             this.Controls.Add(this.colorPanel);
             this.Controls.Add(this.selectColorButton);
             this.Controls.Add(this.testModeComboBox);
@@ -139,7 +150,7 @@ namespace changeResolution1
             this.Controls.Add(this.monitorLabel);
             this.Name = "MonitorTestForm";
             this.Text = "MonitorTestForm";
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MonitorTestForm_KeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.monitorTestForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -157,5 +168,6 @@ namespace changeResolution1
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Timer colorChangeTimer;
         private System.Windows.Forms.Panel colorPanel;
+        private System.Windows.Forms.Button brightnessContrastButton;
     }
 }

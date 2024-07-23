@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace changeResolution1
@@ -15,6 +16,9 @@ namespace changeResolution1
         private List<Rectangle> repairRegions = new List<Rectangle>(); // Список областей для ремонта
         //private ToolTip toolTip;
         private Stopwatch stopwatch;
+        private Screen selectedScreen;
+        private Dictionary<string, string> monitorNameToIdentifierMap;
+        MonitorInfoManager monitorInfoManager;
 
         private int progressValue = 0;
         private int totalTimeInMilliseconds;
@@ -24,18 +28,33 @@ namespace changeResolution1
         {
             InitializeComponent();
             stopwatch = new Stopwatch();
+            monitorInfoManager = new MonitorInfoManager();
             InitializeCustomComponents();
         }
         private void InitializeCustomComponents()
         {
             intervalLabel.Text = intervalTrackBar.Value.ToString() + "ms.";
-            foreach (var screen in Screen.AllScreens)
+            monitorNameToIdentifierMap = new Dictionary<string, string>();
+
+            var monitorNames = Screen.AllScreens.Select(screen => screen.DeviceName).ToList();
+            var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames();
+
+            for (int i = 0; i < monitorNames.Count; i++)
             {
-                monitorComboBox.Items.Add(screen.DeviceName);
+                var identifier = monitorNames[i];
+                var friendlyName = friendlyNames[i];
+                monitorNameToIdentifierMap[friendlyName] = identifier;
+                monitorComboBox.Items.Add(friendlyName);
             }
+
+            // Select the first non-integrated monitor
+            int nonIntegratedIndex = monitorComboBox.Items.Count > 1 ? 1 : 0;
+            monitorComboBox.SelectedIndex = nonIntegratedIndex;
+            selectedScreen = Screen.AllScreens[nonIntegratedIndex];
+
             presetColorComboBox.SelectedIndex = 0;
             testModeComboBox.SelectedIndex = 0;
-            monitorComboBox.SelectedIndex = 0;
+            siticoneTextBox1.Text = "OSTRZEŻENIE: Proces ten spowoduje miganie świateł, które mogą wywołać drgawki u osób cierpiących na padaczkę światłoczułą. Postępuj ostrożnie.";
         }
 
         private void ShowOnMonitor()
@@ -45,7 +64,7 @@ namespace changeResolution1
                 monitorForm.Close();
             }
 
-            Screen selectedScreen = Screen.AllScreens[monitorComboBox.SelectedIndex];
+            
             monitorForm = new Overlay(currentColor, intervalTrackBar.Value,
                 isMulticolor: multi_colorCheckBox.Checked, repairColors: repairColors,
                 repairRegions: repairRegions, testMode: testModeComboBox.SelectedItem.ToString());
@@ -103,7 +122,7 @@ namespace changeResolution1
                 }
                 if (totalTimeInMilliseconds > MaxTimeInMilliseconds )
                 {
-                    MessageBox.Show("Max. czas wykonania выполнения - 24 часа и минимум 1 секунда.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Max. czas wykonania  - 24 godziny ", "błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     isFlashing = false;
                     (sender as Button).Text = "Start";
                     return;
@@ -140,7 +159,6 @@ namespace changeResolution1
 
         private void locateButton_Click(object sender, EventArgs e)
         {
-            Screen selectedScreen = Screen.AllScreens[monitorComboBox.SelectedIndex];
             using (RegionSelectorForm regionSelector = new RegionSelectorForm(selectedScreen))
             {
                 if (regionSelector.ShowDialog() == DialogResult.OK)
@@ -251,5 +269,9 @@ namespace changeResolution1
                 UpdateProgress();
             }
 
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     }

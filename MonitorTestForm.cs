@@ -7,44 +7,27 @@ namespace changeResolution1
     public partial class MonitorTestForm : Form
     {
         private TestOverlay currentTestOverlay;
-        string testMode = "Default";
-        string testPattern = "Default";
-        Color customColor = Color.White;
+        private string testMode = "Default";
+        private string testPattern = "Default";
+        private Color customColor = Color.White;
         private int colorIndex;
         private Color[] testColors = { Color.Red, Color.Green, Color.Blue, Color.White, Color.Black };
         private bool autoCycle = true;
+        private Screen selectedScreen;
+        private MonitorInfoManager monitorInfoManager;
+
         public MonitorTestForm()
         {
             InitializeComponent();
+            monitorInfoManager = new MonitorInfoManager();
             InitializeCustomComponents();
         }
 
         private void InitializeCustomComponents()
         {
-
-
-            foreach (var screen in Screen.AllScreens)
-            {
-                monitorComboBox.Items.Add(screen.DeviceName);
-            }
-            monitorComboBox.SelectedIndex = 0;
-            testModeComboBox.SelectedIndex = 0;
-            testPatternComboBox.SelectedIndex = 0;
-            for (int i = 0; i < testColors.Length; i++)
-            {
-                Button colorButton = new Button
-                {
-                    BackColor = testColors[i],
-                    Width = 50,
-                    Height = 50,
-                    Margin = new Padding(5),
-                    Tag = i
-                };
-                colorButton.Click += ColorButton_Click;
-                colorPanel.Controls.Add(colorButton);
-            }
-
+            selectedScreen = monitorInfoManager.SetScreenToComboBoxAndGetNonIntegred(monitorComboBox);
         }
+
         private void ColorButton_Click(object sender, EventArgs e)
         {
             if (sender is Button button)
@@ -55,6 +38,7 @@ namespace changeResolution1
                 colorChangeTimer.Stop();
             }
         }
+
         private void testMonitorButton_Click(object sender, EventArgs e)
         {
             if (currentTestOverlay != null)
@@ -91,15 +75,18 @@ namespace changeResolution1
                 {
                     currentTestOverlay.BackColor = colorDialog1.Color;
                 }
-                else { TestMonitor(testMode, testPattern, customColor); }
-                
+                else
+                {
+                    TestMonitor(testMode, testPattern, colorDialog1.Color);
+                }
+
                 autoCycle = false;
             }
         }
 
         private void TestMonitor(string testMode, string testPattern, Color customColor)
         {
-            Screen selectedScreen = Screen.AllScreens[monitorComboBox.SelectedIndex]; 
+            Screen selectedScreen = Screen.AllScreens[monitorComboBox.SelectedIndex];
             currentTestOverlay = new TestOverlay(testMode, testPattern, customColor);
             currentTestOverlay.StartPosition = FormStartPosition.Manual;
             currentTestOverlay.Location = selectedScreen.Bounds.Location;
@@ -114,27 +101,30 @@ namespace changeResolution1
             if (autoCycle)
             {
                 colorIndex = (colorIndex + 1) % testColors.Length;
-               
                 TestMonitor(testMode, "Default", testColors[colorIndex]);
             }
         }
 
-        private void MonitorTestForm_KeyDown(object sender, KeyEventArgs e)
+        private void monitorTestForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Left)
+            if (currentTestOverlay != null)
             {
-                autoCycle = false;
-                colorChangeTimer.Stop();
-                colorIndex = (colorIndex - 1 + testColors.Length) % testColors.Length;
-                this.BackColor = testColors[colorIndex];
-            }
-            else if (e.KeyCode == Keys.Right)
-            {
-                autoCycle = false;
-                colorChangeTimer.Stop();
-                colorIndex = (colorIndex + 1) % testColors.Length;
-                this.BackColor = testColors[colorIndex];
+                if (e.KeyCode == Keys.Left)
+                {
+                    autoCycle = false;
+                    colorChangeTimer.Stop();
+                    colorIndex = (colorIndex - 1 + testColors.Length) % testColors.Length;
+                    currentTestOverlay.BackColor = testColors[colorIndex];
+                }
+                else if (e.KeyCode == Keys.Right)
+                {
+                    autoCycle = false;
+                    colorChangeTimer.Stop();
+                    colorIndex = (colorIndex + 1) % testColors.Length;
+                    currentTestOverlay.BackColor = testColors[colorIndex];
+                }
             }
         }
     }
 }
+

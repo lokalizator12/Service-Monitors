@@ -19,6 +19,7 @@ namespace changeResolution1
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.MonitorComboBox = new System.Windows.Forms.ComboBox();
             this.ResolutionComboBox = new System.Windows.Forms.ComboBox();
             this.SetResolution1 = new System.Windows.Forms.Button();
@@ -36,6 +37,9 @@ namespace changeResolution1
             this.button5 = new System.Windows.Forms.Button();
             this.fixDisplayButton = new System.Windows.Forms.Button();
             this.testFormButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MonitorComboBox
@@ -44,7 +48,7 @@ namespace changeResolution1
             this.MonitorComboBox.FormattingEnabled = true;
             this.MonitorComboBox.Location = new System.Drawing.Point(127, 25);
             this.MonitorComboBox.Name = "MonitorComboBox";
-            this.MonitorComboBox.Size = new System.Drawing.Size(121, 21);
+            this.MonitorComboBox.Size = new System.Drawing.Size(167, 21);
             this.MonitorComboBox.TabIndex = 0;
             this.MonitorComboBox.SelectedIndexChanged += new System.EventHandler(this.MonitorComboBox_SelectedIndexChanged);
             // 
@@ -54,7 +58,7 @@ namespace changeResolution1
             this.ResolutionComboBox.FormattingEnabled = true;
             this.ResolutionComboBox.Location = new System.Drawing.Point(127, 59);
             this.ResolutionComboBox.Name = "ResolutionComboBox";
-            this.ResolutionComboBox.Size = new System.Drawing.Size(121, 21);
+            this.ResolutionComboBox.Size = new System.Drawing.Size(167, 21);
             this.ResolutionComboBox.TabIndex = 1;
             // 
             // SetResolution1
@@ -201,9 +205,40 @@ namespace changeResolution1
             this.testFormButton.UseVisualStyleBackColor = true;
             this.testFormButton.Click += new System.EventHandler(this.testFormButton_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 335);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(13, 13);
+            this.label7.TabIndex = 17;
+            this.label7.Text = ";)";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(1023, 523);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(13, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = ";)";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(217, 296);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(33, 23);
+            this.button6.TabIndex = 19;
+            this.button6.Text = "test monitor";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(1494, 576);
+            this.ClientSize = new System.Drawing.Size(1494, 777);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.testFormButton);
             this.Controls.Add(this.fixDisplayButton);
             this.Controls.Add(this.button5);
@@ -221,6 +256,7 @@ namespace changeResolution1
             this.Controls.Add(this.SetResolution1);
             this.Controls.Add(this.ResolutionComboBox);
             this.Controls.Add(this.MonitorComboBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -241,6 +277,9 @@ namespace changeResolution1
         private Button button5;
         private Button fixDisplayButton;
         private Button testFormButton;
+        private Label label7;
+        private Label label8;
+        private Button button6;
     }
 }
 
