@@ -153,9 +153,7 @@ namespace changeResolution1
             }
         }
 
-        private void monitorComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
+      
 
         private void locateButton_Click(object sender, EventArgs e)
         {

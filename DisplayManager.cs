@@ -10,6 +10,9 @@ namespace changeResolution1
 {
     internal class DisplayManager
     {
+        private const int DM_POSITION = 0x00000020;
+        private const int DM_PELSHEIGHT = 0x00100000;
+        private const int DM_PELSWIDTH = 0x00080000;
         private const int ENUM_CURRENT_SETTINGS = -1;
         private const int CDS_UPDATEREGISTRY = 0x01;
         private const int DISP_CHANGE_SUCCESSFUL = 0;
@@ -135,6 +138,7 @@ namespace changeResolution1
 
         private void SetDuplicateMode(DISPLAY_DEVICE primaryDevice, DISPLAY_DEVICE secondaryDevice, DEVMODE devMode)
         {
+            devMode.dmFields = unchecked((short)(DM_POSITION | DM_PELSWIDTH | DM_PELSHEIGHT));
             int result = ChangeDisplaySettingsEx(primaryDevice.DeviceName, ref devMode, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)
             {
@@ -150,6 +154,8 @@ namespace changeResolution1
 
         private void SetExtendMode(DISPLAY_DEVICE primaryDevice, DISPLAY_DEVICE secondaryDevice, DEVMODE devModePrimary, DEVMODE devModeSecondary)
         {
+            devModePrimary.dmFields = unchecked((short)(DM_POSITION | DM_PELSWIDTH | DM_PELSHEIGHT));
+
             int result = ChangeDisplaySettingsEx(primaryDevice.DeviceName, ref devModePrimary, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)
             {
@@ -158,6 +164,7 @@ namespace changeResolution1
 
             devModeSecondary.dmPositionX = devModePrimary.dmPelsWidth;
             devModeSecondary.dmPositionY = 0;
+            devModeSecondary.dmFields = unchecked((short)(DM_POSITION | DM_PELSWIDTH | DM_PELSHEIGHT));
 
             result = ChangeDisplaySettingsEx(secondaryDevice.DeviceName, ref devModeSecondary, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)
@@ -168,6 +175,10 @@ namespace changeResolution1
 
         private void SetPrimaryOnlyMode(DISPLAY_DEVICE primaryDevice, DISPLAY_DEVICE secondaryDevice, DEVMODE devModePrimary, DEVMODE devModeSecondary)
         {
+            devModePrimary.dmPositionX = 0;
+            devModePrimary.dmPositionY = 0;
+            devModePrimary.dmFields = unchecked((short)(DM_POSITION | DM_PELSWIDTH | DM_PELSHEIGHT));
+
             int result = ChangeDisplaySettingsEx(primaryDevice.DeviceName, ref devModePrimary, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)
             {
@@ -176,6 +187,7 @@ namespace changeResolution1
 
             devModeSecondary.dmPositionX = -devModeSecondary.dmPelsWidth;
             devModeSecondary.dmPositionY = 0;
+            devModePrimary.dmFields = unchecked((short)(DM_POSITION | DM_PELSWIDTH | DM_PELSHEIGHT));
 
             result = ChangeDisplaySettingsEx(secondaryDevice.DeviceName, ref devModeSecondary, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)
@@ -186,6 +198,10 @@ namespace changeResolution1
 
         private void SetSecondaryOnlyMode(DISPLAY_DEVICE primaryDevice, DISPLAY_DEVICE secondaryDevice, DEVMODE devModePrimary, DEVMODE devModeSecondary)
         {
+            devModeSecondary.dmPositionX = 0;
+            devModeSecondary.dmPositionY = 0;
+            devModePrimary.dmFields = unchecked((short)(DM_POSITION | DM_PELSWIDTH | DM_PELSHEIGHT));
+
             int result = ChangeDisplaySettingsEx(secondaryDevice.DeviceName, ref devModeSecondary, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)
             {
@@ -194,6 +210,7 @@ namespace changeResolution1
 
             devModePrimary.dmPositionX = -devModePrimary.dmPelsWidth;
             devModePrimary.dmPositionY = 0;
+            devModePrimary.dmFields = unchecked((short)(DM_POSITION | DM_PELSWIDTH | DM_PELSHEIGHT));
 
             result = ChangeDisplaySettingsEx(primaryDevice.DeviceName, ref devModePrimary, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)

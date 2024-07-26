@@ -7,7 +7,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static changeResolution1.DisplayManager;
 
 namespace changeResolution1
 {
@@ -445,5 +444,7 @@ namespace changeResolution1
             }
             return null;
         }
+
+       
     }
 }

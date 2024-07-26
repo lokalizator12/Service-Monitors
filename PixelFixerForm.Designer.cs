@@ -112,7 +112,6 @@
             this.monitorComboBox.Size = new System.Drawing.Size(121, 21);
             this.monitorComboBox.TabIndex = 7;
             this.toolTip1.SetToolTip(this.monitorComboBox, "Wybierz monitor do naprawy pikseli");
-            this.monitorComboBox.SelectedIndexChanged += new System.EventHandler(this.monitorComboBox_SelectedIndexChanged);
             // 
             // intervalLabel
             // 

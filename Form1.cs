@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 namespace changeResolution1
@@ -128,6 +129,7 @@ namespace changeResolution1
             label6.Text = monitorInfoManager.GetDiagonal();
             label7.Text = edidInfo;
             label8.Text = serialNumber;
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -171,7 +173,15 @@ namespace changeResolution1
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                displayManager.SetDisplayMode(DisplayManager.DisplayMode.SecondaryOnly);
+                MessageBox.Show("Display mode set to Secondary Only.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
 
         }
 
@@ -189,8 +199,23 @@ namespace changeResolution1
 
         private void button6_Click(object sender, EventArgs e)
         {
-            BrightnessContrastForm brightness = new BrightnessContrastForm();
+            SearchInformationForm brightness = new SearchInformationForm();
             brightness.ShowDialog();    
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            MonitorInfoSerachForm monitorInfoSerach = new MonitorInfoSerachForm();
+            monitorInfoSerach.Show();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://systemy.evk.pl/",
+                UseShellExecute = true
+            });
         }
     }
 }
