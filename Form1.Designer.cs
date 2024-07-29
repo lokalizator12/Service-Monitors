@@ -260,9 +260,9 @@ namespace changeResolution1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = global::changeResolution1.Properties.Resources.DA;
-            this.pictureBox1.Location = new System.Drawing.Point(1589, 650);
+            this.pictureBox1.Location = new System.Drawing.Point(1667, 700);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(142, 125);
+            this.pictureBox1.Size = new System.Drawing.Size(75, 77);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 22;
             this.pictureBox1.TabStop = false;

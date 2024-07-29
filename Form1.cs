@@ -31,6 +31,7 @@ namespace changeResolution1
             monitorNameToIdentifierMap = new Dictionary<string, string>();
 
             var monitorNames = resolutionManager.GetMonitorNames();
+            Console.WriteLine(monitorNames);
             var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames(); // This method should return a list of friendly names in the same order as `monitorNames`
 
             for (int i = 0; i < monitorNames.Count; i++)

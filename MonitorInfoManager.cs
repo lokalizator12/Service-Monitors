@@ -77,41 +77,8 @@ namespace changeResolution1
                         stringBuilder.AppendLine("PNPDeviceID: " + pnpDeviceId + Environment.NewLine);
                         stringBuilder.AppendLine("Status: " + status + Environment.NewLine);
 
-                        Dictionary<string, string> manufacturerDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-                        {
-                            { "LEN", "Lenovo" },
-                            { "HP", "Hewlett-Packard" },
-                            { "DELL", "Dell" },
-                            { "ASUS", "ASUS" },
-                            { "ACER", "Acer" },
-                            { "MSI", "MSI" },
-                            { "SAMSUNG", "Samsung" },
-                            { "LG", "LG" },
-                            { "SONY", "Sony" },
-                            { "TOSHIBA", "Toshiba" },
-                            { "APPLE", "Apple" },
-                            { "HUAWEI", "Huawei" },
-                            { "MICROSOFT", "Microsoft" },
-                            { "XIAOMI", "Xiaomi" }
-                        };
-
-                        string model = ExtractModelFromName(name);
-
-                        foreach (var entry in manufacturerDictionary)
-                        {
-                            if (name.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0)
-                            {
-                                manufacturer = entry.Value;
-                                model = Regex.Replace(model, entry.Key, string.Empty, RegexOptions.IgnoreCase);
-                                break;
-                            }
-                        }
-                        string panelType = InferPanelType(name);
 
 
-                        stringBuilder.AppendLine("Model: " + model.Trim() + Environment.NewLine);
-                        stringBuilder.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
-                        stringBuilder.AppendLine("Panel Type: " + panelType + Environment.NewLine);
 
                     }
                 });
@@ -314,21 +281,146 @@ namespace changeResolution1
                             edidInfo.AppendLine("Serial Number: " + string.Join("", serialNumber.Select(s => ((char)int.Parse(s)).ToString())) + "\n");
                         }
 
-                        if (userFriendlyName is string[] name)
-                        {
-                            edidInfo.AppendLine("User Friendly Name: " + string.Join("", name.Select(s => ((char)int.Parse(s)).ToString())) + "\n");
-                        }
+                        ushort[] manufacturerNameUshorts = (ushort[])queryObj["ManufacturerName"];
+                        string manufacturerNameFull = DecodeMonitorString(manufacturerNameUshorts);
 
-                        if (manufacturerName is string[] manufacturer)
+
+                        ushort[] userfrendlyNameUshorts = (ushort[])queryObj["UserFriendlyName"];
+                        string userfrendlyNameFull = DecodeMonitorString(userfrendlyNameUshorts);
+
+                        Dictionary<string, string> manufacturerDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                            {
+                                { "ACER", "Acer" },
+                                { "ACI", "Asus (ASUSTeK Computer Inc.)" },
+                                { "ACT", "Targa" },
+                                { "ADI", "ADI Corporation" },
+                                { "AMW", "AMW" },
+                                { "AOC", "AOC International (USA) Ltd." },
+                                { "API", "Acer America Corp." },
+                                { "APP", "Apple" },
+                                { "ART", "ArtMedia" },
+                                { "AST", "AST Research" },
+                                { "ASUS", "ASUS" },
+                                { "AUO", "AU Optronics" },
+                                { "BENQ", "BenQ" },
+                                { "BNQ", "BenQ Corporation" },
+                                { "BOE", "BOE Display Technology" },
+                                { "CASIO", "Casio" },
+                                { "CMN", "Chi Mei" },
+                                { "CPQ", "COMPAQ Computer Corp." },
+                                { "CPL", "Compal Electronics, Inc. / ALFA" },
+                                { "CTX", "CTX / Chuntex Electronic Co." },
+                                { "DEC", "Digital Equipment Corporation" },
+                                { "DELL", "Dell" },
+                                { "DPC", "Delta Electronics, Inc." },
+                                { "DWE", "Daewoo Telecom Ltd" },
+                                { "ECS", "ELITEGROUP Computer Systems" },
+                                { "EIZ", "EIZO Corporation" },
+                                { "EPI", "Envision Peripherals, Inc." },
+                                { "FCM", "Funai Electric Company of Taiwan" },
+                                { "FUS", "Fujitsu Siemens" },
+                                { "GIGABYTE", "Gigabyte" },
+                                { "GSM", "LG Electronics Inc. (GoldStar Technology, Inc.)" },
+                                { "GWY", "Gateway 2000" },
+                                { "HAIER", "Haier" },
+                                { "HANNSTAR", "HannStar" },
+                                { "HISENSE", "Hisense" },
+                                { "HEI", "Hyundai Electronics Industries Co., Ltd." },
+                                { "HIQ", "Hyundai ImageQuest" },
+                                { "HIT", "Hitachi" },
+                                { "HP", "Hewlett-Packard" },
+                                { "HSD", "Hannspree Inc." },
+                                { "HSL", "Hansol Electronics" },
+                                { "HTC", "Hitachi Ltd. / Nissei Sangyo America Ltd." },
+                                { "HUA", "Huawei" },
+                                { "HWP", "Hewlett Packard (HP)" },
+                                { "IBM", "IBM PC Company" },
+                                { "ICL", "Fujitsu ICL" },
+                                { "IFS", "InFocus" },
+                                { "INSIGNIA", "Insignia" },
+                                { "IQT", "Hyundai" },
+                                { "IVM", "Iiyama" },
+                                { "JVC", "JVC" },
+                                { "KDS", "KDS USA" },
+                                { "KFC", "KFC Computek" },
+                                { "KOIZUMI", "Koizumi" },
+                                { "KONKA", "Konka" },
+                                { "LEN", "Lenovo" },
+                                { "LG", "LG" },
+                                { "LGD", "LG Display" },
+                                { "LKM", "ADLAS / AZALEA" },
+                                { "LNK", "LINK Technologies, Inc." },
+                                { "LPL", "LG Philips" },
+                                { "LTN", "Lite-On" },
+                                { "MAG", "MAG InnoVision" },
+                                { "MAX", "Maxdata Computer GmbH" },
+                                { "MEI", "Panasonic Comm. & Systems Co." },
+                                { "MEL", "Mitsubishi Electronics" },
+                                { "MIC", "Microsoft" },
+                                { "MIR", "Miro Computer Products AG" },
+                                { "MITSUBISHI", "Mitsubishi Electric" },
+                                { "MSI", "MSI" },
+                                { "NAN", "NANAO" },
+                                { "NEC", "NEC Display Solutions" },
+                                { "NOK", "Nokia" },
+                                { "NVD", "Nvidia" },
+                                { "OQI", "OPTIQUEST" },
+                                { "PACKARD BELL", "Packard Bell" },
+                                { "PBN", "Packard Bell" },
+                                { "PCK", "Daewoo" },
+                                { "PDC", "Polaroid" },
+                                { "PHILIPS", "Philips" },
+                                { "PHL", "Philips Consumer Electronics Co." },
+                                { "PLANAR", "Planar Systems" },
+                                { "PGS", "Princeton Graphic Systems" },
+                                { "PROVIEW", "Proview" },
+                                { "PRT", "Princeton" },
+                                { "RAZER", "Razer" },
+                                { "REL", "Relisys" },
+                                { "SAMSUNG", "Samsung" },
+                                { "SANYO", "Sanyo" },
+                                { "SEC", "Seiko Epson Corporation" },
+                                { "SHARP", "Sharp" },
+                                { "SKYWORTH", "Skyworth" },
+                                { "SMC", "Samtron" },
+                                { "SMI", "Smile" },
+                                { "SNI", "Siemens Nixdorf" },
+                                { "SONY", "Sony" },
+                                { "SPT", "Sceptre" },
+                                { "SRC", "Shamrock Technology" },
+                                { "STN", "Samtron" },
+                                { "STP", "Sceptre" },
+                                { "TAT", "Tatung Co. of America, Inc." },
+                                { "TATUNG", "Tatung" },
+                                { "TCL", "TCL Technology" },
+                                { "THOMSON", "Thomson" },
+                                { "TSB", "Toshiba" },
+                                { "UNM", "Unisys Corporation" },
+                                { "VESTEL", "Vestel" },
+                                { "VIEW", "ViewSonic" },
+                                { "VIZIO", "Vizio" },
+                                { "VSC", "ViewSonic Corporation" },
+                                { "WTC", "Wen Technology" },
+                                { "ZCM", "Zenith Data Systems" },
+                                { "WESTINGHOUSE", "Westinghouse" }
+                            };
+                        // string model = ExtractModelFromName(userfrendlyNameFull);
+                        string manufacturer = "";
+                        foreach (var entry in manufacturerDictionary)
                         {
-                            edidInfo.AppendLine("Manufacturer Name: " + string.Join("", manufacturer.Select(s => ((char)int.Parse(s)).ToString())) + "\n");
+                            if (manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                manufacturer = entry.Value;
+
+                            }
                         }
+                        edidInfo.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
+                        edidInfo.AppendLine("Model: " + userfrendlyNameFull + Environment.NewLine);
 
                         if (productCodeID is ushort[] productCode)
                         {
                             edidInfo.AppendLine("Product Code ID: " + string.Join("", productCode.Select(p => p.ToString("X"))) + "\n");
                         }
-
                         edidInfo.AppendLine("\n");
                     }
                 });
@@ -340,7 +432,25 @@ namespace changeResolution1
 
             return edidInfo.ToString();
         }
+        static string DecodeMonitorString(ushort[] data)
+        {
+            if (data == null)
+            {
+                return string.Empty;
+            }
 
+            StringBuilder result = new StringBuilder();
+            foreach (ushort code in data)
+            {
+                if (code == 0)
+                {
+                    break;
+                }
+                result.Append((char)code);
+            }
+
+            return result.ToString();
+        }
         public async Task<string> GetMonitorSerialNumberAsync()
         {
             StringBuilder serialNumberInfo = new StringBuilder();
@@ -433,7 +543,7 @@ namespace changeResolution1
             {
                 MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
             }
-
+            Console.WriteLine("frendly names list:" + friendlyNames);
             return friendlyNames;
         }
         public string GetIdentifierFromFriendlyName(string friendlyName)
@@ -445,6 +555,6 @@ namespace changeResolution1
             return null;
         }
 
-       
+
     }
 }
