@@ -188,6 +188,8 @@ namespace changeResolution1
                 {
                     sb.AppendLine($"Monitor {deviceIndex + 1}:");
                     sb.AppendLine($"Device Name: {d.DeviceName}");
+                    sb.AppendLine($"Device id: {d.DeviceID}");
+
                     sb.AppendLine($"Device String: {d.DeviceString}");
 
                     DEVMODE devMode = new DEVMODE();
@@ -234,9 +236,21 @@ namespace changeResolution1
             }
         }
 
+        public static double CalculatePPI(double widthCm, double heightCm, int widthPx, int heightPx)
+        {
+            double diagonalInches = CalculateDiagonalInInches(widthCm, heightCm);
+            double diagonalPx = Math.Sqrt(Math.Pow(widthPx, 2) + Math.Pow(heightPx, 2));
+            return diagonalPx / diagonalInches;
+        }
 
+        public static double CalculateDiagonalInInches(double widthCm, double heightCm)
+        {
+            double diagonalCm = Math.Sqrt(Math.Pow(widthCm, 2) + Math.Pow(heightCm, 2));
+            return diagonalCm / 2.54;
+        }
         public string GetDiagonal()
         {
+
             StringBuilder stringBuilder = new StringBuilder();
             double diagonalSizeCm = Math.Sqrt(Math.Pow(maxHorizontalSizeCm, 2) + Math.Pow(maxVerticalSizeCm, 2));
             double diagonalSizeInches = diagonalSizeCm / 2.54;
@@ -248,6 +262,7 @@ namespace changeResolution1
             double diagonalPixels = Math.Sqrt(Math.Pow(resolutionWidth, 2) + Math.Pow(resolutionHeight, 2));
             double diagonalInches = diagonalPixels / averageDpi;
             stringBuilder.AppendLine("Diagonal from resolution:" + diagonalInches.ToString() + Environment.NewLine);
+            stringBuilder.AppendLine("PPI: " + CalculatePPI(maxVerticalSizeCm, maxHorizontalSizeCm, resolutionWidth, resolutionHeight));
             return stringBuilder.ToString();
         }
 
@@ -273,8 +288,8 @@ namespace changeResolution1
                         var productCodeID = queryObj["ProductCodeID"];
 
                         edidInfo.AppendLine("Instance Name: " + instanceName + "\n");
-                        edidInfo.AppendLine("Year Of Manufacture: " + yearOfManufacture + "\n");
-                        edidInfo.AppendLine("Week Of Manufacture: " + weekOfManufacture + "\n");
+                        edidInfo.AppendLine("Month and Year Of Manufacture: " + yearOfManufacture + "\n");
+                        edidInfo.AppendLine("Month Of Manufacture: " + ConvertWeeksToMonths(Convert.ToInt16(weekOfManufacture)) + "\n");
 
                         if (serialNumberID is string[] serialNumber)
                         {
@@ -450,6 +465,12 @@ namespace changeResolution1
             }
 
             return result.ToString();
+        }
+
+        static int ConvertWeeksToMonths(int weeks)
+        {
+            const double weeksInMonth = 4.345;
+            return (int)Math.Round(weeks / weeksInMonth);
         }
         public async Task<string> GetMonitorSerialNumberAsync()
         {

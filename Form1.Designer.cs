@@ -43,6 +43,7 @@ namespace changeResolution1
             this.label9 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button8 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -221,7 +222,7 @@ namespace changeResolution1
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(1023, 523);
+            this.label8.Location = new System.Drawing.Point(1402, 522);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(13, 13);
             this.label8.TabIndex = 18;
@@ -268,9 +269,20 @@ namespace changeResolution1
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(254, 142);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(40, 23);
+            this.button8.TabIndex = 23;
+            this.button8.Text = "Show information";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1743, 777);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.button6);
@@ -323,6 +335,7 @@ namespace changeResolution1
         private Label label9;
         private Button button7;
         private PictureBox pictureBox1;
+        private Button button8;
     }
 }
 
