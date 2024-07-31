@@ -1,4 +1,6 @@
-﻿namespace changeResolution1
+﻿
+
+namespace changeResolution1
 {
     partial class PixelFixerForm
     {
@@ -41,6 +43,8 @@
             this.monitorLabel = new System.Windows.Forms.Label();
             this.intervalDescriptionLabel = new System.Windows.Forms.Label();
             this.controlPanel = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.testModeComboBox = new System.Windows.Forms.ComboBox();
             this.timeLeftLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -54,15 +58,12 @@
             this.presetColorLabel = new System.Windows.Forms.Label();
             this.presetColorComboBox = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.siticoneTextBox1 = new Siticone.Desktop.UI.WinForms.SiticoneTextBox();
-            this.siticoneBorderlessForm1 = new Siticone.Desktop.UI.WinForms.SiticoneBorderlessForm(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.intervalTrackBar)).BeginInit();
             this.controlPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hoursUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.secondsUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // startStopButton
@@ -166,7 +167,7 @@
             // controlPanel
             // 
             this.controlPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.controlPanel.Controls.Add(this.siticoneTextBox1);
+            this.controlPanel.Controls.Add(this.textBox1);
             this.controlPanel.Controls.Add(this.pictureBox1);
             this.controlPanel.Controls.Add(this.testModeComboBox);
             this.controlPanel.Controls.Add(this.timeLeftLabel);
@@ -193,6 +194,32 @@
             this.controlPanel.Name = "controlPanel";
             this.controlPanel.Size = new System.Drawing.Size(372, 351);
             this.controlPanel.TabIndex = 0;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.Info;
+            this.textBox1.Cursor = System.Windows.Forms.Cursors.No;
+            this.textBox1.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox1.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.textBox1.Location = new System.Drawing.Point(97, 209);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(258, 79);
+            this.textBox1.TabIndex = 26;
+            this.textBox1.Text = "OSTRZEŻENIE: Proces ten spowoduje miganie świateł, które mogą wywołać drgawki u o" +
+    "sób cierpiących na padaczkę światłoczułą. Postępuj ostrożnie.";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(3, 209);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(79, 77);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 25;
+            this.pictureBox1.TabStop = false;
             // 
             // testModeComboBox
             // 
@@ -254,7 +281,6 @@
             this.hoursUpDown.Name = "hoursUpDown";
             this.hoursUpDown.Size = new System.Drawing.Size(46, 20);
             this.hoursUpDown.TabIndex = 19;
-            this.hoursUpDown.ValueChanged += new System.EventHandler(this.hoursUpDown_ValueChanged);
             // 
             // minutesUpDown
             // 
@@ -319,48 +345,7 @@
             this.presetColorComboBox.TabIndex = 13;
             this.presetColorComboBox.SelectedIndexChanged += new System.EventHandler(this.presetColorComboBox_SelectedIndexChanged);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(3, 209);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(79, 77);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 25;
-            this.pictureBox1.TabStop = false;
-            // 
-            // siticoneTextBox1
-            // 
-            this.siticoneTextBox1.BackColor = System.Drawing.Color.Khaki;
-            this.siticoneTextBox1.BorderColor = System.Drawing.Color.Yellow;
-            this.siticoneTextBox1.BorderRadius = 4;
-            this.siticoneTextBox1.BorderStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-            this.siticoneTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.siticoneTextBox1.DefaultText = "";
-            this.siticoneTextBox1.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.siticoneTextBox1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.siticoneTextBox1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.siticoneTextBox1.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.siticoneTextBox1.Enabled = false;
-            this.siticoneTextBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.siticoneTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.siticoneTextBox1.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.siticoneTextBox1.Location = new System.Drawing.Point(100, 209);
-            this.siticoneTextBox1.Multiline = true;
-            this.siticoneTextBox1.Name = "siticoneTextBox1";
-            this.siticoneTextBox1.PasswordChar = '\0';
-            this.siticoneTextBox1.PlaceholderText = "";
-            this.siticoneTextBox1.ReadOnly = true;
-            this.siticoneTextBox1.SelectedText = "";
-            this.siticoneTextBox1.Size = new System.Drawing.Size(255, 81);
-            this.siticoneTextBox1.TabIndex = 27;
-            // 
-            // siticoneBorderlessForm1
-            // 
-            this.siticoneBorderlessForm1.ContainerControl = this;
-            this.siticoneBorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
-            this.siticoneBorderlessForm1.TransparentWhileDrag = true;
+            
             // 
             // PixelFixerForm
             // 
@@ -368,16 +353,16 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(396, 375);
             this.Controls.Add(this.controlPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "PixelFixerForm";
             this.Text = "PixelFixerForm";
             ((System.ComponentModel.ISupportInitialize)(this.intervalTrackBar)).EndInit();
             this.controlPanel.ResumeLayout(false);
             this.controlPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hoursUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.secondsUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -408,7 +393,6 @@
         private System.Windows.Forms.ComboBox testModeComboBox;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private Siticone.Desktop.UI.WinForms.SiticoneTextBox siticoneTextBox1;
-        private Siticone.Desktop.UI.WinForms.SiticoneBorderlessForm siticoneBorderlessForm1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

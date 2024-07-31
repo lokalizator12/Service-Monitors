@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "changeResolution1", "changeResolution1.csproj", "{3FA8920D-FAB2-4666-91A3-0F7269A95B0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceMonitorEVK", "ServiceMonitorEVK.csproj", "{3FA8920D-FAB2-4666-91A3-0F7269A95B0F}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ServiceMonitorEVK_Setup", "..\ServiceMonitorEVK_Setup\ServiceMonitorEVK_Setup.vdproj", "{0DF9565D-0F02-42BF-81AE-AB17ADBD5D7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,6 +20,9 @@ Global
 		{3FA8920D-FAB2-4666-91A3-0F7269A95B0F}.h|Any CPU.Build.0 = Release|Any CPU
 		{3FA8920D-FAB2-4666-91A3-0F7269A95B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FA8920D-FAB2-4666-91A3-0F7269A95B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DF9565D-0F02-42BF-81AE-AB17ADBD5D7C}.Debug|Any CPU.ActiveCfg = Debug
+		{0DF9565D-0F02-42BF-81AE-AB17ADBD5D7C}.h|Any CPU.ActiveCfg = Debug
+		{0DF9565D-0F02-42BF-81AE-AB17ADBD5D7C}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

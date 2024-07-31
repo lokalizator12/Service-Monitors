@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using static changeResolution1.DisplayManager;
 using System.Windows.Forms;
 
 namespace changeResolution1
@@ -116,6 +113,21 @@ namespace changeResolution1
         public List<string> GetMonitorNames()
         {
             return Screen.AllScreens.Select(screen => screen.DeviceName).ToList();
+        }
+
+        public (int Width, int Height) GetCurrentResolution(string displayIdentifier)
+        {
+            DEVMODE devMode = new DEVMODE();
+            devMode.dmSize = (ushort)Marshal.SizeOf(devMode);
+
+            if (EnumDisplaySettings(displayIdentifier, -1, ref devMode))
+            {
+                return ((int)devMode.dmPelsWidth, (int)devMode.dmPelsHeight);
+            }
+            else
+            {
+                return (0, 0);
+            }
         }
     }
 }

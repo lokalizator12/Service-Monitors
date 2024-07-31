@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -30,12 +31,18 @@ namespace changeResolution1
             stopwatch = new Stopwatch();
             monitorInfoManager = new MonitorInfoManager();
             InitializeCustomComponents();
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
         }
-        private void InitializeCustomComponents()
+       
+        private void OnDisplaySettingsChanged(object sender, EventArgs e)
         {
-            intervalLabel.Text = intervalTrackBar.Value.ToString() + "ms.";
-            monitorNameToIdentifierMap = new Dictionary<string, string>();
+            FillMonitorComboBox();
+        }
+        private void FillMonitorComboBox()
+        {
+            monitorComboBox.Items.Clear();
 
+            monitorNameToIdentifierMap = new Dictionary<string, string>();
             var monitorNames = Screen.AllScreens.Select(screen => screen.DeviceName).ToList();
             var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames();
 
@@ -47,14 +54,16 @@ namespace changeResolution1
                 monitorComboBox.Items.Add(friendlyName);
             }
 
-            // Select the first non-integrated monitor
             int nonIntegratedIndex = monitorComboBox.Items.Count > 1 ? 1 : 0;
             monitorComboBox.SelectedIndex = nonIntegratedIndex;
             selectedScreen = Screen.AllScreens[nonIntegratedIndex];
 
+        }
+        private void InitializeCustomComponents()
+        {
+            FillMonitorComboBox();
             presetColorComboBox.SelectedIndex = 0;
             testModeComboBox.SelectedIndex = 0;
-            siticoneTextBox1.Text = "OSTRZEŻENIE: Proces ten spowoduje miganie świateł, które mogą wywołać drgawki u osób cierpiących na padaczkę światłoczułą. Postępuj ostrożnie.";
         }
 
         private void ShowOnMonitor()
@@ -64,7 +73,7 @@ namespace changeResolution1
                 monitorForm.Close();
             }
 
-            
+
             monitorForm = new Overlay(currentColor, intervalTrackBar.Value,
                 isMulticolor: multi_colorCheckBox.Checked, repairColors: repairColors,
                 repairRegions: repairRegions, testMode: testModeComboBox.SelectedItem.ToString());
@@ -120,7 +129,7 @@ namespace changeResolution1
                 {
                     totalTimeInMilliseconds = 0;
                 }
-                if (totalTimeInMilliseconds > MaxTimeInMilliseconds )
+                if (totalTimeInMilliseconds > MaxTimeInMilliseconds)
                 {
                     MessageBox.Show("Max. czas wykonania  - 24 godziny ", "błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     isFlashing = false;
@@ -153,7 +162,7 @@ namespace changeResolution1
             }
         }
 
-      
+
 
         private void locateButton_Click(object sender, EventArgs e)
         {
@@ -235,41 +244,41 @@ namespace changeResolution1
         }
 
 
-            private void UpdateTimeLeft(int elapsedMilliseconds)
-            {
-                int remainingTime = totalTimeInMilliseconds - elapsedMilliseconds;
-                TimeSpan timeSpan = TimeSpan.FromMilliseconds(remainingTime);
-                timeLeftLabel.Text = $"Zostało {timeSpan.Hours}g. {timeSpan.Minutes}m. {timeSpan.Seconds}sek.";
-            }
-
-            private void CompleteFlashing()
-            {
-                timer1.Stop();
-                if (monitorForm != null)
-                {
-                    monitorForm.StopFlashing();
-                    monitorForm.Close();
-                }
-                startStopButton.Text = "Start";
-                isFlashing = false;
-                progressBar.Value = 0;
-                timeLeftLabel.Text = string.Empty;
-                MessageBox.Show("Naprawa skończona", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            private void hoursUpDown_ValueChanged(object sender, EventArgs e)
-            {
-
-            }
-
-            private void timer1_Tick(object sender, EventArgs e)
-            {
-                UpdateProgress();
-            }
-
-        private void label4_Click(object sender, EventArgs e)
+        private void UpdateTimeLeft(int elapsedMilliseconds)
         {
-
+            int remainingTime = totalTimeInMilliseconds - elapsedMilliseconds;
+            TimeSpan timeSpan = TimeSpan.FromMilliseconds(remainingTime);
+            timeLeftLabel.Text = $"Zostało {timeSpan.Hours}g. {timeSpan.Minutes}m. {timeSpan.Seconds}sek.";
         }
+
+        private void CompleteFlashing()
+        {
+            timer1.Stop();
+            if (monitorForm != null)
+            {
+                monitorForm.StopFlashing();
+                monitorForm.Close();
+            }
+            startStopButton.Text = "Start";
+            isFlashing = false;
+            progressBar.Value = 0;
+            timeLeftLabel.Text = string.Empty;
+            MessageBox.Show("Naprawa skończona", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            UpdateProgress();
+        }
+
     }
-    }
+}

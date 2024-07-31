@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
@@ -36,6 +37,7 @@ namespace changeResolution1
         Dictionary<string, string> manufacturerDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                             {
                                 { "ACER", "Acer" },
+                                {"ACR", "Acer" },
                                 { "ACI", "Asus (ASUSTeK Computer Inc.)" },
                                 { "ACT", "Targa" },
                                 { "ADI", "ADI Corporation" },
@@ -198,9 +200,10 @@ namespace changeResolution1
             InitializeComponent();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
-           // FillMonitorComboBox();
+            // FillMonitorComboBox();
             //GetMonitorInfos();
             _ = InitializeAsync();
+            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
         }
         private async Task InitializeAsync()
         {
@@ -286,7 +289,6 @@ namespace changeResolution1
                     monitors[i].UpdateSize(maxHorizontalSizeCm, maxVerticalSizeCm);
                 });
 
-
                 DISPLAY_DEVICE d = new DISPLAY_DEVICE();
                 d.cb = Marshal.SizeOf(d);
 
@@ -359,7 +361,6 @@ namespace changeResolution1
                     i++;
                 }
 
-
                 DISPLAY_DEVICE d = new DISPLAY_DEVICE();
                 d.cb = Marshal.SizeOf(d);
 
@@ -377,18 +378,10 @@ namespace changeResolution1
                         if (monitors.Length > deviceIndex)
                         {
                             monitors[deviceIndex].UpdateResolutionAndFrequency(resolutionWidth, resolutionHeight, displayFrequency);
-                           
-                            monitors[deviceIndex].PPI =
-                                CalculatePPI(monitors[deviceIndex].MaxVerticalSize,
-                                monitors[deviceIndex].MaxHorizontalSize,
-                                resolutionWidth, resolutionHeight).ToString();
 
-                            monitors[deviceIndex].Diagonal2 =
-                                GetDiagonalFromResoluton(
-                                monitors[deviceIndex].MaxVerticalSize,
-                                monitors[deviceIndex].MaxHorizontalSize,
-                                resolutionWidth,
-                                resolutionHeight).ToString();
+                            monitors[deviceIndex].PPI = CalculatePPI(monitors[deviceIndex].MaxVerticalSize, monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
+
+                            monitors[deviceIndex].Diagonal2 = GetDiagonalFromResoluton(monitors[deviceIndex].MaxVerticalSize, monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
                         }
                     }
 
@@ -402,8 +395,6 @@ namespace changeResolution1
             }
             return monitors;
         }
-
-
 
         static string DecodeMonitorString(ushort[] data)
         {
@@ -525,6 +516,30 @@ namespace changeResolution1
             {
                 DisplayMonitorInfo(monitors[MonitorComboBox.SelectedIndex]);
             }
+        }
+        private async void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
+        {
+            await RefreshMonitorInfoAsync();
+        }
+
+        private async Task RefreshMonitorInfoAsync()
+        {
+            await FillMonitorComboBoxAsync();
+            await GetMonitorInfosAsync();
+            if (MonitorComboBox.Items.Count > 0)
+            {
+                MonitorComboBox.SelectedIndex = 0;
+            }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
