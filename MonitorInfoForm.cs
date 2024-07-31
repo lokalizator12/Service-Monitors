@@ -17,6 +17,7 @@ namespace changeResolution1
         private ResolutionDisplayManager resolutionManager;
         MonitorInfo[] monitors;
 
+
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct DISPLAY_DEVICE
         {
