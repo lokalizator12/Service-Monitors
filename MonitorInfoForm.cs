@@ -286,6 +286,7 @@ namespace changeResolution1
                     monitors[i].UpdateSize(maxHorizontalSizeCm, maxVerticalSizeCm);
                 });
 
+
                 DISPLAY_DEVICE d = new DISPLAY_DEVICE();
                 d.cb = Marshal.SizeOf(d);
 
