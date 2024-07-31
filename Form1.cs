@@ -127,10 +127,10 @@ namespace changeResolution1
             label3.Text = monitorNames;
             label4.Text = monitorInfo;
             label5.Text = monitorInfo1;
-            label6.Text = monitorInfoManager.GetDiagonal();
+            label9.Text = monitorInfoManager.GetDiagonal();
             label7.Text = edidInfo;
             label8.Text = serialNumber;
-            
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -201,7 +201,7 @@ namespace changeResolution1
         private void button6_Click(object sender, EventArgs e)
         {
             SearchInformationForm brightness = new SearchInformationForm();
-            brightness.ShowDialog();    
+            brightness.ShowDialog();
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -217,6 +217,12 @@ namespace changeResolution1
                 FileName = "https://systemy.evk.pl/",
                 UseShellExecute = true
             });
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            MonitorInfoForm monitorInfo = new MonitorInfoForm();
+            monitorInfo.ShowDialog();
         }
     }
 }
