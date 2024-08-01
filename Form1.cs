@@ -1,4 +1,5 @@
-﻿using MaterialSkin.Controls;
+﻿using MaterialSkin;
+using MaterialSkin.Controls;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -8,20 +9,25 @@ using System.Linq;
 using System.Windows.Forms;
 namespace changeResolution1
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
 
         private DisplayManager displayManager;
         private MonitorInfoManager monitorInfoManager;
         private ResolutionDisplayManager resolutionManager;
         private Dictionary<string, string> monitorNameToIdentifierMap;
+        private readonly MaterialSkinManager materialSkinManager;
+        private int colorSchemeIndex;
         public Form1()
         {
             InitializeComponent();
             displayManager = new DisplayManager();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
-            
+            ///////////////////////
+            materialSkinManager = MaterialSkinManager.Instance;
+            InitizializeCustomForm();
+            ////////////////////////////////
             FillMonitorComboBox();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             SetMaxResolutionForAllMonitors();
@@ -32,14 +38,25 @@ namespace changeResolution1
             UpdateResolutionComboBox();
 
             SetMaxResolutionForAllMonitors();
-            if (label3.Text.Length > 0 && label4.Text.Length > 0 && label5.Text.Length > 0)
+            if (materialMultiLineTextBox4.Text.Length > 0 && materialMultiLineTextBox5.Text.Length > 0 && materialMultiLineTextBox2.Text.Length > 0)
             {
                 showFullInfo();
             }
 
         }
 
-        
+        public void InitizializeCustomForm()
+        {
+
+            materialSkinManager.EnforceBackcolorOnAllComponents = true;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+
+            DrawerAutoShow = true;
+
+        }
+
         private void FillMonitorComboBox()
         {
             MonitorComboBox.Items.Clear();
@@ -63,7 +80,7 @@ namespace changeResolution1
             }
         }
 
-        
+
 
         private void UpdateResolutionComboBox()
         {
@@ -106,26 +123,27 @@ namespace changeResolution1
                 var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
 
                 resolutionManager.SetResolution(identifier, width, height);
+                new MaterialSnackBar($"Resolution changed: {width}x{height}").Show(this);
             }
         }
 
         private void SetMaxResolution_Click(object sender, EventArgs e)
         {
-            
-                var selectedFriendlyName = MonitorComboBox.SelectedItem.ToString();
-                var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
-                var maxResolution = resolutionManager.GetMaxResolution(identifier);
 
-                if (maxResolution != default)
-                {
-                    MessageBox.Show($"Max resolution: {maxResolution.Width}x{maxResolution.Height}");
-                    resolutionManager.SetResolution(identifier, maxResolution.Width, maxResolution.Height);
-                }
-                else
-                {
-                    MessageBox.Show("No valid resolution found.");
-                }
-            
+            var selectedFriendlyName = MonitorComboBox.SelectedItem.ToString();
+            var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
+            var maxResolution = resolutionManager.GetMaxResolution(identifier);
+
+            if (maxResolution != default)
+            {
+                resolutionManager.SetResolution(identifier, maxResolution.Width, maxResolution.Height);
+                new MaterialSnackBar($"Max resolution: {maxResolution.Width}x{maxResolution.Height}").Show(this);
+            }
+            else
+            {
+                new MaterialSnackBar("Not valid resolution", "ok", true).Show(this);
+            }
+
         }
         private void SetMaxResolutionForAllMonitors()
         {
@@ -149,16 +167,16 @@ namespace changeResolution1
             var monitorInfo1 = await monitorInfoManager.GetDisplayInfo1Async();
             var edidInfo = await monitorInfoManager.GetEdidInfoAsync();
             var serialNumber = await monitorInfoManager.GetMonitorSerialNumberAsync();
-            label3.Text = monitorNames;
-            label4.Text = monitorInfo;
-            label5.Text = monitorInfo1;
-            label9.Text = monitorInfoManager.GetDiagonal();
-            label7.Text = edidInfo;
-            label8.Text = serialNumber;
+            materialMultiLineTextBox2.Text = monitorNames;
+            materialMultiLineTextBox3.Text = monitorInfoManager.GetDiagonal(); ;
+            materialMultiLineTextBox4.Text = monitorInfo;
+            materialMultiLineTextBox1.Text = monitorInfo1;
+            materialMultiLineTextBox5.Text = edidInfo;
+            materialMultiLineTextBox6.Text = serialNumber;
         }
-        private  void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-           showFullInfo();
+
 
         }
 
@@ -217,8 +235,7 @@ namespace changeResolution1
 
         private void fixDisplayButton_Click(object sender, EventArgs e)
         {
-            PixelFixerForm pixelFixerForm = new PixelFixerForm();
-            pixelFixerForm.ShowDialog();
+
         }
 
         private void testFormButton_Click(object sender, EventArgs e)
@@ -229,8 +246,7 @@ namespace changeResolution1
 
         private void button6_Click(object sender, EventArgs e)
         {
-            SearchInformationForm brightness = new SearchInformationForm();
-            brightness.ShowDialog();
+
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -250,8 +266,7 @@ namespace changeResolution1
 
         private void button8_Click(object sender, EventArgs e)
         {
-            MonitorInfoForm monitorInfo = new MonitorInfoForm();
-            monitorInfo.ShowDialog();
+
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -272,6 +287,109 @@ namespace changeResolution1
         private void MonitorComboBox_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             UpdateResolutionComboBox();
+        }
+
+
+        private void updateColor()
+        {
+            //These are just example color schemes
+            switch (colorSchemeIndex)
+            {
+                case 0:
+                    materialSkinManager.ColorScheme = new ColorScheme(
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Teal500 : Primary.BlueGrey800,
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Teal700 : Primary.BlueGrey900,
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Teal200 : Primary.BlueGrey500,
+                        Accent.Pink200,
+                        TextShade.WHITE);
+                    break;
+
+                case 1:
+                    materialSkinManager.ColorScheme = new ColorScheme(
+                        Primary.Green600,
+                        Primary.Green700,
+                        Primary.Green200,
+                        Accent.Red100,
+                        TextShade.WHITE);
+                    break;
+
+                case 2:
+                    materialSkinManager.ColorScheme = new ColorScheme(
+                        Primary.BlueGrey800,
+                        Primary.BlueGrey900,
+                        Primary.BlueGrey500,
+                        Accent.LightBlue200,
+                        TextShade.WHITE);
+                    break;
+            }
+            Invalidate();
+        }
+
+        private void materialSwitch1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (materialSwitch1.Checked)
+            {
+                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+
+            }
+            else
+            {
+                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+
+            }
+            updateColor();
+        }
+
+
+        private void tabPage7_Enter(object sender, EventArgs e)
+        {
+            MaterialSnackBar SnackBarMessage = new MaterialSnackBar("SnackBar started succesfully", "OK", true);
+            SnackBarMessage.Show(this);
+        }
+
+        private void showInfoPage_Enter(object sender, EventArgs e)
+        {
+
+            seedListView();
+            //  
+        }
+
+        private void fixPixelPage_Enter(object sender, EventArgs e)
+        {
+            PixelFixerForm pixelFixerForm = new PixelFixerForm();
+            pixelFixerForm.ShowDialog();
+        }
+
+        private void tabPage4_Enter(object sender, EventArgs e)
+        {
+            MaterialSnackBar SnackBarMessage = new MaterialSnackBar("Loading...");
+            SnackBarMessage.Show(this);
+            showFullInfo();
+        }
+
+
+        private async void seedListView()
+        {
+            MonitorInfoForm monitorInfo = new MonitorInfoForm();
+            MonitorInfo[] monitors = await monitorInfo.GetMonitorInfosAsync();
+
+            foreach (MonitorInfo monitor in monitors)
+            {
+                var item = new ListViewItem(monitor.ToString());
+                materialListView2.Items.Add(item);
+            }
+        }
+
+        private void searchInfoPage_Enter(object sender, EventArgs e)
+        {
+            SearchInformationForm brightness = new SearchInformationForm();
+            brightness.ShowDialog();
+        }
+
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            new MonitorInfoForm().ShowDialog();
+
         }
     }
 }

@@ -87,12 +87,7 @@ namespace changeResolution1
             if (result != DISP_CHANGE_SUCCESSFUL)
             {
                 MessageBox.Show($"Failed to change display settings. Error code: {result}");
-            }
-            else
-            {
-                MessageBox.Show($"Resolution changed successfully to {width}x{height}.");
-            }
-        }
+            }}
 
         public (int Width, int Height) GetMaxResolution(string displayIdentifier)
         {

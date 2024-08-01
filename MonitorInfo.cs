@@ -37,7 +37,16 @@ namespace changeResolution1
             Frequency = frequency;
         }
 
-
+        public override string ToString()
+        {
+            return $"Manufacturer: {Manufacturer}, Model: {Model}, SerialNumber: {SerialNumber}, " +
+                   $"YearOfProduction: {YearOfProduction}, MonthOfProduction: {MonthOfProduction}, " +
+                   $"ProductCodeID: {ProductCodeID}, Diagonal1: {Diagonal1}, Diagonal2: {Diagonal2}, " +
+                   $"Resolution: {Resolution}, Frequency: {Frequency}, PPI: {PPI}, " +
+                   $"SizeMonitor: {SizeMonitor}, MaxVerticalSize: {MaxVerticalSize}, " +
+                   $"MaxHorizontalSize: {MaxHorizontalSize}, Identifier: {Identifier}, " +
+                   $"FriendlyName: {FriendlyName}";
+        }
 
         public MonitorInfo()
         {

@@ -16,7 +16,7 @@ namespace changeResolution1
         private Dictionary<string, string> monitorNameToIdentifierMap;
         private MonitorInfoManager monitorInfoManager;
         private ResolutionDisplayManager resolutionManager;
-        MonitorInfo[] monitors;
+        public MonitorInfo[] monitors { get; set; }
 
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -232,7 +232,7 @@ namespace changeResolution1
             }
         }
 
-        private async Task<MonitorInfo[]> GetMonitorInfosAsync()
+        public async Task<MonitorInfo[]> GetMonitorInfosAsync()
         {
             monitors = await GetMonitorInfos1Async();
             monitors = await SetMonitorSizesAsync(monitors);
