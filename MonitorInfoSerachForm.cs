@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using MaterialSkin.Controls;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -20,7 +21,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace changeResolution1
 {
-    public partial class MonitorInfoSerachForm : Form
+    public partial class MonitorInfoSerachForm : MaterialForm
     {
         private IWebDriver driver;
 
@@ -338,7 +339,7 @@ namespace changeResolution1
                             }
 
                             Console.WriteLine(textBuilder.ToString());
-                           
+
                             return ExtractProductFeaturesFromPdf(textBuilder.ToString());
                         }
                     }

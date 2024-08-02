@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using MaterialSkin.Controls;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using System.Windows.Forms;
 
 namespace changeResolution1
 {
-    public partial class PixelFixerForm : Form
+    public partial class PixelFixerForm : MaterialForm
     {
         private bool isFlashing = false;
         private Color currentColor = Color.Green;
@@ -33,7 +34,7 @@ namespace changeResolution1
             InitializeCustomComponents();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
         }
-       
+
         private void OnDisplaySettingsChanged(object sender, EventArgs e)
         {
             FillMonitorComboBox();

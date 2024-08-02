@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using MaterialSkin.Controls;
+using Microsoft.Win32;
+using PdfSharp.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,14 @@ using System.Windows.Forms;
 
 namespace changeResolution1
 {
-    public partial class MonitorInfoForm : Form
+    public partial class MonitorInfoForm : MaterialForm
     {
         private Dictionary<string, MonitorInfo> modelToMonitorInfoMap;
+
         private Dictionary<string, string> monitorNameToIdentifierMap;
         private MonitorInfoManager monitorInfoManager;
         private ResolutionDisplayManager resolutionManager;
+        private Form1 _form1;
         public MonitorInfo[] monitors { get; set; }
 
 
@@ -193,8 +197,9 @@ namespace changeResolution1
 
         [DllImport("user32.dll")]
         private static extern bool EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
-        public MonitorInfoForm()
+        public MonitorInfoForm(Form1 form1)
         {
+            _form1 = form1;
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
             monitors = new MonitorInfo[searcher.Get().Count];
             InitializeComponent();
@@ -212,7 +217,9 @@ namespace changeResolution1
         }
         private async Task FillMonitorComboBoxAsync()
         {
-            MonitorComboBox.Items.Clear();
+            _form1.isUpdatingComboBox = true;
+            _form1.materialComboBoxMonitors.Items.Clear();
+           
             modelToMonitorInfoMap = new Dictionary<string, MonitorInfo>();
 
             var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames();
@@ -223,13 +230,14 @@ namespace changeResolution1
                 var monitor = monitors[i];
                 var modelName = string.IsNullOrWhiteSpace(monitor.Model) ? "Integrated Monitor" : monitor.Model;
                 modelToMonitorInfoMap[modelName] = monitor;
-                MonitorComboBox.Items.Add(modelName);
+                _form1.materialComboBoxMonitors.Items.Add(modelName);
             }
 
-            if (MonitorComboBox.Items.Count > 0)
+            if (_form1.materialComboBoxMonitors.Items.Count > 0)
             {
-                MonitorComboBox.SelectedIndex = 0;
+                _form1.materialComboBoxMonitors.SelectedIndex = 0;
             }
+            _form1.isUpdatingComboBox = false;
         }
 
         public async Task<MonitorInfo[]> GetMonitorInfosAsync()
@@ -423,18 +431,18 @@ namespace changeResolution1
         }
         private void DisplayMonitorInfo(MonitorInfo monitorInfo)
         {
-            lblManufacturer.Text = monitorInfo.Manufacturer;
-            lblModel.Text = monitorInfo.Model;
-            lblSerialNo.Text = monitorInfo.SerialNumber;
-            lblYearOfProduction.Text = monitorInfo.YearOfProduction;
-            lblMonthOfProduction.Text = monitorInfo.MonthOfProduction;
-            lblProductCodeID.Text = monitorInfo.ProductCodeID;
-            lblDiagonal1.Text = monitorInfo.Diagonal1.ToString();
-            lblDiagonal2.Text = monitorInfo.Diagonal2;
-            lblResolution.Text = monitorInfo.Resolution;
-            lblFrequency.Text = monitorInfo.Frequency.ToString();
-            lblPPI.Text = monitorInfo.PPI;
-            lblSizeMonitor.Text = monitorInfo.SizeMonitor;
+           /* _form1.materialLabelManufacturer.Text = monitorInfo.Manufacturer;
+            _form1.materialLabelModel.Text = monitorInfo.Model;
+            _form1.materialLabelSerialNo.Text = monitorInfo.SerialNumber;
+            _form1.materialLabelYearOfProduction.Text = monitorInfo.YearOfProduction;
+            _form1.materialLabelMonthOfProduction.Text = monitorInfo.MonthOfProduction;
+            _form1.materialLabelProductCodeID.Text = monitorInfo.ProductCodeID;
+            _form1.materialLabelDiagonal1.Text = monitorInfo.Diagonal1.ToString();
+            _form1.materialLabelDiagonal2.Text = monitorInfo.Diagonal2;
+            _form1.materialLabelResolution.Text = monitorInfo.Resolution;
+            _form1.materialLabelFrequency.Text = monitorInfo.Frequency.ToString();
+            _form1.materialLabelPPI.Text = monitorInfo.PPI;
+            _form1.materialLabelSizeMonitor.Text = monitorInfo.SizeMonitor;*/
         }
 
         private void CopyToClipboard(string text)
@@ -502,11 +510,11 @@ namespace changeResolution1
         }
 
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        public void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (monitors[0] != null)
             {
-                DisplayMonitorInfo(monitors[MonitorComboBox.SelectedIndex]);
+                DisplayMonitorInfo(monitors[_form1.materialComboBoxMonitors.SelectedIndex]);
             }
         }
 
@@ -514,7 +522,7 @@ namespace changeResolution1
         {
             if (monitors[0] != null)
             {
-                DisplayMonitorInfo(monitors[MonitorComboBox.SelectedIndex]);
+                DisplayMonitorInfo(monitors[_form1.materialComboBoxMonitors.SelectedIndex]);
             }
         }
         private async void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
@@ -526,9 +534,9 @@ namespace changeResolution1
         {
             await FillMonitorComboBoxAsync();
             await GetMonitorInfosAsync();
-            if (MonitorComboBox.Items.Count > 0)
+            if (_form1.materialComboBoxMonitors.Items.Count > 0)
             {
-                MonitorComboBox.SelectedIndex = 0;
+                _form1.materialComboBoxMonitors.SelectedIndex = 0;
             }
         }
 

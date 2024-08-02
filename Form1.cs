@@ -1,22 +1,30 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
 using Microsoft.Win32;
+using ServiceMonitorEVK.Database;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 namespace changeResolution1
 {
     public partial class Form1 : MaterialForm
     {
-
+        private DatabaseManager databaseManager;
         private DisplayManager displayManager;
         private MonitorInfoManager monitorInfoManager;
         private ResolutionDisplayManager resolutionManager;
         private Dictionary<string, string> monitorNameToIdentifierMap;
         private readonly MaterialSkinManager materialSkinManager;
+        MonitorInfo[] monitors;
+
+        MonitorInfoForm monitorInfo;
+        public bool isUpdatingComboBox = false;
+
         private int colorSchemeIndex;
         public Form1()
         {
@@ -24,6 +32,8 @@ namespace changeResolution1
             displayManager = new DisplayManager();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
+            databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
+
             ///////////////////////
             materialSkinManager = MaterialSkinManager.Instance;
             InitizializeCustomForm();
@@ -50,13 +60,23 @@ namespace changeResolution1
 
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
             materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-
+            checkTheme();
             DrawerAutoShow = true;
-
         }
-
+        private async void SendMonitorInfoToDatabase()
+        {
+            try
+            {
+                var monitorInfo = monitors[materialComboBoxMonitors.SelectedIndex];
+                await databaseManager.InsertMonitorInfo(monitorInfo);
+                monitorInfo.IdEVK = textBoxIdEVK.Text;
+                monitorInfo.TesterInitials = textBoxTester.Text;
+                new MaterialSnackBar($"Sended to database succesfully").Show(this);
+            }catch(Exception x)
+            {
+                new MaterialSnackBar($"Eror: {x.Message}").Show(this);
+            }
+        }
         private void FillMonitorComboBox()
         {
             MonitorComboBox.Items.Clear();
@@ -297,11 +317,14 @@ namespace changeResolution1
             {
                 case 0:
                     materialSkinManager.ColorScheme = new ColorScheme(
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Teal500 : Primary.BlueGrey800,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Teal700 : Primary.BlueGrey900,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Teal200 : Primary.BlueGrey500,
-                        Accent.Pink200,
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
+                        Accent.Red400,
                         TextShade.WHITE);
+                    pictureBoxLogo.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                ? Color.FromArgb(0x21, 0x21, 0x21)
+                : Color.FromArgb(0x37, 0x47, 0x4F);
                     break;
 
                 case 1:
@@ -311,6 +334,7 @@ namespace changeResolution1
                         Primary.Green200,
                         Accent.Red100,
                         TextShade.WHITE);
+                    pictureBoxLogo.BackColor = Color.Blue;
                     break;
 
                 case 2:
@@ -320,6 +344,7 @@ namespace changeResolution1
                         Primary.BlueGrey500,
                         Accent.LightBlue200,
                         TextShade.WHITE);
+                    pictureBoxLogo.BackColor = Color.White;
                     break;
             }
             Invalidate();
@@ -327,19 +352,25 @@ namespace changeResolution1
 
         private void materialSwitch1_CheckedChanged(object sender, EventArgs e)
         {
+            checkTheme();
+        }
+
+        private void checkTheme()
+        {
             if (materialSwitch1.Checked)
             {
                 materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+                pictureBoxLogo.BackColor = Color.Black;
 
             }
             else
             {
                 materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+                pictureBoxLogo.BackColor = Color.White;
 
             }
             updateColor();
         }
-
 
         private void tabPage7_Enter(object sender, EventArgs e)
         {
@@ -350,8 +381,9 @@ namespace changeResolution1
         private void showInfoPage_Enter(object sender, EventArgs e)
         {
 
-            seedListView();
-            //  
+            monitorInfo = new MonitorInfoForm(this);
+
+
         }
 
         private void fixPixelPage_Enter(object sender, EventArgs e)
@@ -368,16 +400,24 @@ namespace changeResolution1
         }
 
 
-        private async void seedListView()
+        private void SeedListView()
         {
-            MonitorInfoForm monitorInfo = new MonitorInfoForm();
-            MonitorInfo[] monitors = await monitorInfo.GetMonitorInfosAsync();
+            monitors = monitorInfo.monitors;
 
-            foreach (MonitorInfo monitor in monitors)
+            if (monitors == null || monitors.Length == 0)
             {
-                var item = new ListViewItem(monitor.ToString());
-                materialListView2.Items.Add(item);
+                MessageBox.Show("No monitors found.");
+                return;
             }
+
+            if (materialComboBoxMonitors.SelectedIndex == -1 || materialComboBoxMonitors.SelectedIndex >= monitors.Length)
+            {
+                MessageBox.Show("Please select a valid monitor.");
+                return;
+            }
+            MonitorInfo monitor = monitors[materialComboBoxMonitors.SelectedIndex];
+            
+            DisplayMonitorInfo(monitor);
         }
 
         private void searchInfoPage_Enter(object sender, EventArgs e)
@@ -388,8 +428,138 @@ namespace changeResolution1
 
         private void materialButton1_Click(object sender, EventArgs e)
         {
-            new MonitorInfoForm().ShowDialog();
+            //  new MonitorInfoForm().ShowDialog();
 
+        }
+
+        private void materialComboBoxMonitors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!isUpdatingComboBox)
+            {
+                //new MaterialSnackBar("Loading...").Show();
+                try
+                {
+                    SeedListView();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        private void DisplayMonitorInfo(MonitorInfo monitorInfo)
+        {
+            materialLabelManufacturer.Text = monitorInfo.Manufacturer;
+            materialLabelModel.Text = monitorInfo.Model;
+            materialLabelSerialNo.Text = monitorInfo.SerialNumber;
+            materialLabelYearOfProduction.Text = monitorInfo.YearOfProduction;
+            materialLabelMonthOfProduction.Text = monitorInfo.MonthOfProduction;
+            materialLabelProductCodeID.Text = monitorInfo.ProductCodeID;
+            materialLabelDiagonal1.Text = monitorInfo.Diagonal1.ToString();
+            materialLabelDiagonal2.Text = monitorInfo.Diagonal2;
+            materialLabelResolution.Text = monitorInfo.Resolution;
+            materialLabelFrequency.Text = monitorInfo.Frequency.ToString();
+            materialLabelPPI.Text = monitorInfo.PPI;
+            materialLabelSizeMonitor.Text = monitorInfo.SizeMonitor;
+            textBoxIdEVK.Enabled = !string.IsNullOrEmpty(monitorInfo.Manufacturer) &
+                            !string.IsNullOrEmpty(monitorInfo.Model);
+            textBoxIdEVK.Text = monitorInfo.IdEVK;
+
+            this.Refresh();
+        }
+
+        private void materialLabelPPI_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelPPI.Text);
+        }
+
+        private void CopyToClipboard(string text)
+        {
+            Clipboard.SetText(text);
+            new MaterialSnackBar("Copied to clipboard.").Show(this);
+
+        }
+
+        private void materialLabelManufacturer_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelManufacturer.Text);
+        }
+
+        private void materialLabelModel_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelModel.Text);
+        }
+
+        private void materialLabelYearOfProduction_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelYearOfProduction.Text);
+        }
+
+        private void materialLabelMonthOfProduction_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelMonthOfProduction.Text);
+        }
+
+        private void materialLabelProductCodeID_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelProductCodeID.Text);
+        }
+
+        private void materialLabelDiagonal1_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelDiagonal1.Text);
+        }
+
+        private void materialLabelDiagonal2_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelDiagonal2.Text);
+        }
+
+        private void materialLabelSerialNo_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelSerialNo.Text);
+        }
+
+        private void materialLabelFrequency_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelFrequency.Text);
+        }
+
+        private void materialLabelSizeMonitor_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelSizeMonitor.Text);
+        }
+
+        private void materialLabelResolution_Click(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelResolution.Text);
+        }
+
+        private void materialLabelPPI_Click_1(object sender, EventArgs e)
+        {
+            CopyToClipboard(materialLabelPPI.Text);
+        }
+
+        private void sendButton_Click(object sender, EventArgs e)
+        {
+            SendMonitorInfoToDatabase();
+        }
+
+        private void textBoxIdEVK_TextChanged(object sender, EventArgs e)
+        {
+            if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
+            {
+                monitors[materialComboBoxMonitors.SelectedIndex].IdEVK = textBoxIdEVK.Text;
+            }
+        }
+
+        private void textBoxTester_TextChanged(object sender, EventArgs e)
+        {
+            if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
+            {
+                monitors[materialComboBoxMonitors.SelectedIndex].TesterInitials = textBoxTester.Text;
+            }
         }
     }
 }

@@ -424,7 +424,7 @@ namespace changeResolution1
             this.lblManufacturer.AutoSize = true;
             this.lblManufacturer.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblManufacturer.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lblManufacturer.Location = new System.Drawing.Point(183, 24);
+            this.lblManufacturer.Location = new System.Drawing.Point(183, 26);
             this.lblManufacturer.Name = "lblManufacturer";
             this.lblManufacturer.Size = new System.Drawing.Size(10, 15);
             this.lblManufacturer.TabIndex = 23;

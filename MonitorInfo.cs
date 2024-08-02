@@ -22,6 +22,8 @@ namespace changeResolution1
         public double MaxHorizontalSize { get; set; }
         public string Identifier { get; set; }
         public string FriendlyName { get; set; }
+        public string IdEVK { get; set; }
+        public string TesterInitials { get; set; }
 
         public void UpdateSize(double maxHorizontalSize, double maxVerticalSize)
         {
@@ -45,7 +47,8 @@ namespace changeResolution1
                    $"Resolution: {Resolution}, Frequency: {Frequency}, PPI: {PPI}, " +
                    $"SizeMonitor: {SizeMonitor}, MaxVerticalSize: {MaxVerticalSize}, " +
                    $"MaxHorizontalSize: {MaxHorizontalSize}, Identifier: {Identifier}, " +
-                   $"FriendlyName: {FriendlyName}";
+                   $"FriendlyName: {FriendlyName}, " +
+                   $"ID EVK: {IdEVK},Tester Initials: {TesterInitials}";
         }
 
         public MonitorInfo()
@@ -66,6 +69,8 @@ namespace changeResolution1
             MaxVerticalSize = 0;
             FriendlyName = "Name";
             Identifier = "DISPLAY";
+            IdEVK = "";
+            TesterInitials = "";
         }
 
     }
