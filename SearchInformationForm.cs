@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using MaterialSkin;
+using MaterialSkin.Controls;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -9,6 +11,7 @@ using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -18,24 +21,62 @@ using System.Windows.Forms;
 
 namespace changeResolution1
 {
-    public partial class SearchInformationForm : Form
+    public partial class SearchInformationForm : MaterialForm
     {
         private IWebDriver driver;
-
+        Form1 form1;
+        private readonly MaterialSkinManager materialSkinManager;
         public SearchInformationForm()
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            InitizializeCustomForm();
         }
-
-        private void BrightnessContrastForm_Load(object sender, EventArgs e)
+        public SearchInformationForm(Form1 form)
         {
 
+            form1 = form;
+            InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            InitizializeCustomForm();
+        }
+
+        private void checkTheme()
+        {
+            if (form1.materialSwitch1.Checked)
+            {
+                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+
+            }
+            else
+            {
+                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+
+            }
+            materialSkinManager.ColorScheme = new ColorScheme(
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
+                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
+                        Accent.Red400,
+                        TextShade.WHITE);
+
+            infoDisplayTextBox.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                ? Color.FromArgb(0x21, 0x21, 0x21)
+                : Color.FromArgb(0x37, 0x47, 0x4F);
+        }
+        public void InitizializeCustomForm()
+        {
+
+            materialSkinManager.EnforceBackcolorOnAllComponents = true;
+            materialSkinManager.AddFormToManage(this);
+            checkTheme();
+            DrawerAutoShow = true;
         }
 
         private async void searchButton_Click(object sender, EventArgs e)
         {
-            modelLabel.Text = "Loading...";
-            machineTypeModelLabel.Text = "";
+            modelLabel1.Text = "Loading...";
+            infoDisplayTextBox.Text = "";
             pictureBox1.Image = null;
             var service = ChromeDriverService.CreateDefaultService();
             service.HideCommandPromptWindow = true;
@@ -43,7 +84,7 @@ namespace changeResolution1
             //options.AddArgument("--headless");
             options.AddArgument("--start-maximized");
             driver = new ChromeDriver(service, options);
-            await FetchAndDisplayProductInfo(manufacturerComboBox.Text);
+            await FetchAndDisplayProductInfo(manufacturerComboBox1.Text);
 
         }
 
@@ -63,13 +104,13 @@ namespace changeResolution1
                         break;
                     // Add more cases for other manufacturers here
                     default:
-                        modelLabel.Text = "Manufacturer not supported.";
+                        modelLabel1.Text = "Manufacturer not supported.";
                         return;
                 }
             }
             catch (Exception ex)
             {
-                modelLabel.Text = $"Error: {ex.Message}";
+                modelLabel1.Text = $"Error: {ex.Message}";
             }
             finally
             {
@@ -103,7 +144,7 @@ namespace changeResolution1
             }
             else
             {
-                modelLabel.Text = "Product information not found.";
+                modelLabel1.Text = "Product information not found.";
             }
         }
 
@@ -154,17 +195,17 @@ namespace changeResolution1
 
                 if (pdfText != null)
                 {
-                    modelLabel.Text = model;
-                    machineTypeModelLabel.Text = pdfText;
+                    modelLabel1.Text = model;
+                    infoDisplayTextBox.Text = pdfText;
                 }
                 else
                 {
-                    modelLabel.Text = "Product features not found in PDF.";
+                    modelLabel1.Text = "Product features not found in PDF.";
                 }
             }
             catch (Exception ex)
             {
-                modelLabel.Text = $"Error: {ex.Message}";
+                modelLabel1.Text = $"Error: {ex.Message}";
             }
             finally
             {
@@ -328,20 +369,19 @@ namespace changeResolution1
                 productInfo.OtherInfo.Add("");
             }
 
-            // Add parsing logic for other manufacturers here
 
             return productInfo;
         }
 
         private void DisplayProductInfo(ProductInfo productInfo)
         {
-            modelLabel.Text = productInfo.Model;
-            machineTypeModelLabel.Text = productInfo.MachineTypeModel;
+            modelLabel1.Text = productInfo.Model;
+            infoDisplayTextBox.Text = productInfo.MachineTypeModel;
             if (!string.IsNullOrEmpty(productInfo.ImageUrl))
             {
                 pictureBox1.Load(productInfo.ImageUrl);
             }
-            infoLabel.Text = string.Join(Environment.NewLine, productInfo.OtherInfo);
+            infoLabel1.Text = string.Join(Environment.NewLine, productInfo.OtherInfo);
         }
 
         public class ProductInfo
@@ -364,9 +404,15 @@ namespace changeResolution1
 
         private void manufacturerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedManufacturer = manufacturerComboBox.SelectedItem.ToString();
+            fillPositionsInfo();
+        }
 
-            searchButton.Enabled = false;
+
+        private void fillPositionsInfo()
+        {
+            var selectedManufacturer = manufacturerComboBox1.SelectedItem.ToString();
+
+            searchButton1.Enabled = false;
             serialNumberTextBox.Enabled = false;
             modelTextBox.Enabled = false;
 
@@ -381,8 +427,8 @@ namespace changeResolution1
             {
                 modelTextBox.Enabled = true;
             }
-        }
 
+        }
         private void modelTextBox_TextChanged(object sender, EventArgs e)
         {
             EnablingElements();
@@ -398,81 +444,12 @@ namespace changeResolution1
             if ((serialNumberTextBox.Enabled && serialNumberTextBox.Text.Length >= 3) ||
                 (modelTextBox.Enabled && modelTextBox.Text.Length >= 3))
             {
-                searchButton.Enabled = true;
+                searchButton1.Enabled = true;
             }
             else
             {
-                searchButton.Enabled = false;
+                searchButton1.Enabled = false;
             }
         }
-
-
-
-
-
-
-
-
-
-        /*
-
-
-                 void Main1()
-                {
-                    try
-                    {
-                        string serviceTag = GetDellMonitorServiceTag();
-                        if (!string.IsNullOrEmpty(serviceTag))
-                        {
-                            Console.WriteLine("Dell Monitor Service Tag: " + serviceTag);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Service Tag not found.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Error: " + ex.Message);
-                    }
-                }
-
-                static string GetDellMonitorServiceTag()
-                {
-                    string serviceTag = null;
-                    ManagementScope scope = new ManagementScope(@"\\.\root\wmi");
-                    ObjectQuery query = new ObjectQuery("SELECT * FROM WmiMonitorID");
-
-                    using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query))
-                    using (ManagementObjectCollection results = searcher.Get())
-                    {
-                        foreach (ManagementObject obj in results)
-                        {
-                            string manufacturerName = GetStringFromUInt16Array((ushort[])obj["ManufacturerName"]);
-                            if (manufacturerName.ToLower().Contains("dell"))
-                            {
-                                serviceTag = GetStringFromUInt16Array((ushort[])obj["SerialNumberID"]);
-                                break;
-                            }
-                        }
-                    }
-
-                    return serviceTag;
-                }
-
-                static string GetStringFromUInt16Array(ushort[] ushortArray)
-                {
-                    if (ushortArray == null)
-                        return null;
-
-                    char[] chars = new char[ushortArray.Length];
-                    for (int i = 0; i < ushortArray.Length; i++)
-                    {
-                        chars[i] = (char)ushortArray[i];
-                    }
-                    return new string(chars).Trim();
-                }
-        */
     }
-
 }

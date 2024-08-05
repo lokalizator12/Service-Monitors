@@ -29,157 +29,213 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchInformationForm));
-            this.searchButton = new System.Windows.Forms.Button();
-            this.serialNumberTextBox = new System.Windows.Forms.TextBox();
-            this.modelLabel = new System.Windows.Forms.Label();
-            this.machineTypeModelLabel = new System.Windows.Forms.Label();
-            this.infoLabel = new System.Windows.Forms.Label();
-            this.manufacturerComboBox = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.modelTextBox = new System.Windows.Forms.TextBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.searchButton1 = new MaterialSkin.Controls.MaterialButton();
+            this.manufacturerComboBox1 = new MaterialSkin.Controls.MaterialComboBox();
+            this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            this.infoLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            this.modelLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            this.infoDisplayTextBox = new MaterialSkin.Controls.MaterialMultiLineTextBox();
+            this.serialNumberTextBox = new MaterialSkin.Controls.MaterialTextBox();
+            this.modelTextBox = new MaterialSkin.Controls.MaterialTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // searchButton
-            // 
-            this.searchButton.Enabled = false;
-            this.searchButton.Location = new System.Drawing.Point(117, 103);
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(75, 23);
-            this.searchButton.TabIndex = 0;
-            this.searchButton.Text = "Search";
-            this.searchButton.UseVisualStyleBackColor = true;
-            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
-            // 
-            // serialNumberTextBox
-            // 
-            this.serialNumberTextBox.Enabled = false;
-            this.serialNumberTextBox.Location = new System.Drawing.Point(107, 43);
-            this.serialNumberTextBox.Name = "serialNumberTextBox";
-            this.serialNumberTextBox.Size = new System.Drawing.Size(100, 20);
-            this.serialNumberTextBox.TabIndex = 1;
-            this.serialNumberTextBox.TextChanged += new System.EventHandler(this.serialNumberTextBox_TextChanged);
-            // 
-            // modelLabel
-            // 
-            this.modelLabel.AutoSize = true;
-            this.modelLabel.Location = new System.Drawing.Point(349, 27);
-            this.modelLabel.Name = "modelLabel";
-            this.modelLabel.Size = new System.Drawing.Size(0, 13);
-            this.modelLabel.TabIndex = 2;
-            // 
-            // machineTypeModelLabel
-            // 
-            this.machineTypeModelLabel.AutoSize = true;
-            this.machineTypeModelLabel.Location = new System.Drawing.Point(349, 58);
-            this.machineTypeModelLabel.Name = "machineTypeModelLabel";
-            this.machineTypeModelLabel.Size = new System.Drawing.Size(0, 13);
-            this.machineTypeModelLabel.TabIndex = 3;
-            // 
-            // infoLabel
-            // 
-            this.infoLabel.AutoSize = true;
-            this.infoLabel.Location = new System.Drawing.Point(349, 117);
-            this.infoLabel.Name = "infoLabel";
-            this.infoLabel.Size = new System.Drawing.Size(0, 13);
-            this.infoLabel.TabIndex = 5;
-            // 
-            // manufacturerComboBox
-            // 
-            this.manufacturerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.manufacturerComboBox.FormattingEnabled = true;
-            this.manufacturerComboBox.Items.AddRange(new object[] {
-            "Dell",
-            "Lenovo"});
-            this.manufacturerComboBox.Location = new System.Drawing.Point(107, 12);
-            this.manufacturerComboBox.Name = "manufacturerComboBox";
-            this.manufacturerComboBox.Size = new System.Drawing.Size(121, 21);
-            this.manufacturerComboBox.Sorted = true;
-            this.manufacturerComboBox.TabIndex = 6;
-            this.manufacturerComboBox.SelectedIndexChanged += new System.EventHandler(this.manufacturerComboBox_SelectedIndexChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Serial number S\\N";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 15);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(70, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Manufacturer";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 84);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(39, 13);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Model ";
-            // 
-            // modelTextBox
-            // 
-            this.modelTextBox.Enabled = false;
-            this.modelTextBox.Location = new System.Drawing.Point(107, 77);
-            this.modelTextBox.Name = "modelTextBox";
-            this.modelTextBox.Size = new System.Drawing.Size(100, 20);
-            this.modelTextBox.TabIndex = 10;
-            this.modelTextBox.TextChanged += new System.EventHandler(this.modelTextBox_TextChanged);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Location = new System.Drawing.Point(878, 294);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(101, 88);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 11;
-            this.pictureBox2.TabStop = false;
-            // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 129);
+            this.pictureBox1.Location = new System.Drawing.Point(42, 282);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(300, 249);
+            this.pictureBox1.Size = new System.Drawing.Size(277, 230);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 4;
             this.pictureBox1.TabStop = false;
+            // 
+            // searchButton1
+            // 
+            this.searchButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.searchButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.searchButton1.Depth = 0;
+            this.searchButton1.HighEmphasis = true;
+            this.searchButton1.Icon = null;
+            this.searchButton1.Location = new System.Drawing.Point(211, 233);
+            this.searchButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.searchButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.searchButton1.Name = "searchButton1";
+            this.searchButton1.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.searchButton1.Size = new System.Drawing.Size(78, 36);
+            this.searchButton1.TabIndex = 12;
+            this.searchButton1.Text = "Search";
+            this.searchButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.searchButton1.UseAccentColor = false;
+            this.searchButton1.UseVisualStyleBackColor = true;
+            this.searchButton1.Click += new System.EventHandler(this.searchButton_Click);
+            // 
+            // manufacturerComboBox1
+            // 
+            this.manufacturerComboBox1.AutoResize = false;
+            this.manufacturerComboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.manufacturerComboBox1.Depth = 0;
+            this.manufacturerComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.manufacturerComboBox1.DropDownHeight = 118;
+            this.manufacturerComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.manufacturerComboBox1.DropDownWidth = 121;
+            this.manufacturerComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.manufacturerComboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.manufacturerComboBox1.FormattingEnabled = true;
+            this.manufacturerComboBox1.Hint = "Choose manufacturer";
+            this.manufacturerComboBox1.IntegralHeight = false;
+            this.manufacturerComboBox1.ItemHeight = 29;
+            this.manufacturerComboBox1.Items.AddRange(new object[] {
+            "Dell",
+            "Lenovo"});
+            this.manufacturerComboBox1.Location = new System.Drawing.Point(164, 79);
+            this.manufacturerComboBox1.MaxDropDownItems = 4;
+            this.manufacturerComboBox1.MouseState = MaterialSkin.MouseState.OUT;
+            this.manufacturerComboBox1.Name = "manufacturerComboBox1";
+            this.manufacturerComboBox1.Size = new System.Drawing.Size(200, 35);
+            this.manufacturerComboBox1.StartIndex = 0;
+            this.manufacturerComboBox1.TabIndex = 13;
+            this.manufacturerComboBox1.UseTallSize = false;
+            this.manufacturerComboBox1.SelectedIndexChanged += new System.EventHandler(this.manufacturerComboBox_SelectedIndexChanged);
+            // 
+            // materialLabel1
+            // 
+            this.materialLabel1.AutoSize = true;
+            this.materialLabel1.Depth = 0;
+            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel1.Location = new System.Drawing.Point(16, 95);
+            this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel1.Name = "materialLabel1";
+            this.materialLabel1.Size = new System.Drawing.Size(97, 19);
+            this.materialLabel1.TabIndex = 16;
+            this.materialLabel1.Text = "Manufacturer";
+            // 
+            // materialLabel2
+            // 
+            this.materialLabel2.AutoSize = true;
+            this.materialLabel2.Depth = 0;
+            this.materialLabel2.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel2.Location = new System.Drawing.Point(16, 134);
+            this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel2.Name = "materialLabel2";
+            this.materialLabel2.Size = new System.Drawing.Size(131, 19);
+            this.materialLabel2.TabIndex = 17;
+            this.materialLabel2.Text = "Serial number S\\N";
+            // 
+            // materialLabel3
+            // 
+            this.materialLabel3.AutoSize = true;
+            this.materialLabel3.Depth = 0;
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel3.Location = new System.Drawing.Point(16, 177);
+            this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel3.Name = "materialLabel3";
+            this.materialLabel3.Size = new System.Drawing.Size(49, 19);
+            this.materialLabel3.TabIndex = 18;
+            this.materialLabel3.Text = "Model ";
+            // 
+            // infoLabel1
+            // 
+            this.infoLabel1.AutoSize = true;
+            this.infoLabel1.Depth = 0;
+            this.infoLabel1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.infoLabel1.Location = new System.Drawing.Point(389, 100);
+            this.infoLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.infoLabel1.Name = "infoLabel1";
+            this.infoLabel1.Size = new System.Drawing.Size(11, 19);
+            this.infoLabel1.TabIndex = 19;
+            this.infoLabel1.Text = ":)";
+            // 
+            // modelLabel1
+            // 
+            this.modelLabel1.AutoSize = true;
+            this.modelLabel1.Depth = 0;
+            this.modelLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.modelLabel1.Location = new System.Drawing.Point(389, 174);
+            this.modelLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.modelLabel1.Name = "modelLabel1";
+            this.modelLabel1.Size = new System.Drawing.Size(11, 19);
+            this.modelLabel1.TabIndex = 20;
+            this.modelLabel1.Text = ":)";
+            // 
+            // infoDisplayTextBox
+            // 
+            this.infoDisplayTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.infoDisplayTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.infoDisplayTextBox.Depth = 0;
+            this.infoDisplayTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.infoDisplayTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.infoDisplayTextBox.Location = new System.Drawing.Point(392, 282);
+            this.infoDisplayTextBox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.infoDisplayTextBox.Name = "infoDisplayTextBox";
+            this.infoDisplayTextBox.ReadOnly = true;
+            this.infoDisplayTextBox.Size = new System.Drawing.Size(642, 230);
+            this.infoDisplayTextBox.TabIndex = 32;
+            this.infoDisplayTextBox.Text = "";
+            // 
+            // serialNumberTextBox
+            // 
+            this.serialNumberTextBox.AnimateReadOnly = false;
+            this.serialNumberTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.serialNumberTextBox.Depth = 0;
+            this.serialNumberTextBox.Enabled = false;
+            this.serialNumberTextBox.Font = new System.Drawing.Font("Roboto", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.serialNumberTextBox.Hint = "ex. V1K49985";
+            this.serialNumberTextBox.LeadingIcon = null;
+            this.serialNumberTextBox.Location = new System.Drawing.Point(164, 120);
+            this.serialNumberTextBox.MaxLength = 50;
+            this.serialNumberTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            this.serialNumberTextBox.Multiline = false;
+            this.serialNumberTextBox.Name = "serialNumberTextBox";
+            this.serialNumberTextBox.Size = new System.Drawing.Size(200, 50);
+            this.serialNumberTextBox.TabIndex = 33;
+            this.serialNumberTextBox.Text = "";
+            this.serialNumberTextBox.TrailingIcon = null;
+            this.serialNumberTextBox.TextChanged += new System.EventHandler(this.serialNumberTextBox_TextChanged);
+            // 
+            // modelTextBox
+            // 
+            this.modelTextBox.AnimateReadOnly = false;
+            this.modelTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.modelTextBox.Depth = 0;
+            this.modelTextBox.Enabled = false;
+            this.modelTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.modelTextBox.Hint = "ex. S2421HS";
+            this.modelTextBox.LeadingIcon = null;
+            this.modelTextBox.Location = new System.Drawing.Point(164, 174);
+            this.modelTextBox.MaxLength = 50;
+            this.modelTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            this.modelTextBox.Multiline = false;
+            this.modelTextBox.Name = "modelTextBox";
+            this.modelTextBox.Size = new System.Drawing.Size(200, 50);
+            this.modelTextBox.TabIndex = 34;
+            this.modelTextBox.Text = "";
+            this.modelTextBox.TrailingIcon = null;
+            this.modelTextBox.TextChanged += new System.EventHandler(this.modelTextBox_TextChanged);
             // 
             // SearchInformationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(991, 394);
-            this.Controls.Add(this.pictureBox2);
+            this.ClientSize = new System.Drawing.Size(1050, 542);
             this.Controls.Add(this.modelTextBox);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.manufacturerComboBox);
-            this.Controls.Add(this.infoLabel);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.machineTypeModelLabel);
-            this.Controls.Add(this.modelLabel);
             this.Controls.Add(this.serialNumberTextBox);
-            this.Controls.Add(this.searchButton);
+            this.Controls.Add(this.infoDisplayTextBox);
+            this.Controls.Add(this.modelLabel1);
+            this.Controls.Add(this.infoLabel1);
+            this.Controls.Add(this.materialLabel3);
+            this.Controls.Add(this.materialLabel2);
+            this.Controls.Add(this.materialLabel1);
+            this.Controls.Add(this.manufacturerComboBox1);
+            this.Controls.Add(this.searchButton1);
+            this.Controls.Add(this.pictureBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SearchInformationForm";
-            this.Text = "BrightnessContrastForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Search information ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BrightnessContrastForm_FormClosing);
-            this.Load += new System.EventHandler(this.BrightnessContrastForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -187,18 +243,16 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button searchButton;
-        private System.Windows.Forms.TextBox serialNumberTextBox;
-        private System.Windows.Forms.Label modelLabel;
-        private System.Windows.Forms.Label machineTypeModelLabel;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label infoLabel;
-        private System.Windows.Forms.ComboBox manufacturerComboBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox modelTextBox;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private MaterialSkin.Controls.MaterialButton searchButton1;
+        private MaterialSkin.Controls.MaterialComboBox manufacturerComboBox1;
+        private MaterialSkin.Controls.MaterialLabel materialLabel1;
+        private MaterialSkin.Controls.MaterialLabel materialLabel2;
+        private MaterialSkin.Controls.MaterialLabel materialLabel3;
+        private MaterialSkin.Controls.MaterialLabel infoLabel1;
+        private MaterialSkin.Controls.MaterialLabel modelLabel1;
+        private MaterialSkin.Controls.MaterialMultiLineTextBox infoDisplayTextBox;
+        private MaterialSkin.Controls.MaterialTextBox serialNumberTextBox;
+        private MaterialSkin.Controls.MaterialTextBox modelTextBox;
     }
 }

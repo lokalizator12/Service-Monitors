@@ -190,7 +190,7 @@ namespace changeResolution1
             this.controlPanel.Controls.Add(this.locateButton);
             this.controlPanel.Controls.Add(this.monitorLabel);
             this.controlPanel.Controls.Add(this.intervalDescriptionLabel);
-            this.controlPanel.Location = new System.Drawing.Point(12, 12);
+            this.controlPanel.Location = new System.Drawing.Point(17, 81);
             this.controlPanel.Name = "controlPanel";
             this.controlPanel.Size = new System.Drawing.Size(372, 351);
             this.controlPanel.TabIndex = 0;
@@ -345,13 +345,11 @@ namespace changeResolution1
             this.presetColorComboBox.TabIndex = 13;
             this.presetColorComboBox.SelectedIndexChanged += new System.EventHandler(this.presetColorComboBox_SelectedIndexChanged);
             // 
-            
-            // 
             // PixelFixerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 375);
+            this.ClientSize = new System.Drawing.Size(404, 447);
             this.Controls.Add(this.controlPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "PixelFixerForm";

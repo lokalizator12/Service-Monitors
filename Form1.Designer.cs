@@ -42,6 +42,9 @@ namespace changeResolution1
             this.materialMultiLineTextBox2 = new MaterialSkin.Controls.MaterialMultiLineTextBox();
             this.materialMultiLineTextBox1 = new MaterialSkin.Controls.MaterialMultiLineTextBox();
             this.showInfoPage = new System.Windows.Forms.TabPage();
+            this.sendButton = new MaterialSkin.Controls.MaterialButton();
+            this.materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
+            this.textBoxIdEVK = new MaterialSkin.Controls.MaterialTextBox2();
             this.materialLabelPPI = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabelResolution = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabelSizeMonitor = new MaterialSkin.Controls.MaterialLabel();
@@ -78,6 +81,7 @@ namespace changeResolution1
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.materialContextMenuStrip1 = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.item1ToolStripMenuItem = new MaterialSkin.Controls.MaterialToolStripMenuItem();
@@ -87,19 +91,15 @@ namespace changeResolution1
             this.item2ToolStripMenuItem = new MaterialSkin.Controls.MaterialToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.item3ToolStripMenuItem = new MaterialSkin.Controls.MaterialToolStripMenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
-            this.textBoxIdEVK = new MaterialSkin.Controls.MaterialTextBox2();
-            this.materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
-            this.sendButton = new MaterialSkin.Controls.MaterialButton();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.fullInfoPage.SuspendLayout();
             this.showInfoPage.SuspendLayout();
             this.resolutionPage.SuspendLayout();
             this.tabPage6.SuspendLayout();
-            this.materialContextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.materialContextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -483,6 +483,70 @@ namespace changeResolution1
             this.showInfoPage.Text = "Show info";
             this.showInfoPage.Enter += new System.EventHandler(this.showInfoPage_Enter);
             // 
+            // sendButton
+            // 
+            this.sendButton.AutoSize = false;
+            this.sendButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.sendButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.sendButton.Depth = 0;
+            this.sendButton.HighEmphasis = true;
+            this.sendButton.Icon = null;
+            this.sendButton.Location = new System.Drawing.Point(21, 499);
+            this.sendButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.sendButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.sendButton.Name = "sendButton";
+            this.sendButton.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.sendButton.Size = new System.Drawing.Size(134, 36);
+            this.sendButton.TabIndex = 54;
+            this.sendButton.Text = "Sent";
+            this.sendButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.sendButton.UseAccentColor = false;
+            this.sendButton.UseVisualStyleBackColor = true;
+            this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
+            // 
+            // materialLabel13
+            // 
+            this.materialLabel13.AutoSize = true;
+            this.materialLabel13.Depth = 0;
+            this.materialLabel13.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel13.Location = new System.Drawing.Point(332, 509);
+            this.materialLabel13.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel13.Name = "materialLabel13";
+            this.materialLabel13.Size = new System.Drawing.Size(47, 19);
+            this.materialLabel13.TabIndex = 53;
+            this.materialLabel13.Text = "Id EVK";
+            // 
+            // textBoxIdEVK
+            // 
+            this.textBoxIdEVK.AnimateReadOnly = false;
+            this.textBoxIdEVK.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.textBoxIdEVK.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textBoxIdEVK.Depth = 0;
+            this.textBoxIdEVK.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.textBoxIdEVK.HelperText = "Insert ID EVK from monitor";
+            this.textBoxIdEVK.HideSelection = true;
+            this.textBoxIdEVK.Hint = "M*********";
+            this.textBoxIdEVK.LeadingIcon = null;
+            this.textBoxIdEVK.Location = new System.Drawing.Point(622, 497);
+            this.textBoxIdEVK.MaxLength = 32767;
+            this.textBoxIdEVK.MouseState = MaterialSkin.MouseState.OUT;
+            this.textBoxIdEVK.Name = "textBoxIdEVK";
+            this.textBoxIdEVK.PasswordChar = '\0';
+            this.textBoxIdEVK.PrefixSuffixText = null;
+            this.textBoxIdEVK.ReadOnly = false;
+            this.textBoxIdEVK.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.textBoxIdEVK.SelectedText = "";
+            this.textBoxIdEVK.SelectionLength = 0;
+            this.textBoxIdEVK.SelectionStart = 0;
+            this.textBoxIdEVK.ShortcutsEnabled = true;
+            this.textBoxIdEVK.Size = new System.Drawing.Size(174, 48);
+            this.textBoxIdEVK.TabIndex = 52;
+            this.textBoxIdEVK.TabStop = false;
+            this.textBoxIdEVK.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxIdEVK.TrailingIcon = null;
+            this.textBoxIdEVK.UseSystemPasswordChar = false;
+            this.textBoxIdEVK.TextChanged += new System.EventHandler(this.textBoxIdEVK_TextChanged);
+            // 
             // materialLabelPPI
             // 
             this.materialLabelPPI.AutoSize = true;
@@ -775,7 +839,7 @@ namespace changeResolution1
             this.materialButton1.NoAccentTextColor = System.Drawing.Color.Empty;
             this.materialButton1.Size = new System.Drawing.Size(134, 36);
             this.materialButton1.TabIndex = 30;
-            this.materialButton1.Text = "show form";
+            this.materialButton1.Text = "Search info";
             this.materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.materialButton1.UseAccentColor = false;
             this.materialButton1.UseVisualStyleBackColor = true;
@@ -954,6 +1018,17 @@ namespace changeResolution1
             this.button2.Text = "duplicate";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::ServiceMonitorEVK.Properties.Resources.DA;
+            this.pictureBox1.Location = new System.Drawing.Point(225, 290);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 28;
+            this.pictureBox1.TabStop = false;
+            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -1034,17 +1109,6 @@ namespace changeResolution1
             this.item3ToolStripMenuItem.Size = new System.Drawing.Size(170, 30);
             this.item3ToolStripMenuItem.Text = "Item 3";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::ServiceMonitorEVK.Properties.Resources.DA;
-            this.pictureBox1.Location = new System.Drawing.Point(225, 290);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(40, 40);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 28;
-            this.pictureBox1.TabStop = false;
-            // 
             // pictureBoxLogo
             // 
             this.pictureBoxLogo.BackColor = System.Drawing.Color.Transparent;
@@ -1056,70 +1120,6 @@ namespace changeResolution1
             this.pictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxLogo.TabIndex = 41;
             this.pictureBoxLogo.TabStop = false;
-            // 
-            // textBoxIdEVK
-            // 
-            this.textBoxIdEVK.AnimateReadOnly = false;
-            this.textBoxIdEVK.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.textBoxIdEVK.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBoxIdEVK.Depth = 0;
-            this.textBoxIdEVK.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.textBoxIdEVK.HelperText = "Insert ID EVK from monitor";
-            this.textBoxIdEVK.HideSelection = true;
-            this.textBoxIdEVK.Hint = "M*********";
-            this.textBoxIdEVK.LeadingIcon = null;
-            this.textBoxIdEVK.Location = new System.Drawing.Point(622, 497);
-            this.textBoxIdEVK.MaxLength = 32767;
-            this.textBoxIdEVK.MouseState = MaterialSkin.MouseState.OUT;
-            this.textBoxIdEVK.Name = "textBoxIdEVK";
-            this.textBoxIdEVK.PasswordChar = '\0';
-            this.textBoxIdEVK.PrefixSuffixText = null;
-            this.textBoxIdEVK.ReadOnly = false;
-            this.textBoxIdEVK.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.textBoxIdEVK.SelectedText = "";
-            this.textBoxIdEVK.SelectionLength = 0;
-            this.textBoxIdEVK.SelectionStart = 0;
-            this.textBoxIdEVK.ShortcutsEnabled = true;
-            this.textBoxIdEVK.Size = new System.Drawing.Size(174, 48);
-            this.textBoxIdEVK.TabIndex = 52;
-            this.textBoxIdEVK.TabStop = false;
-            this.textBoxIdEVK.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.textBoxIdEVK.TrailingIcon = null;
-            this.textBoxIdEVK.UseSystemPasswordChar = false;
-            this.textBoxIdEVK.TextChanged += new System.EventHandler(this.textBoxIdEVK_TextChanged);
-            // 
-            // materialLabel13
-            // 
-            this.materialLabel13.AutoSize = true;
-            this.materialLabel13.Depth = 0;
-            this.materialLabel13.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel13.Location = new System.Drawing.Point(332, 509);
-            this.materialLabel13.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabel13.Name = "materialLabel13";
-            this.materialLabel13.Size = new System.Drawing.Size(47, 19);
-            this.materialLabel13.TabIndex = 53;
-            this.materialLabel13.Text = "Id EVK";
-            // 
-            // sendButton
-            // 
-            this.sendButton.AutoSize = false;
-            this.sendButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.sendButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.sendButton.Depth = 0;
-            this.sendButton.HighEmphasis = true;
-            this.sendButton.Icon = null;
-            this.sendButton.Location = new System.Drawing.Point(21, 499);
-            this.sendButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.sendButton.MouseState = MaterialSkin.MouseState.HOVER;
-            this.sendButton.Name = "sendButton";
-            this.sendButton.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.sendButton.Size = new System.Drawing.Size(134, 36);
-            this.sendButton.TabIndex = 54;
-            this.sendButton.Text = "Sent";
-            this.sendButton.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.sendButton.UseAccentColor = false;
-            this.sendButton.UseVisualStyleBackColor = true;
-            this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
             // 
             // Form1
             // 
@@ -1143,8 +1143,8 @@ namespace changeResolution1
             this.resolutionPage.ResumeLayout(false);
             this.resolutionPage.PerformLayout();
             this.tabPage6.ResumeLayout(false);
-            this.materialContextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.materialContextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
             this.ResumeLayout(false);
 
@@ -1171,7 +1171,6 @@ namespace changeResolution1
         private MaterialSkin.Controls.MaterialToolStripMenuItem item3ToolStripMenuItem;
         private TabPage fullInfoPage;
         private TabPage searchInfoPage;
-        private MaterialSkin.Controls.MaterialSwitch materialSwitch1;
         private TabPage tabPage6;
         private TabPage testMonitorPage;
         private Button button7;
@@ -1221,6 +1220,7 @@ namespace changeResolution1
         private MaterialLabel materialLabel13;
         private MaterialTextBox2 textBoxIdEVK;
         private MaterialButton sendButton;
+        public MaterialSwitch materialSwitch1;
     }
 }
 

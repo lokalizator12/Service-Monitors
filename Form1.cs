@@ -8,7 +8,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 namespace changeResolution1
 {
@@ -72,7 +71,8 @@ namespace changeResolution1
                 monitorInfo.IdEVK = textBoxIdEVK.Text;
                 monitorInfo.TesterInitials = textBoxTester.Text;
                 new MaterialSnackBar($"Sended to database succesfully").Show(this);
-            }catch(Exception x)
+            }
+            catch (Exception x)
             {
                 new MaterialSnackBar($"Eror: {x.Message}").Show(this);
             }
@@ -382,7 +382,7 @@ namespace changeResolution1
         {
 
             monitorInfo = new MonitorInfoForm(this);
-
+            fillPostionsInfo();
 
         }
 
@@ -416,27 +416,27 @@ namespace changeResolution1
                 return;
             }
             MonitorInfo monitor = monitors[materialComboBoxMonitors.SelectedIndex];
-            
+
             DisplayMonitorInfo(monitor);
         }
 
         private void searchInfoPage_Enter(object sender, EventArgs e)
         {
-            SearchInformationForm brightness = new SearchInformationForm();
-            brightness.ShowDialog();
+            new MaterialSnackBar("coming soon or will be deleted this page...", "OK", true).Show(this);
         }
 
         private void materialButton1_Click(object sender, EventArgs e)
         {
-            //  new MonitorInfoForm().ShowDialog();
+            new SearchInformationForm(this).Show();
 
         }
 
-        private void materialComboBoxMonitors_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void fillPostionsInfo()
         {
             if (!isUpdatingComboBox)
             {
-                //new MaterialSnackBar("Loading...").Show();
+                new MaterialSnackBar("Loading...").Show(this);
                 try
                 {
                     SeedListView();
@@ -446,6 +446,10 @@ namespace changeResolution1
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
+        }
+        private void materialComboBoxMonitors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fillPostionsInfo();
         }
 
         private void DisplayMonitorInfo(MonitorInfo monitorInfo)
@@ -551,6 +555,7 @@ namespace changeResolution1
             if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
             {
                 monitors[materialComboBoxMonitors.SelectedIndex].IdEVK = textBoxIdEVK.Text;
+
             }
         }
 
@@ -559,8 +564,11 @@ namespace changeResolution1
             if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
             {
                 monitors[materialComboBoxMonitors.SelectedIndex].TesterInitials = textBoxTester.Text;
+                if (textBoxTester.Text.Length == 2) new MaterialSnackBar("Initials inited succesfully").Show(this);
             }
         }
+
+
     }
 }
 

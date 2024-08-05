@@ -350,6 +350,9 @@
     <Content Include="Resources\application_logo_transparent.ico" />
     <Content Include="Resources\DALL·E 2024-07-26 12.15.39 .ico" />
     <Content Include="Resources\logo %281%29.png" />
+    <Content Include="selenium-manager.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\logo %281%291.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
