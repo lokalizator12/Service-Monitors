@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace changeResolution1
 {
-    public partial class MonitorInfoForm : MaterialForm
+    public partial class MonitorInfoForm : Form
     {
         private Dictionary<string, MonitorInfo> modelToMonitorInfoMap;
 

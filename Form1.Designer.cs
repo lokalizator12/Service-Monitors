@@ -92,6 +92,7 @@ namespace changeResolution1
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.item3ToolStripMenuItem = new MaterialSkin.Controls.MaterialToolStripMenuItem();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
+            this.materialSliderOpasity = new MaterialSkin.Controls.MaterialSlider();
             this.materialTabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.fullInfoPage.SuspendLayout();
@@ -235,11 +236,12 @@ namespace changeResolution1
             this.materialTabControl1.Multiline = true;
             this.materialTabControl1.Name = "materialTabControl1";
             this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(1544, 674);
+            this.materialTabControl1.Size = new System.Drawing.Size(1560, 580);
             this.materialTabControl1.TabIndex = 35;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.materialSliderOpasity);
             this.tabPage1.Controls.Add(this.materialCheckbox2);
             this.tabPage1.Controls.Add(this.materialCheckbox1);
             this.tabPage1.Controls.Add(this.textBoxTester);
@@ -248,7 +250,7 @@ namespace changeResolution1
             this.tabPage1.Location = new System.Drawing.Point(4, 39);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1536, 631);
+            this.tabPage1.Size = new System.Drawing.Size(1552, 537);
             this.tabPage1.TabIndex = 7;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -322,7 +324,7 @@ namespace changeResolution1
             this.materialSwitch1.Checked = true;
             this.materialSwitch1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialSwitch1.Depth = 0;
-            this.materialSwitch1.Location = new System.Drawing.Point(3, 591);
+            this.materialSwitch1.Location = new System.Drawing.Point(3, 462);
             this.materialSwitch1.Margin = new System.Windows.Forms.Padding(0);
             this.materialSwitch1.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialSwitch1.MouseState = MaterialSkin.MouseState.HOVER;
@@ -347,7 +349,7 @@ namespace changeResolution1
             this.fullInfoPage.Location = new System.Drawing.Point(4, 39);
             this.fullInfoPage.Name = "fullInfoPage";
             this.fullInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.fullInfoPage.Size = new System.Drawing.Size(1536, 631);
+            this.fullInfoPage.Size = new System.Drawing.Size(1552, 537);
             this.fullInfoPage.TabIndex = 3;
             this.fullInfoPage.Text = "Show full info";
             this.fullInfoPage.Enter += new System.EventHandler(this.tabPage4_Enter);
@@ -363,7 +365,7 @@ namespace changeResolution1
             this.materialMultiLineTextBox6.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialMultiLineTextBox6.Name = "materialMultiLineTextBox6";
             this.materialMultiLineTextBox6.ReadOnly = true;
-            this.materialMultiLineTextBox6.Size = new System.Drawing.Size(247, 619);
+            this.materialMultiLineTextBox6.Size = new System.Drawing.Size(247, 523);
             this.materialMultiLineTextBox6.TabIndex = 34;
             this.materialMultiLineTextBox6.Text = "";
             // 
@@ -378,7 +380,7 @@ namespace changeResolution1
             this.materialMultiLineTextBox5.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialMultiLineTextBox5.Name = "materialMultiLineTextBox5";
             this.materialMultiLineTextBox5.ReadOnly = true;
-            this.materialMultiLineTextBox5.Size = new System.Drawing.Size(248, 619);
+            this.materialMultiLineTextBox5.Size = new System.Drawing.Size(248, 522);
             this.materialMultiLineTextBox5.TabIndex = 33;
             this.materialMultiLineTextBox5.Text = "";
             // 
@@ -393,7 +395,7 @@ namespace changeResolution1
             this.materialMultiLineTextBox4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialMultiLineTextBox4.Name = "materialMultiLineTextBox4";
             this.materialMultiLineTextBox4.ReadOnly = true;
-            this.materialMultiLineTextBox4.Size = new System.Drawing.Size(250, 619);
+            this.materialMultiLineTextBox4.Size = new System.Drawing.Size(250, 522);
             this.materialMultiLineTextBox4.TabIndex = 32;
             this.materialMultiLineTextBox4.Text = "";
             // 
@@ -408,7 +410,7 @@ namespace changeResolution1
             this.materialMultiLineTextBox3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialMultiLineTextBox3.Name = "materialMultiLineTextBox3";
             this.materialMultiLineTextBox3.ReadOnly = true;
-            this.materialMultiLineTextBox3.Size = new System.Drawing.Size(251, 619);
+            this.materialMultiLineTextBox3.Size = new System.Drawing.Size(251, 522);
             this.materialMultiLineTextBox3.TabIndex = 31;
             this.materialMultiLineTextBox3.Text = "";
             // 
@@ -423,7 +425,7 @@ namespace changeResolution1
             this.materialMultiLineTextBox2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialMultiLineTextBox2.Name = "materialMultiLineTextBox2";
             this.materialMultiLineTextBox2.ReadOnly = true;
-            this.materialMultiLineTextBox2.Size = new System.Drawing.Size(251, 619);
+            this.materialMultiLineTextBox2.Size = new System.Drawing.Size(251, 522);
             this.materialMultiLineTextBox2.TabIndex = 30;
             this.materialMultiLineTextBox2.Text = "";
             // 
@@ -438,7 +440,7 @@ namespace changeResolution1
             this.materialMultiLineTextBox1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialMultiLineTextBox1.Name = "materialMultiLineTextBox1";
             this.materialMultiLineTextBox1.ReadOnly = true;
-            this.materialMultiLineTextBox1.Size = new System.Drawing.Size(246, 619);
+            this.materialMultiLineTextBox1.Size = new System.Drawing.Size(246, 522);
             this.materialMultiLineTextBox1.TabIndex = 29;
             this.materialMultiLineTextBox1.Text = "";
             // 
@@ -478,7 +480,7 @@ namespace changeResolution1
             this.showInfoPage.Location = new System.Drawing.Point(4, 39);
             this.showInfoPage.Name = "showInfoPage";
             this.showInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.showInfoPage.Size = new System.Drawing.Size(1536, 631);
+            this.showInfoPage.Size = new System.Drawing.Size(1552, 537);
             this.showInfoPage.TabIndex = 1;
             this.showInfoPage.Text = "Show info";
             this.showInfoPage.Enter += new System.EventHandler(this.showInfoPage_Enter);
@@ -491,7 +493,7 @@ namespace changeResolution1
             this.sendButton.Depth = 0;
             this.sendButton.HighEmphasis = true;
             this.sendButton.Icon = null;
-            this.sendButton.Location = new System.Drawing.Point(21, 499);
+            this.sendButton.Location = new System.Drawing.Point(33, 418);
             this.sendButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.sendButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.sendButton.Name = "sendButton";
@@ -509,7 +511,7 @@ namespace changeResolution1
             this.materialLabel13.AutoSize = true;
             this.materialLabel13.Depth = 0;
             this.materialLabel13.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel13.Location = new System.Drawing.Point(332, 509);
+            this.materialLabel13.Location = new System.Drawing.Point(332, 503);
             this.materialLabel13.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel13.Name = "materialLabel13";
             this.materialLabel13.Size = new System.Drawing.Size(47, 19);
@@ -527,7 +529,7 @@ namespace changeResolution1
             this.textBoxIdEVK.HideSelection = true;
             this.textBoxIdEVK.Hint = "M*********";
             this.textBoxIdEVK.LeadingIcon = null;
-            this.textBoxIdEVK.Location = new System.Drawing.Point(622, 497);
+            this.textBoxIdEVK.Location = new System.Drawing.Point(572, 480);
             this.textBoxIdEVK.MaxLength = 32767;
             this.textBoxIdEVK.MouseState = MaterialSkin.MouseState.OUT;
             this.textBoxIdEVK.Name = "textBoxIdEVK";
@@ -553,7 +555,7 @@ namespace changeResolution1
             this.materialLabelPPI.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelPPI.Depth = 0;
             this.materialLabelPPI.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelPPI.Location = new System.Drawing.Point(619, 467);
+            this.materialLabelPPI.Location = new System.Drawing.Point(619, 461);
             this.materialLabelPPI.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelPPI.Name = "materialLabelPPI";
             this.materialLabelPPI.Size = new System.Drawing.Size(11, 19);
@@ -567,7 +569,7 @@ namespace changeResolution1
             this.materialLabelResolution.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelResolution.Depth = 0;
             this.materialLabelResolution.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelResolution.Location = new System.Drawing.Point(619, 429);
+            this.materialLabelResolution.Location = new System.Drawing.Point(619, 423);
             this.materialLabelResolution.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelResolution.Name = "materialLabelResolution";
             this.materialLabelResolution.Size = new System.Drawing.Size(11, 19);
@@ -581,7 +583,7 @@ namespace changeResolution1
             this.materialLabelSizeMonitor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelSizeMonitor.Depth = 0;
             this.materialLabelSizeMonitor.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelSizeMonitor.Location = new System.Drawing.Point(619, 391);
+            this.materialLabelSizeMonitor.Location = new System.Drawing.Point(619, 385);
             this.materialLabelSizeMonitor.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelSizeMonitor.Name = "materialLabelSizeMonitor";
             this.materialLabelSizeMonitor.Size = new System.Drawing.Size(11, 19);
@@ -595,7 +597,7 @@ namespace changeResolution1
             this.materialLabelFrequency.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelFrequency.Depth = 0;
             this.materialLabelFrequency.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelFrequency.Location = new System.Drawing.Point(619, 352);
+            this.materialLabelFrequency.Location = new System.Drawing.Point(619, 346);
             this.materialLabelFrequency.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelFrequency.Name = "materialLabelFrequency";
             this.materialLabelFrequency.Size = new System.Drawing.Size(11, 19);
@@ -609,7 +611,7 @@ namespace changeResolution1
             this.materialLabelSerialNo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelSerialNo.Depth = 0;
             this.materialLabelSerialNo.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelSerialNo.Location = new System.Drawing.Point(619, 310);
+            this.materialLabelSerialNo.Location = new System.Drawing.Point(619, 304);
             this.materialLabelSerialNo.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelSerialNo.Name = "materialLabelSerialNo";
             this.materialLabelSerialNo.Size = new System.Drawing.Size(11, 19);
@@ -623,7 +625,7 @@ namespace changeResolution1
             this.materialLabelDiagonal2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelDiagonal2.Depth = 0;
             this.materialLabelDiagonal2.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelDiagonal2.Location = new System.Drawing.Point(619, 268);
+            this.materialLabelDiagonal2.Location = new System.Drawing.Point(619, 262);
             this.materialLabelDiagonal2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelDiagonal2.Name = "materialLabelDiagonal2";
             this.materialLabelDiagonal2.Size = new System.Drawing.Size(11, 19);
@@ -637,7 +639,7 @@ namespace changeResolution1
             this.materialLabelDiagonal1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelDiagonal1.Depth = 0;
             this.materialLabelDiagonal1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelDiagonal1.Location = new System.Drawing.Point(619, 226);
+            this.materialLabelDiagonal1.Location = new System.Drawing.Point(619, 220);
             this.materialLabelDiagonal1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelDiagonal1.Name = "materialLabelDiagonal1";
             this.materialLabelDiagonal1.Size = new System.Drawing.Size(11, 19);
@@ -651,7 +653,7 @@ namespace changeResolution1
             this.materialLabelProductCodeID.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelProductCodeID.Depth = 0;
             this.materialLabelProductCodeID.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelProductCodeID.Location = new System.Drawing.Point(619, 189);
+            this.materialLabelProductCodeID.Location = new System.Drawing.Point(619, 183);
             this.materialLabelProductCodeID.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelProductCodeID.Name = "materialLabelProductCodeID";
             this.materialLabelProductCodeID.Size = new System.Drawing.Size(11, 19);
@@ -665,7 +667,7 @@ namespace changeResolution1
             this.materialLabelMonthOfProduction.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelMonthOfProduction.Depth = 0;
             this.materialLabelMonthOfProduction.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelMonthOfProduction.Location = new System.Drawing.Point(619, 150);
+            this.materialLabelMonthOfProduction.Location = new System.Drawing.Point(619, 144);
             this.materialLabelMonthOfProduction.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelMonthOfProduction.Name = "materialLabelMonthOfProduction";
             this.materialLabelMonthOfProduction.Size = new System.Drawing.Size(11, 19);
@@ -679,7 +681,7 @@ namespace changeResolution1
             this.materialLabelYearOfProduction.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelYearOfProduction.Depth = 0;
             this.materialLabelYearOfProduction.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelYearOfProduction.Location = new System.Drawing.Point(619, 108);
+            this.materialLabelYearOfProduction.Location = new System.Drawing.Point(619, 102);
             this.materialLabelYearOfProduction.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelYearOfProduction.Name = "materialLabelYearOfProduction";
             this.materialLabelYearOfProduction.Size = new System.Drawing.Size(11, 19);
@@ -693,7 +695,7 @@ namespace changeResolution1
             this.materialLabelModel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelModel.Depth = 0;
             this.materialLabelModel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelModel.Location = new System.Drawing.Point(619, 66);
+            this.materialLabelModel.Location = new System.Drawing.Point(619, 60);
             this.materialLabelModel.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelModel.Name = "materialLabelModel";
             this.materialLabelModel.Size = new System.Drawing.Size(11, 19);
@@ -707,7 +709,7 @@ namespace changeResolution1
             this.materialLabelManufacturer.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelManufacturer.Depth = 0;
             this.materialLabelManufacturer.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelManufacturer.Location = new System.Drawing.Point(619, 24);
+            this.materialLabelManufacturer.Location = new System.Drawing.Point(619, 18);
             this.materialLabelManufacturer.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelManufacturer.Name = "materialLabelManufacturer";
             this.materialLabelManufacturer.Size = new System.Drawing.Size(11, 19);
@@ -720,7 +722,7 @@ namespace changeResolution1
             this.materialLabel14.AutoSize = true;
             this.materialLabel14.Depth = 0;
             this.materialLabel14.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel14.Location = new System.Drawing.Point(332, 467);
+            this.materialLabel14.Location = new System.Drawing.Point(332, 461);
             this.materialLabel14.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel14.Name = "materialLabel14";
             this.materialLabel14.Size = new System.Drawing.Size(25, 19);
@@ -732,7 +734,7 @@ namespace changeResolution1
             this.ResolutionLabel.AutoSize = true;
             this.ResolutionLabel.Depth = 0;
             this.ResolutionLabel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.ResolutionLabel.Location = new System.Drawing.Point(332, 429);
+            this.ResolutionLabel.Location = new System.Drawing.Point(332, 423);
             this.ResolutionLabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.ResolutionLabel.Name = "ResolutionLabel";
             this.ResolutionLabel.Size = new System.Drawing.Size(76, 19);
@@ -744,7 +746,7 @@ namespace changeResolution1
             this.materialLabel8.AutoSize = true;
             this.materialLabel8.Depth = 0;
             this.materialLabel8.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel8.Location = new System.Drawing.Point(332, 391);
+            this.materialLabel8.Location = new System.Drawing.Point(332, 385);
             this.materialLabel8.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel8.Name = "materialLabel8";
             this.materialLabel8.Size = new System.Drawing.Size(131, 19);
@@ -756,7 +758,7 @@ namespace changeResolution1
             this.materialLabel9.AutoSize = true;
             this.materialLabel9.Depth = 0;
             this.materialLabel9.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel9.Location = new System.Drawing.Point(332, 352);
+            this.materialLabel9.Location = new System.Drawing.Point(332, 346);
             this.materialLabel9.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel9.Name = "materialLabel9";
             this.materialLabel9.Size = new System.Drawing.Size(74, 19);
@@ -768,7 +770,7 @@ namespace changeResolution1
             this.materialLabel10.AutoSize = true;
             this.materialLabel10.Depth = 0;
             this.materialLabel10.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel10.Location = new System.Drawing.Point(332, 310);
+            this.materialLabel10.Location = new System.Drawing.Point(332, 304);
             this.materialLabel10.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel10.Name = "materialLabel10";
             this.materialLabel10.Size = new System.Drawing.Size(69, 19);
@@ -780,7 +782,7 @@ namespace changeResolution1
             this.materialLabel11.AutoSize = true;
             this.materialLabel11.Depth = 0;
             this.materialLabel11.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel11.Location = new System.Drawing.Point(332, 268);
+            this.materialLabel11.Location = new System.Drawing.Point(332, 262);
             this.materialLabel11.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel11.Name = "materialLabel11";
             this.materialLabel11.Size = new System.Drawing.Size(105, 19);
@@ -792,7 +794,7 @@ namespace changeResolution1
             this.materialLabel12.AutoSize = true;
             this.materialLabel12.Depth = 0;
             this.materialLabel12.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel12.Location = new System.Drawing.Point(332, 226);
+            this.materialLabel12.Location = new System.Drawing.Point(332, 220);
             this.materialLabel12.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel12.Name = "materialLabel12";
             this.materialLabel12.Size = new System.Drawing.Size(112, 19);
@@ -832,7 +834,7 @@ namespace changeResolution1
             this.materialButton1.Depth = 0;
             this.materialButton1.HighEmphasis = true;
             this.materialButton1.Icon = null;
-            this.materialButton1.Location = new System.Drawing.Point(21, 573);
+            this.materialButton1.Location = new System.Drawing.Point(33, 492);
             this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialButton1.Name = "materialButton1";
@@ -850,7 +852,7 @@ namespace changeResolution1
             this.materialLabel7.AutoSize = true;
             this.materialLabel7.Depth = 0;
             this.materialLabel7.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel7.Location = new System.Drawing.Point(332, 189);
+            this.materialLabel7.Location = new System.Drawing.Point(332, 183);
             this.materialLabel7.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel7.Name = "materialLabel7";
             this.materialLabel7.Size = new System.Drawing.Size(113, 19);
@@ -862,7 +864,7 @@ namespace changeResolution1
             this.materialLabel6.AutoSize = true;
             this.materialLabel6.Depth = 0;
             this.materialLabel6.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel6.Location = new System.Drawing.Point(332, 150);
+            this.materialLabel6.Location = new System.Drawing.Point(332, 144);
             this.materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel6.Name = "materialLabel6";
             this.materialLabel6.Size = new System.Drawing.Size(146, 19);
@@ -874,7 +876,7 @@ namespace changeResolution1
             this.materialLabel5.AutoSize = true;
             this.materialLabel5.Depth = 0;
             this.materialLabel5.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel5.Location = new System.Drawing.Point(332, 108);
+            this.materialLabel5.Location = new System.Drawing.Point(332, 102);
             this.materialLabel5.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel5.Name = "materialLabel5";
             this.materialLabel5.Size = new System.Drawing.Size(132, 19);
@@ -886,7 +888,7 @@ namespace changeResolution1
             this.materialLabel4.AutoSize = true;
             this.materialLabel4.Depth = 0;
             this.materialLabel4.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel4.Location = new System.Drawing.Point(332, 66);
+            this.materialLabel4.Location = new System.Drawing.Point(332, 60);
             this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel4.Name = "materialLabel4";
             this.materialLabel4.Size = new System.Drawing.Size(45, 19);
@@ -898,7 +900,7 @@ namespace changeResolution1
             this.materialLabel3.AutoSize = true;
             this.materialLabel3.Depth = 0;
             this.materialLabel3.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabel3.Location = new System.Drawing.Point(332, 24);
+            this.materialLabel3.Location = new System.Drawing.Point(332, 18);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
             this.materialLabel3.Size = new System.Drawing.Size(97, 19);
@@ -911,7 +913,7 @@ namespace changeResolution1
             this.searchInfoPage.Location = new System.Drawing.Point(4, 39);
             this.searchInfoPage.Name = "searchInfoPage";
             this.searchInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.searchInfoPage.Size = new System.Drawing.Size(1536, 631);
+            this.searchInfoPage.Size = new System.Drawing.Size(1552, 537);
             this.searchInfoPage.TabIndex = 4;
             this.searchInfoPage.Text = "Search info";
             this.searchInfoPage.UseVisualStyleBackColor = true;
@@ -923,7 +925,7 @@ namespace changeResolution1
             this.testMonitorPage.Location = new System.Drawing.Point(4, 39);
             this.testMonitorPage.Name = "testMonitorPage";
             this.testMonitorPage.Padding = new System.Windows.Forms.Padding(3);
-            this.testMonitorPage.Size = new System.Drawing.Size(1536, 631);
+            this.testMonitorPage.Size = new System.Drawing.Size(1552, 537);
             this.testMonitorPage.TabIndex = 6;
             this.testMonitorPage.Text = "Test monitor";
             this.testMonitorPage.UseVisualStyleBackColor = true;
@@ -942,7 +944,7 @@ namespace changeResolution1
             this.resolutionPage.Location = new System.Drawing.Point(4, 39);
             this.resolutionPage.Name = "resolutionPage";
             this.resolutionPage.Padding = new System.Windows.Forms.Padding(3);
-            this.resolutionPage.Size = new System.Drawing.Size(1536, 631);
+            this.resolutionPage.Size = new System.Drawing.Size(1552, 537);
             this.resolutionPage.TabIndex = 0;
             this.resolutionPage.Text = "Resolution";
             // 
@@ -951,7 +953,7 @@ namespace changeResolution1
             this.fixPixelPage.ImageKey = "fix (1).png";
             this.fixPixelPage.Location = new System.Drawing.Point(4, 39);
             this.fixPixelPage.Name = "fixPixelPage";
-            this.fixPixelPage.Size = new System.Drawing.Size(1536, 631);
+            this.fixPixelPage.Size = new System.Drawing.Size(1552, 537);
             this.fixPixelPage.TabIndex = 2;
             this.fixPixelPage.Text = "Fix pixel";
             this.fixPixelPage.UseVisualStyleBackColor = true;
@@ -968,7 +970,7 @@ namespace changeResolution1
             this.tabPage6.Location = new System.Drawing.Point(4, 39);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1536, 631);
+            this.tabPage6.Size = new System.Drawing.Size(1552, 537);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "test";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1113,7 +1115,7 @@ namespace changeResolution1
             // 
             this.pictureBoxLogo.BackColor = System.Drawing.Color.Transparent;
             this.pictureBoxLogo.Image = global::ServiceMonitorEVK.Properties.Resources.logo__1_;
-            this.pictureBoxLogo.Location = new System.Drawing.Point(1446, 28);
+            this.pictureBoxLogo.Location = new System.Drawing.Point(1448, 28);
             this.pictureBoxLogo.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBoxLogo.Name = "pictureBoxLogo";
             this.pictureBoxLogo.Size = new System.Drawing.Size(97, 33);
@@ -1121,9 +1123,24 @@ namespace changeResolution1
             this.pictureBoxLogo.TabIndex = 41;
             this.pictureBoxLogo.TabStop = false;
             // 
+            // materialSliderOpasity
+            // 
+            this.materialSliderOpasity.Depth = 0;
+            this.materialSliderOpasity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialSliderOpasity.Location = new System.Drawing.Point(158, 459);
+            this.materialSliderOpasity.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialSliderOpasity.Name = "materialSliderOpasity";
+            this.materialSliderOpasity.Size = new System.Drawing.Size(231, 40);
+            this.materialSliderOpasity.TabIndex = 41;
+            this.materialSliderOpasity.Text = "Opasity";
+            this.materialSliderOpasity.UseAccentColor = true;
+            this.materialSliderOpasity.Value = 100;
+            this.materialSliderOpasity.ValueMax = 100;
+            this.materialSliderOpasity.onValueChanged += new MaterialSkin.Controls.MaterialSlider.ValueChanged(this.materialSliderOpasity_onValueChanged);
+            // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(1550, 741);
+            this.ClientSize = new System.Drawing.Size(1566, 647);
             this.Controls.Add(this.pictureBoxLogo);
             this.Controls.Add(this.materialTabControl1);
             this.DrawerAutoShow = true;
@@ -1221,6 +1238,7 @@ namespace changeResolution1
         private MaterialTextBox2 textBoxIdEVK;
         private MaterialButton sendButton;
         public MaterialSwitch materialSwitch1;
+        private MaterialSlider materialSliderOpasity;
     }
 }
 

@@ -195,9 +195,9 @@ namespace changeResolution1
             this.MonitorComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MonitorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MonitorComboBox.FormattingEnabled = true;
-            this.MonitorComboBox.Location = new System.Drawing.Point(3, 64);
+            this.MonitorComboBox.Location = new System.Drawing.Point(0, 0);
             this.MonitorComboBox.Name = "MonitorComboBox";
-            this.MonitorComboBox.Size = new System.Drawing.Size(361, 21);
+            this.MonitorComboBox.Size = new System.Drawing.Size(399, 21);
             this.MonitorComboBox.Sorted = true;
             this.MonitorComboBox.TabIndex = 12;
             this.MonitorComboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
@@ -456,7 +456,7 @@ namespace changeResolution1
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(367, 318);
+            this.ClientSize = new System.Drawing.Size(399, 396);
             this.Controls.Add(this.label25);
             this.Controls.Add(this.label26);
             this.Controls.Add(this.lblModel);

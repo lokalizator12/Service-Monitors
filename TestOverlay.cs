@@ -9,14 +9,29 @@ namespace changeResolution1
     public partial class TestOverlay : Form
     {
 
-        private string testMode;
-        private string testPattern;
+        public string testMode;
+        public string testPattern;
         private Color customColor;
         private int direction = 0;
+        private int currentColorIndex = 0;
+        List<Color> colors = new List<Color>
+                            {
+                                Color.Red,
+                                Color.Lime,
+                                Color.Yellow,
+                                Color.Aqua,
+                                Color.Magenta,
+                                Color.Blue,
+                                Color.Gray,
+                                Color.Black,
+                                Color.White
+                            };
         public TestOverlay(Color customColor)
         {
             InitializeComponent();
             this.customColor = customColor;
+            this.testMode = "Default";
+            this.testPattern = "Default";
         }
         private Dictionary<string, int> patternParameters = new Dictionary<string, int>()
         {
@@ -34,6 +49,8 @@ namespace changeResolution1
             this.testPattern = testPattern;
             this.customColor = customColor;
         }
+
+
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -58,6 +75,9 @@ namespace changeResolution1
                 case "Circular Gradient":
                     DrawCircularGradient(e.Graphics);
                     break;
+                case "Custom Pattern":
+                    DrawCustomPattern(e.Graphics);
+                    break;
 
             }
         }
@@ -65,6 +85,7 @@ namespace changeResolution1
         private void DrawOnlyBackground()
         {
             this.BackColor = customColor;
+            this.Invalidate();
         }
         private void DrawCircularGradient(Graphics g)
         {
@@ -280,10 +301,69 @@ namespace changeResolution1
 
         private void TestOverlay_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
+           
+            
+            switch (e.KeyCode)
             {
-                this.Close();
+                case Keys.D1:
+                case Keys.NumPad1:
+                    customColor = Color.Red;
+                    break;
+                case Keys.D2:
+                case Keys.NumPad2:
+                    customColor = Color.Lime;
+                    break;
+                case Keys.D3:
+                case Keys.NumPad3:
+                    customColor = Color.Yellow;
+                    break;
+                case Keys.D4:
+                case Keys.NumPad4:
+                    customColor = Color.Aqua;
+                    break;
+                case Keys.D5:
+                case Keys.NumPad5:
+                    customColor = Color.Magenta;
+                    break;
+                case Keys.D6:
+                case Keys.NumPad6:
+                    customColor = Color.Blue;
+                    break;
+                case Keys.D7:
+                case Keys.NumPad7:
+                    customColor = Color.Gray;
+                    break;
+                case Keys.D8:
+                case Keys.NumPad8:
+                    customColor = Color.Black;
+                    break;
+                case Keys.D9:
+                case Keys.NumPad9:
+                    customColor = Color.White;
+                    break;
+                case Keys.Tab:
+                    if (colorDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        customColor = colorDialog1.Color;
+                    }
+                    break;
+                case Keys.Space:
+                case Keys.Right:
+                    currentColorIndex = (currentColorIndex + 1) % colors.Count;
+                    customColor = colors[currentColorIndex];
+                    break;
+                case Keys.Left:
+                    currentColorIndex = (currentColorIndex - 1 + colors.Count) % colors.Count;
+                    customColor = colors[currentColorIndex];
+                    break;
+                case Keys.Escape:
+                    this.Close();
+                    break;
+                default:
+                    break;
             }
+
+            this.Invalidate();
         }
 
         private void TestOverlay_MouseDown(object sender, MouseEventArgs e)

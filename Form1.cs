@@ -74,7 +74,7 @@ namespace changeResolution1
             }
             catch (Exception x)
             {
-                new MaterialSnackBar($"Eror: {x.Message}").Show(this);
+                new MaterialSnackBar($"Error: {x.Message}").Show(this);
             }
         }
         private void FillMonitorComboBox()
@@ -293,7 +293,13 @@ namespace changeResolution1
         {
             if (keyData == Keys.Escape)
             {
-                this.Close();
+
+                MaterialDialog materialDialog = new MaterialDialog(this, "Exit from app", "Are you sure you want to exit the app?", "Yes", true, "Cancel", true);
+                DialogResult result = materialDialog.ShowDialog(this);
+                if (result == DialogResult.OK)
+                {
+                    this.Close();
+                }
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -374,8 +380,9 @@ namespace changeResolution1
 
         private void tabPage7_Enter(object sender, EventArgs e)
         {
-            MaterialSnackBar SnackBarMessage = new MaterialSnackBar("SnackBar started succesfully", "OK", true);
-            SnackBarMessage.Show(this);
+            MonitorTestForm monitorTest = new MonitorTestForm(this);
+            monitorTest.Show();
+
         }
 
         private void showInfoPage_Enter(object sender, EventArgs e)
@@ -388,8 +395,8 @@ namespace changeResolution1
 
         private void fixPixelPage_Enter(object sender, EventArgs e)
         {
-            PixelFixerForm pixelFixerForm = new PixelFixerForm();
-            pixelFixerForm.ShowDialog();
+            PixelFixerForm pixelFixerForm = new PixelFixerForm(this);
+            pixelFixerForm.Show();
         }
 
         private void tabPage4_Enter(object sender, EventArgs e)
@@ -555,7 +562,6 @@ namespace changeResolution1
             if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
             {
                 monitors[materialComboBoxMonitors.SelectedIndex].IdEVK = textBoxIdEVK.Text;
-
             }
         }
 
@@ -568,7 +574,14 @@ namespace changeResolution1
             }
         }
 
-
+        private void materialSliderOpasity_onValueChanged(object sender, int newValue)
+        {
+            if (newValue > 1)
+            {
+                this.Opacity = newValue / 100.0;
+                this.Invalidate();
+            }
+        }
     }
 }
 

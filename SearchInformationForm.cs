@@ -29,12 +29,9 @@ namespace changeResolution1
         public SearchInformationForm()
         {
             InitializeComponent();
-            materialSkinManager = MaterialSkinManager.Instance;
-            InitizializeCustomForm();
         }
         public SearchInformationForm(Form1 form)
         {
-
             form1 = form;
             InitializeComponent();
             materialSkinManager = MaterialSkinManager.Instance;

@@ -17,7 +17,7 @@ namespace changeResolution1
         private Action updateProgress;
         private string testMode;
 
-        public Overlay(Color color, int interval, bool isMulticolor, List<Color> repairColors, List<Rectangle> repairRegions, string testMode)
+        public Overlay(Color color, int interval, bool isMulticolor, bool isSingleColor, List<Color> repairColors, List<Rectangle> repairRegions, string testMode)
         {
             InitializeComponent();
             timer1.Interval = currentInterval = interval;
@@ -30,9 +30,14 @@ namespace changeResolution1
             {
                 this.BackColor = repairColors[colorIndex];
             }
-            else
+            if (isSingleColor)
             {
                 this.BackColor = color;
+            }
+            else
+            {
+                this.BackColor = Color.White;
+                this.Opacity = 1;
             }
         }
 
@@ -101,6 +106,9 @@ namespace changeResolution1
             {
                 DrawGrayscaleGradient(e.Graphics);
             }
+            
+            
+
         }
 
         private void DrawColorSpectrum(Graphics g)
@@ -135,7 +143,7 @@ namespace changeResolution1
 
         private Color ColorFromHSV(double hue, double saturation, double value)
         {
-            
+
             int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
             double f = hue / 60 - Math.Floor(hue / 60);
 
