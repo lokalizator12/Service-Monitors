@@ -35,16 +35,19 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.ControlBox = false;
+            this.Cursor = System.Windows.Forms.Cursors.Cross;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
             this.Name = "TestOverlay";
             this.Text = "TestOverlay";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.TestOverlay_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TestOverlay_KeyDown);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TestOverlay_MouseDown);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TestOverlay_MouseDown_1);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TestOverlay_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TestOverlay_MouseUp);
             this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.TestOverlay_MouseWheel);
             this.ResumeLayout(false);
 

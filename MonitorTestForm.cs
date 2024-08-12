@@ -8,6 +8,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace changeResolution1
 {
@@ -17,6 +18,8 @@ namespace changeResolution1
         private string testMode = "Default";
         private string testPattern = "Default";
         private Color customColor = Color.Blue;
+        MonitorInfo monitorInfo;
+        private bool isPinned = false;
         Form1 form1;
         private ResolutionDisplayManager resolutionManager;
 
@@ -39,11 +42,14 @@ namespace changeResolution1
         private Screen selectedScreen;
         private MaterialSkinManager materialSkinManager;
         private MonitorInfoManager monitorInfoManager;
+        private Point pinnedPosition;
+        private Point originalPosition;
         private Dictionary<PictureBox, Color> pictureBoxColors = new Dictionary<PictureBox, Color>();
 
 
         public MonitorTestForm()
         {
+            monitorInfo = new MonitorInfo();
             resolutionManager = new ResolutionDisplayManager();
             monitorInfoManager = new MonitorInfoManager();
             InitializeComponent();
@@ -82,6 +88,8 @@ namespace changeResolution1
         }
         public void InitizializeCustomForm()
         {
+            monitorInfo = new MonitorInfo();
+
             foreach (Control control in colorPanel.Controls)
             {
                 if (control is PictureBox pictureBox)
@@ -290,15 +298,15 @@ namespace changeResolution1
                     return true;
                 case Keys.D8:
                 case Keys.NumPad8:
-                    changeColorFromPanel(Color.Black);
-                    currentPictureBox = pictureBoxBlack;
-                    currentColorIndex = 7;
-                    return true;
-                case Keys.D9:
-                case Keys.NumPad9:
                     changeColorFromPanel(Color.White);
                     currentPictureBox = pictureBoxWhite;
                     currentColorIndex = 8;
+                    return true;
+                case Keys.D9:
+                case Keys.NumPad9:
+                    changeColorFromPanel(Color.Black);
+                    currentPictureBox = pictureBoxBlack;
+                    currentColorIndex = 9;
                     return true;
                 case Keys.Tab:
                     if (colorDialog2.ShowDialog() == DialogResult.OK)
@@ -317,6 +325,33 @@ namespace changeResolution1
                     currentColorIndex = (currentColorIndex - 1 + colors.Count) % colors.Count;
                     customColor = colors[currentColorIndex];
                     currentPictureBox = GetPictureBoxByIndex(currentColorIndex);
+                    return true;
+                case Keys.Q:
+                    SetOverlayBackgroundFromPictureBox(pictureBox5);
+                    return true;
+                case Keys.W:
+                    SetOverlayBackgroundFromPictureBox(pictureBox6);
+                    return true;
+                case Keys.Control | Keys.S:
+                    SaveImage();
+                    return true;
+                case Keys.X:
+                    if (currentTestOverlay != null)
+                    {
+                        currentTestOverlay.ClearMarks();
+                    }
+                    return true;
+                case Keys.A:
+                    SetMark(Color.Yellow);
+                    return true;
+                case Keys.S:
+                    SetMark(Color.DeepSkyBlue);
+                    return true;
+                case Keys.D:
+                    SetMark(Color.Red);
+                    return true;
+                case Keys.Escape:
+                    this.Close();
                     return true;
                 default:
                     break;
@@ -356,14 +391,7 @@ namespace changeResolution1
                 default: return null;
             }
         }
-        private void colorChangeTimer_Tick(object sender, EventArgs e)
-        {
-        }
 
-        private void monitorTestForm_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
@@ -460,6 +488,164 @@ namespace changeResolution1
         {
             testPattern = testPatternComboBox1.SelectedIndex.ToString();
             startTest();
+        }
+
+        private void pictureBox1_Click_1(object sender, EventArgs e)
+        {
+            SetMark(Color.Red);
+        }
+
+        private void pictureBox10_Click(object sender, EventArgs e)
+        {
+            Clean();
+        }
+
+        private void pictureBox9_Click(object sender, EventArgs e)
+        {
+            SaveImage();
+        }
+        private void SetMark(Color color)
+        {
+            this.Cursor = Cursors.Cross;
+            if (currentTestOverlay != null)
+            {
+                currentTestOverlay.SetMarkColor(color);
+            }
+            this.Cursor = Cursors.Default;
+        }
+        private void Clean()
+        {
+            if (currentTestOverlay != null)
+            {
+                currentTestOverlay.ClearMarks();
+            }
+        }
+
+        private void SaveImage()
+        {
+            if (currentTestOverlay != null)
+            {
+                string fileName = $"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                currentTestOverlay.CaptureScreenshot(fileName);
+
+            }
+        }
+
+        private void pictureBox7_Click(object sender, EventArgs e)
+        {
+            SetMark(Color.DeepSkyBlue);
+        }
+
+        private void pictureBox8_Click(object sender, EventArgs e)
+        {
+            SetMark(Color.Yellow);
+        }
+
+
+
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+            SetOverlayBackgroundFromPictureBox(pictureBox6);
+        }
+
+
+        private void SetOverlayBackgroundFromPictureBox(PictureBox pictureBox)
+        {
+            if (pictureBox.BackgroundImage != null)
+            {
+                if (currentTestOverlay != null)
+                {
+                    currentTestOverlay.BackgroundImage = pictureBox.BackgroundImage;
+                    currentTestOverlay.BackgroundImageLayout = pictureBox.BackgroundImageLayout;
+                }
+                else
+                {
+                    TestMonitorWithBackgroundImage(pictureBox.BackgroundImage, pictureBox.BackgroundImageLayout);
+                }
+            }
+            else
+            {
+                Color selectedColor = pictureBox.BackColor;
+                if (currentTestOverlay != null)
+                {
+                    currentTestOverlay.BackColor = selectedColor;
+                }
+                else
+                {
+                    TestMonitor(testMode, testPattern, selectedColor);
+                }
+            }
+        }
+
+
+        private TestOverlay TestMonitorWithBackgroundImage(Image backgroundImage, ImageLayout layout)
+        {
+            Screen selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
+            currentTestOverlay = new TestOverlay(testMode, testPattern, customColor)
+            {
+                StartPosition = FormStartPosition.Manual,
+                Location = selectedScreen.Bounds.Location,
+                Size = selectedScreen.Bounds.Size,
+                FormBorderStyle = FormBorderStyle.None,
+                WindowState = FormWindowState.Maximized,
+                BackgroundImage = backgroundImage,
+                BackgroundImageLayout = layout
+            };
+
+            currentTestOverlay.Show();
+            return currentTestOverlay;
+        }
+
+
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            SetOverlayBackgroundFromPictureBox(pictureBox5);
+        }
+
+        private void MonitorTestForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            form1.isMonitorFormExist = false;
+        }
+
+        private void MonitorTestForm_Load(object sender, EventArgs e)
+        {
+
+            RoundPictureBoxCorners(pictureBoxSilver, cornerRadius);
+            RoundPictureBoxCorners(pictureBoxBlack, cornerRadius);
+        }
+
+      
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+            isPinned = !isPinned;
+
+            if (isPinned)
+            {
+                pictureBox2.Image = ServiceMonitorEVK.Properties.Resources.pinOut;
+                originalPosition = this.Location;
+
+                this.Location = new Point(
+                    Screen.PrimaryScreen.WorkingArea.Width - this.Width,
+                    Screen.PrimaryScreen.WorkingArea.Height - this.Height
+                );
+            }
+            else
+            {
+                pictureBox2.Image = ServiceMonitorEVK.Properties.Resources.push_pin;
+                this.Location = originalPosition;
+            }
+           
+        }
+
+        private void pictureBox2_Move(object sender, EventArgs e)
+        {
+            if (isPinned)
+            {
+                this.Location = pinnedPosition;
+            }
         }
     }
 }

@@ -261,7 +261,7 @@ namespace changeResolution1
                 {
                     string manufacturerNameFull = DecodeMonitorString((ushort[])queryObj["ManufacturerName"]);
                     string manufacturer = manufacturerDictionary.FirstOrDefault(entry => manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0).Value;
-
+                    
                     var monitorInfo = new MonitorInfo
                     {
                         YearOfProduction = queryObj["YearOfManufacture"].ToString(),

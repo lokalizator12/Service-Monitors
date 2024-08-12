@@ -39,6 +39,7 @@ namespace changeResolution1
                         st.AppendLine("MaxVerticalImageSize: " + maxVerticalSizeCm.ToString() + "\n");
                         st.AppendLine("SupportedDisplayFeatures: " + queryObj["SupportedDisplayFeatures"].ToString() + "\n");
                         st.AppendLine("VideoInputType: " + queryObj["VideoInputType"].ToString() + "\n");
+                        st.AppendLine("--------------------------------------------");
                     }
                 });
             }
@@ -76,9 +77,7 @@ namespace changeResolution1
                         stringBuilder.AppendLine("Name: " + name + Environment.NewLine);
                         stringBuilder.AppendLine("PNPDeviceID: " + pnpDeviceId + Environment.NewLine);
                         stringBuilder.AppendLine("Status: " + status + Environment.NewLine);
-
-
-
+                        stringBuilder.AppendLine("--------------------------------------------");
 
                     }
                 });
@@ -91,28 +90,7 @@ namespace changeResolution1
             return stringBuilder.ToString();
         }
 
-        private string InferPanelType(string monitorName)
-        {
-            // Add logic here to infer the panel type based on monitor name or other properties
-            // This is a placeholder example
-            if (monitorName.IndexOf("IPS", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                return "IPS";
-            }
-            else if (monitorName.IndexOf("TN", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                return "TN";
-            }
-            else if (monitorName.IndexOf("VA", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                return "VA";
-            }
-            else
-            {
-                return "Unknown";
-            }
-        }
-
+       
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct DISPLAY_DEVICE
@@ -213,7 +191,7 @@ namespace changeResolution1
                         sb.AppendLine($"Color Depth: {devMode.dmBitsPerPel} bits");
                     }
 
-                    sb.AppendLine();
+                    sb.AppendLine("--------------------------------------------");
                     deviceIndex++;
                     d.cb = Marshal.SizeOf(d);
                 }
@@ -436,7 +414,7 @@ namespace changeResolution1
                         {
                             edidInfo.AppendLine("Product Code ID: " + string.Join("", productCode.Select(p => p.ToString("X"))) + "\n");
                         }
-                        edidInfo.AppendLine("\n");
+                        edidInfo.AppendLine("\n--------------------------------------------");
                     }
                 });
             }

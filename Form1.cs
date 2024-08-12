@@ -23,7 +23,7 @@ namespace changeResolution1
 
         MonitorInfoForm monitorInfo;
         public bool isUpdatingComboBox = false;
-
+        internal bool isMonitorFormExist = false;
         private int colorSchemeIndex;
         public Form1()
         {
@@ -31,7 +31,7 @@ namespace changeResolution1
             displayManager = new DisplayManager();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
-            databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
+
 
             ///////////////////////
             materialSkinManager = MaterialSkinManager.Instance;
@@ -47,7 +47,7 @@ namespace changeResolution1
             UpdateResolutionComboBox();
 
             SetMaxResolutionForAllMonitors();
-            if (materialMultiLineTextBox4.Text.Length > 0 && materialMultiLineTextBox5.Text.Length > 0 && materialMultiLineTextBox2.Text.Length > 0)
+            if (materialMultiLineTextBox2.Text.Length > 0)
             {
                 showFullInfo();
             }
@@ -56,7 +56,6 @@ namespace changeResolution1
 
         public void InitizializeCustomForm()
         {
-
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
             materialSkinManager.AddFormToManage(this);
             checkTheme();
@@ -64,17 +63,23 @@ namespace changeResolution1
         }
         private async void SendMonitorInfoToDatabase()
         {
-            try
+            if (materialComboBoxMonitors.SelectedIndex != null)
             {
-                var monitorInfo = monitors[materialComboBoxMonitors.SelectedIndex];
-                await databaseManager.InsertMonitorInfo(monitorInfo);
-                monitorInfo.IdEVK = textBoxIdEVK.Text;
-                monitorInfo.TesterInitials = textBoxTester.Text;
-                new MaterialSnackBar($"Sended to database succesfully").Show(this);
-            }
-            catch (Exception x)
-            {
-                new MaterialSnackBar($"Error: {x.Message}").Show(this);
+                try
+                {
+
+                    var monitorInfo = monitors[materialComboBoxMonitors.SelectedIndex];
+                    databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
+                    await databaseManager.InsertMonitorInfoPostgres(monitorInfo);
+                    monitorInfo.IdEVK = textBoxIdEVK.Text;
+                    monitorInfo.TesterInitials = textBoxTester.Text;
+                    ShowSnackbar($"Sended to database succesfully");
+
+                }
+                catch (Exception x)
+                {
+                    ShowSnackbar($"Error: {x.Message}");
+                }
             }
         }
         private void FillMonitorComboBox()
@@ -143,7 +148,7 @@ namespace changeResolution1
                 var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
 
                 resolutionManager.SetResolution(identifier, width, height);
-                new MaterialSnackBar($"Resolution changed: {width}x{height}").Show(this);
+                ShowSnackbar($"Resolution changed: {width}x{height}");
             }
         }
 
@@ -157,7 +162,7 @@ namespace changeResolution1
             if (maxResolution != default)
             {
                 resolutionManager.SetResolution(identifier, maxResolution.Width, maxResolution.Height);
-                new MaterialSnackBar($"Max resolution: {maxResolution.Width}x{maxResolution.Height}").Show(this);
+                ShowSnackbar($"Max resolution: {maxResolution.Width}x{maxResolution.Height}");
             }
             else
             {
@@ -187,107 +192,14 @@ namespace changeResolution1
             var monitorInfo1 = await monitorInfoManager.GetDisplayInfo1Async();
             var edidInfo = await monitorInfoManager.GetEdidInfoAsync();
             var serialNumber = await monitorInfoManager.GetMonitorSerialNumberAsync();
-            materialMultiLineTextBox2.Text = monitorNames;
-            materialMultiLineTextBox3.Text = monitorInfoManager.GetDiagonal(); ;
-            materialMultiLineTextBox4.Text = monitorInfo;
-            materialMultiLineTextBox1.Text = monitorInfo1;
-            materialMultiLineTextBox5.Text = edidInfo;
-            materialMultiLineTextBox6.Text = serialNumber;
+            materialMultiLineTextBox2.Text = monitorNames + "\n==============================\n"
+                + monitorInfoManager.GetDiagonal() + "\n==============================\n"
+                + monitorInfo + "\n==============================\n"
+                + monitorInfo1 + "\n==============================\n"
+                + edidInfo + "\n==============================\n"
+                + serialNumber + "\n==============================\n";
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                displayManager.SetDisplayMode(DisplayManager.DisplayMode.Duplicate);
-                MessageBox.Show("Display mode set to Duplicate.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
-        }
-        private void button3_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                displayManager.SetDisplayMode(DisplayManager.DisplayMode.Extend);
-                MessageBox.Show("Display mode set to Extend.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                displayManager.SetDisplayMode(DisplayManager.DisplayMode.PrimaryOnly);
-                MessageBox.Show("Display mode set to Primary Only.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
-
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                displayManager.SetDisplayMode(DisplayManager.DisplayMode.SecondaryOnly);
-                MessageBox.Show("Display mode set to Secondary Only.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error: {ex.Message}");
-            }
-
-        }
-
-        private void fixDisplayButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void testFormButton_Click(object sender, EventArgs e)
-        {
-            MonitorTestForm testForm = new MonitorTestForm();
-            testForm.ShowDialog();
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            MonitorInfoSerachForm monitorInfoSerach = new MonitorInfoSerachForm();
-            monitorInfoSerach.Show();
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://systemy.evk.pl/",
-                UseShellExecute = true
-            });
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-
-        }
+       
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -378,12 +290,6 @@ namespace changeResolution1
             updateColor();
         }
 
-        private void tabPage7_Enter(object sender, EventArgs e)
-        {
-            MonitorTestForm monitorTest = new MonitorTestForm(this);
-            monitorTest.Show();
-
-        }
 
         private void showInfoPage_Enter(object sender, EventArgs e)
         {
@@ -393,16 +299,10 @@ namespace changeResolution1
 
         }
 
-        private void fixPixelPage_Enter(object sender, EventArgs e)
-        {
-            PixelFixerForm pixelFixerForm = new PixelFixerForm(this);
-            pixelFixerForm.Show();
-        }
 
         private void tabPage4_Enter(object sender, EventArgs e)
         {
-            MaterialSnackBar SnackBarMessage = new MaterialSnackBar("Loading...");
-            SnackBarMessage.Show(this);
+            ShowSnackbar("Loading...");
             showFullInfo();
         }
 
@@ -443,14 +343,14 @@ namespace changeResolution1
         {
             if (!isUpdatingComboBox)
             {
-                new MaterialSnackBar("Loading...").Show(this);
+                ShowSnackbar("Loading...");
                 try
                 {
                     SeedListView();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error: {ex.Message}");
+                    ShowSnackbar($"Error: {ex.Message}");
                 }
             }
         }
@@ -488,8 +388,7 @@ namespace changeResolution1
         private void CopyToClipboard(string text)
         {
             Clipboard.SetText(text);
-            new MaterialSnackBar("Copied to clipboard.").Show(this);
-
+            ShowSnackbar("Copied to clipboard.");
         }
 
         private void materialLabelManufacturer_Click(object sender, EventArgs e)
@@ -570,7 +469,7 @@ namespace changeResolution1
             if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
             {
                 monitors[materialComboBoxMonitors.SelectedIndex].TesterInitials = textBoxTester.Text;
-                if (textBoxTester.Text.Length == 2) new MaterialSnackBar("Initials inited succesfully").Show(this);
+                if (textBoxTester.Text.Length == 2) ShowSnackbar("Initials inited succesfully");
             }
         }
 
@@ -582,6 +481,109 @@ namespace changeResolution1
                 this.Invalidate();
             }
         }
+
+        private void buttonTestingMonitor_Click(object sender, EventArgs e)
+        {
+            MonitorTestForm monitorTest;
+            if (!isMonitorFormExist)
+            {
+                monitorTest = new MonitorTestForm(this);
+                monitorTest.Show();
+                isMonitorFormExist = true;
+            }
+        }
+
+        private void materialButton3_Click(object sender, EventArgs e)
+        {
+            PixelFixerForm pixelFixerForm = new PixelFixerForm(this);
+            pixelFixerForm.Show();
+        }
+
+        private void searchAssetButton_Click(object sender, EventArgs e)
+        {
+
+
+            string query =
+     "SELECT aa.Marka, " +
+     "aa.Model, " +
+     "aa.NumerSeryjny, " +
+     "aa.KlasaEvk, " +
+     "aa.MiejsceMagazynowe, " +
+     "CONCAT(p1.Imie, ' ', p1.Nazwisko) AS TestowaniePracownik, " +
+     "aa.TestowanieData, " +
+     "CONCAT(p2.Imie, ' ', p2.Nazwisko) AS CzyszczeniePracownik, " +
+     "aa.CzyszczenieData, " +
+     "CASE WHEN aa.CzyTestowany = 1 THEN 'Yes' ELSE 'No' END AS CzyTestowany, " +
+     "CASE WHEN aa.CzyCzyszczony = 1 THEN 'Yes' ELSE 'No' END AS CzyCzyszczony, " +
+     "aa.IdEvk, " +
+     "aa.Zdjecia " +
+     "FROM admin_asset.sprzet AS aa " +
+     "LEFT JOIN admin_asset.pracownik AS p1 ON aa.EtapTestowanie = p1.IdPracownik " +
+     "LEFT JOIN admin_asset.pracownik AS p2 ON aa.EtapCzyszczenie = p2.IdPracownik " +
+     $"WHERE aa.IdEvk = '{textBoxIdEVK.Text}'";
+
+
+            databaseManager = new DatabaseManager("localhost", "root", "moodle", "admin_asset");
+            Dictionary<string, string> parameters = databaseManager.ExecuteQuery(query);
+            if (parameters == null || parameters.Count == 0)
+            {
+                ShowSnackbar("No data found in the database for the provided IdEvk.");
+            }
+            else
+            {
+                foreach (var kvp in parameters)
+                {
+                    switch (kvp.Key)
+                    {
+                        case "Manufacturer":
+                            labelAssetManufacturer.Text = kvp.Value;
+                            break;
+                        case "Model":
+                            labelAssetModel.Text = kvp.Value;
+                            break;
+                        case "SerialNumber":
+                            labelAssetSerialNumber.Text = kvp.Value;
+                            break;
+                        case "Class":
+                            labelAssetClass.Text = kvp.Value;
+                            break;
+                        case "TestowaniePracownik":
+                            labelAssetTester.Text = kvp.Value;
+                            break;
+                        case "TestowanieData":
+                            labelAssetDateTesting.Text = kvp.Value;
+                            break;
+                        case "CzyszczeniePracownik":
+                            labelAssetCleaner.Text = kvp.Value;
+                            break;
+                        case "CzyszczenieData":
+                            labelAssetDateCleaning.Text = kvp.Value;
+                            break;
+                        case "CzyTestowany":
+                            labelAssetIsTested.Text = kvp.Value;
+                            break;
+                        case "MiejsceMagazynowe":
+                            labelAssetPlace.Text = kvp.Value;
+                            break;
+                        case "CzyCzyszczony":
+                            labelAssetIsCleaned.Text = kvp.Value;
+                            break;
+                        case "IdEvk":
+                            labelAssetIdEvk.Text = kvp.Value;
+                            break;
+
+                    }
+                }
+            }
+
+        }
+        private void ShowSnackbar(string message)
+        {
+            var snackbar = new MaterialSnackBar(message, 3000);
+            snackbar.Show(this);
+        }
     }
+
+
 }
 

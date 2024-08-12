@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Windows.Forms;
 
 namespace changeResolution1
@@ -14,6 +15,16 @@ namespace changeResolution1
         private Color customColor;
         private int direction = 0;
         private int currentColorIndex = 0;
+
+        /// <summary>
+        private List<Rectangle> markedAreas = new List<Rectangle>();
+        private Dictionary<Rectangle, Color> areaColors = new Dictionary<Rectangle, Color>();
+        private Rectangle currentRect;
+        private bool isDrawing = false;
+        private Color currentMarkColor = Color.Red; // Default color for marking
+        /// </summary>
+        /// 
+
         List<Color> colors = new List<Color>
                             {
                                 Color.Red,
@@ -32,6 +43,9 @@ namespace changeResolution1
             this.customColor = customColor;
             this.testMode = "Default";
             this.testPattern = "Default";
+
+            ///////////////////
+            this.DoubleBuffered = true;
         }
         private Dictionary<string, int> patternParameters = new Dictionary<string, int>()
         {
@@ -48,6 +62,8 @@ namespace changeResolution1
             this.testMode = testMode;
             this.testPattern = testPattern;
             this.customColor = customColor;
+            /////////////////////
+            this.DoubleBuffered = true;
         }
 
 
@@ -80,8 +96,48 @@ namespace changeResolution1
                     break;
 
             }
-        }
+            /////////////////
+            foreach (var area in markedAreas)
+            {
+                DrawCircle(e.Graphics, area, areaColors[area]);
+            }
 
+            if (isDrawing)
+            {
+                DrawCircle(e.Graphics, currentRect, currentMarkColor);
+            }
+
+            if (markedAreas.Count > 0)
+            {
+                DrawLegend(e.Graphics);
+            }
+
+
+        }
+        private void DrawCircle(Graphics g, Rectangle rect, Color color)
+        {
+            using (Pen pen = new Pen(color, 2))
+            {
+                g.DrawEllipse(pen, rect);
+            }
+        }
+        private void DrawLegend(Graphics g)
+        {
+            string legendText = "Red: Scratch, Blue: Dead Pixel, Yellow: Burn-in";
+            using (Font font = new Font("Arial", 10, FontStyle.Bold))
+            {
+                SizeF textSize = g.MeasureString(legendText, font);
+                RectangleF legendRect = new RectangleF(new PointF(10, this.ClientSize.Height - textSize.Height - 10), textSize);
+                using (Brush brush = new SolidBrush(Color.White))
+                {
+                    g.FillRectangle(brush, legendRect);
+                }
+                using (Brush brush = new SolidBrush(Color.Black))
+                {
+                    g.DrawString(legendText, font, brush, new PointF(10, this.ClientSize.Height - textSize.Height - 10));
+                }
+            }
+        }
         private void DrawOnlyBackground()
         {
             this.BackColor = customColor;
@@ -301,8 +357,8 @@ namespace changeResolution1
 
         private void TestOverlay_KeyDown(object sender, KeyEventArgs e)
         {
-           
-            
+
+
             switch (e.KeyCode)
             {
                 case Keys.D1:
@@ -356,6 +412,27 @@ namespace changeResolution1
                     currentColorIndex = (currentColorIndex - 1 + colors.Count) % colors.Count;
                     customColor = colors[currentColorIndex];
                     break;
+                case Keys.Q:
+                    this.BackgroundImage = ServiceMonitorEVK.Properties.Resources.win_back;
+                    break;
+                case Keys.W:
+                    this.BackgroundImage = ServiceMonitorEVK.Properties.Resources.color_pallete;
+                    break;
+                case Keys.Control | Keys.S:
+                    CaptureScreenshot($"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png");
+                    break;
+                case Keys.X:
+                    ClearMarks();
+                    break;
+                case Keys.A:
+                    SetMarkColor(Color.Yellow);
+                    break;
+                case Keys.S:
+                    SetMarkColor(Color.DeepSkyBlue);
+                    break;
+                case Keys.D:
+                    SetMarkColor(Color.Red);
+                    break;
                 case Keys.Escape:
                     this.Close();
                     break;
@@ -366,14 +443,6 @@ namespace changeResolution1
             this.Invalidate();
         }
 
-        private void TestOverlay_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                direction = (direction + 1) % 4;
-                this.Invalidate();
-            }
-        }
 
         private void TestOverlay_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -400,9 +469,71 @@ namespace changeResolution1
             }
         }
 
-        private void TestOverlay_Load(object sender, EventArgs e)
-        {
 
+
+        private void TestOverlay_MouseDown_1(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDrawing = true;
+                currentRect = new Rectangle(e.Location, new Size(0, 0));
+            }
+        }
+
+        private void TestOverlay_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDrawing)
+            {
+                int radius = Math.Max(Math.Abs(e.X - currentRect.X), Math.Abs(e.Y - currentRect.Y));
+                currentRect.Width = radius * 2;
+                currentRect.Height = radius * 2;
+                currentRect.X = e.X - radius;
+                currentRect.Y = e.Y - radius;
+                this.Invalidate();
+            }
+        }
+
+        private void TestOverlay_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isDrawing)
+            {
+                isDrawing = false;
+                markedAreas.Add(currentRect);
+                areaColors[currentRect] = currentMarkColor;
+                this.Invalidate();
+            }
+        }
+
+        public void ClearMarks()
+        {
+            markedAreas.Clear();
+            areaColors.Clear();
+            this.Invalidate();
+        }
+
+        public void SetMarkColor(Color color)
+        {
+            currentMarkColor = color;
+        }
+
+        public void CaptureScreenshot(string fileName)
+        {
+            string directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Screenshots");
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            string filePath = Path.Combine(directoryPath, fileName);
+
+            using (Bitmap bitmap = new Bitmap(this.ClientSize.Width, this.ClientSize.Height))
+            {
+                this.DrawToBitmap(bitmap, new Rectangle(Point.Empty, this.ClientSize));
+                using (Graphics g = Graphics.FromImage(bitmap))
+                {
+                    DrawLegend(g);
+                }
+                bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace changeResolution1
 {
@@ -24,6 +25,9 @@ namespace changeResolution1
         public string FriendlyName { get; set; }
         public string IdEVK { get; set; }
         public string TesterInitials { get; set; }
+
+        public List<string> ParametersMonitorList { get; private set; }
+
 
         public void UpdateSize(double maxHorizontalSize, double maxVerticalSize)
         {
@@ -53,6 +57,22 @@ namespace changeResolution1
 
         public MonitorInfo()
         {
+            ParametersMonitorList = new List<string>
+        {
+            nameof(Manufacturer),
+            nameof(Model),
+            nameof(SerialNumber),
+            nameof(YearOfProduction),
+            nameof(MonthOfProduction),
+            nameof(ProductCodeID),
+            nameof(Diagonal1),
+            nameof(Resolution),
+            nameof(Frequency),
+            nameof(PPI),
+            nameof(SizeMonitor),
+            nameof(IdEVK),
+            nameof(TesterInitials)
+        };
             Manufacturer = "Manufacturer";
             Model = "Model";
             SerialNumber = "SerialNumber";

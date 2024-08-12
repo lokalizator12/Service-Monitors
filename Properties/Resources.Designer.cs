@@ -22,7 +22,7 @@ namespace ServiceMonitorEVK.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace ServiceMonitorEVK.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServiceMonitorEVK.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace ServiceMonitorEVK.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap aqua {
+        public static System.Drawing.Bitmap aqua {
             get {
                 object obj = ResourceManager.GetObject("aqua", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +73,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap black {
+        public static System.Drawing.Bitmap black {
             get {
                 object obj = ResourceManager.GetObject("black", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +83,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap blue {
+        public static System.Drawing.Bitmap blue {
             get {
                 object obj = ResourceManager.GetObject("blue", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +93,17 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap color_wheel {
+        public static System.Drawing.Bitmap color_pallete {
+            get {
+                object obj = ResourceManager.GetObject("color_pallete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap color_wheel {
             get {
                 object obj = ResourceManager.GetObject("color-wheel", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +113,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap color_wheel1 {
+        public static System.Drawing.Bitmap color_wheel1 {
             get {
                 object obj = ResourceManager.GetObject("color-wheel1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -113,7 +123,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DA {
+        public static System.Drawing.Bitmap DA {
             get {
                 object obj = ResourceManager.GetObject("DA", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +133,27 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap lime {
+        public static System.Drawing.Bitmap delete_symbol_option {
+            get {
+                object obj = ResourceManager.GetObject("delete-symbol-option", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap fix__1_ {
+            get {
+                object obj = ResourceManager.GetObject("fix (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap lime {
             get {
                 object obj = ResourceManager.GetObject("lime", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -133,7 +163,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap logo__1_ {
+        public static System.Drawing.Bitmap logo__1_ {
             get {
                 object obj = ResourceManager.GetObject("logo (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -143,7 +173,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap magenta {
+        public static System.Drawing.Bitmap magenta {
             get {
                 object obj = ResourceManager.GetObject("magenta", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -153,7 +183,37 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap red {
+        public static System.Drawing.Bitmap monitoring_test {
+            get {
+                object obj = ResourceManager.GetObject("monitoring-test", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap pinOut {
+            get {
+                object obj = ResourceManager.GetObject("pinOut", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap push_pin {
+            get {
+                object obj = ResourceManager.GetObject("push-pin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap red {
             get {
                 object obj = ResourceManager.GetObject("red", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -163,7 +223,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap red1 {
+        public static System.Drawing.Bitmap red1 {
             get {
                 object obj = ResourceManager.GetObject("red1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -173,7 +233,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap red2 {
+        public static System.Drawing.Bitmap red2 {
             get {
                 object obj = ResourceManager.GetObject("red2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -183,7 +243,27 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap select {
+        public static System.Drawing.Bitmap save_prtscr {
+            get {
+                object obj = ResourceManager.GetObject("save_prtscr", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap searchAsset {
+            get {
+                object obj = ResourceManager.GetObject("searchAsset", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap select {
             get {
                 object obj = ResourceManager.GetObject("select", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -193,7 +273,57 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap silver {
+        public static System.Drawing.Bitmap select_blue {
+            get {
+                object obj = ResourceManager.GetObject("select blue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap select_red {
+            get {
+                object obj = ResourceManager.GetObject("select red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap select_red1 {
+            get {
+                object obj = ResourceManager.GetObject("select red1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap select_red2 {
+            get {
+                object obj = ResourceManager.GetObject("select red2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap select_yello {
+            get {
+                object obj = ResourceManager.GetObject("select yello", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap silver {
             get {
                 object obj = ResourceManager.GetObject("silver", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -203,7 +333,7 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap white {
+        public static System.Drawing.Bitmap white {
             get {
                 object obj = ResourceManager.GetObject("white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -213,7 +343,17 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap yellow {
+        public static System.Drawing.Bitmap win_back {
+            get {
+                object obj = ResourceManager.GetObject("win_back", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap yellow {
             get {
                 object obj = ResourceManager.GetObject("yellow", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
