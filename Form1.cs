@@ -5,7 +5,6 @@ using ServiceMonitorEVK.Database;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -22,16 +21,17 @@ namespace changeResolution1
         MonitorInfo[] monitors;
 
         MonitorInfoForm monitorInfo;
-        public bool isUpdatingComboBox = false;
         internal bool isMonitorFormExist = false;
         private int colorSchemeIndex;
+        internal bool isUpdatingComboBox = false;
+
         public Form1()
         {
             InitializeComponent();
             displayManager = new DisplayManager();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
-
+            databaseManager = new DatabaseManager("localhost", "root", "moodle", "admin_asset");
 
             ///////////////////////
             materialSkinManager = MaterialSkinManager.Instance;
@@ -56,6 +56,7 @@ namespace changeResolution1
 
         public void InitizializeCustomForm()
         {
+            this.comboBoxCountry.DropDownStyle = ComboBoxStyle.DropDown;
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
             materialSkinManager.AddFormToManage(this);
             checkTheme();
@@ -199,7 +200,7 @@ namespace changeResolution1
                 + edidInfo + "\n==============================\n"
                 + serialNumber + "\n==============================\n";
         }
-       
+
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -285,7 +286,6 @@ namespace changeResolution1
             {
                 materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
                 pictureBoxLogo.BackColor = Color.White;
-
             }
             updateColor();
         }
@@ -296,10 +296,26 @@ namespace changeResolution1
 
             monitorInfo = new MonitorInfoForm(this);
             fillPostionsInfo();
+            if (checkBoxAutoShow.Checked)
+            {
+                if (materialLabelSerialNo.Text != null) SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
+            }
 
+            if (checkBoxCountry.Checked) databaseManager.FillCountryComboBox(comboBoxCountry);
         }
 
-
+        private void fillPostionsInfo()
+        {
+            try
+            {
+                SeedListView();
+                ShowSnackbar("Loading...");
+            }
+            catch (Exception ex)
+            {
+                ShowSnackbar($"Error: {ex.Message}");
+            }
+        }
         private void tabPage4_Enter(object sender, EventArgs e)
         {
             ShowSnackbar("Loading...");
@@ -313,18 +329,17 @@ namespace changeResolution1
 
             if (monitors == null || monitors.Length == 0)
             {
-                MessageBox.Show("No monitors found.");
+                ShowSnackbar("No monitors found.");
                 return;
             }
 
             if (materialComboBoxMonitors.SelectedIndex == -1 || materialComboBoxMonitors.SelectedIndex >= monitors.Length)
             {
-                MessageBox.Show("Please select a valid monitor.");
+                ShowSnackbar("Please select a valid monitor.");
                 return;
             }
-            MonitorInfo monitor = monitors[materialComboBoxMonitors.SelectedIndex];
 
-            DisplayMonitorInfo(monitor);
+            DisplayMonitorInfo(monitors[materialComboBoxMonitors.SelectedIndex]);
         }
 
         private void searchInfoPage_Enter(object sender, EventArgs e)
@@ -339,24 +354,13 @@ namespace changeResolution1
         }
 
 
-        private void fillPostionsInfo()
-        {
-            if (!isUpdatingComboBox)
-            {
-                ShowSnackbar("Loading...");
-                try
-                {
-                    SeedListView();
-                }
-                catch (Exception ex)
-                {
-                    ShowSnackbar($"Error: {ex.Message}");
-                }
-            }
-        }
         private void materialComboBoxMonitors_SelectedIndexChanged(object sender, EventArgs e)
         {
             fillPostionsInfo();
+            if (checkBoxAutoShow.Checked)
+            {
+                if (materialLabelSerialNo.Text != null) SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
+            }
         }
 
         private void DisplayMonitorInfo(MonitorInfo monitorInfo)
@@ -378,77 +382,6 @@ namespace changeResolution1
             textBoxIdEVK.Text = monitorInfo.IdEVK;
 
             this.Refresh();
-        }
-
-        private void materialLabelPPI_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelPPI.Text);
-        }
-
-        private void CopyToClipboard(string text)
-        {
-            Clipboard.SetText(text);
-            ShowSnackbar("Copied to clipboard.");
-        }
-
-        private void materialLabelManufacturer_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelManufacturer.Text);
-        }
-
-        private void materialLabelModel_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelModel.Text);
-        }
-
-        private void materialLabelYearOfProduction_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelYearOfProduction.Text);
-        }
-
-        private void materialLabelMonthOfProduction_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelMonthOfProduction.Text);
-        }
-
-        private void materialLabelProductCodeID_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelProductCodeID.Text);
-        }
-
-        private void materialLabelDiagonal1_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelDiagonal1.Text);
-        }
-
-        private void materialLabelDiagonal2_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelDiagonal2.Text);
-        }
-
-        private void materialLabelSerialNo_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelSerialNo.Text);
-        }
-
-        private void materialLabelFrequency_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelFrequency.Text);
-        }
-
-        private void materialLabelSizeMonitor_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelSizeMonitor.Text);
-        }
-
-        private void materialLabelResolution_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelResolution.Text);
-        }
-
-        private void materialLabelPPI_Click_1(object sender, EventArgs e)
-        {
-            CopyToClipboard(materialLabelPPI.Text);
         }
 
         private void sendButton_Click(object sender, EventArgs e)
@@ -501,86 +434,168 @@ namespace changeResolution1
 
         private void searchAssetButton_Click(object sender, EventArgs e)
         {
+            if (textBoxIdEVK.Text != null && textBoxIdEVK.Text.Length > 6) SearchInfoFromAsset(textBoxIdEVK.Text);
+            
 
+        }
+
+        private void SearchInfoFromAsset(string searchValue, string searchBy = "IdEvk")
+        {
+            string whereClause = searchBy == "NumerSeryjny" ? "NumerSeryjny" : "IdEvk";
 
             string query =
-     "SELECT aa.Marka, " +
-     "aa.Model, " +
-     "aa.NumerSeryjny, " +
-     "aa.KlasaEvk, " +
-     "aa.MiejsceMagazynowe, " +
-     "CONCAT(p1.Imie, ' ', p1.Nazwisko) AS TestowaniePracownik, " +
-     "aa.TestowanieData, " +
-     "CONCAT(p2.Imie, ' ', p2.Nazwisko) AS CzyszczeniePracownik, " +
-     "aa.CzyszczenieData, " +
-     "CASE WHEN aa.CzyTestowany = 1 THEN 'Yes' ELSE 'No' END AS CzyTestowany, " +
-     "CASE WHEN aa.CzyCzyszczony = 1 THEN 'Yes' ELSE 'No' END AS CzyCzyszczony, " +
-     "aa.IdEvk, " +
-     "aa.Zdjecia " +
-     "FROM admin_asset.sprzet AS aa " +
-     "LEFT JOIN admin_asset.pracownik AS p1 ON aa.EtapTestowanie = p1.IdPracownik " +
-     "LEFT JOIN admin_asset.pracownik AS p2 ON aa.EtapCzyszczenie = p2.IdPracownik " +
-     $"WHERE aa.IdEvk = '{textBoxIdEVK.Text}'";
+    "SELECT aa.Marka, " +
+    "aa.Model, " +
+    "aa.NumerSeryjny, " +
+    "aa.KlasaEvk, " +
+    "aa.MiejsceMagazynowe, " +
+    "CONCAT(p1.Imie, ' ', p1.Nazwisko) AS TestowaniePracownik, " +
+    "aa.TestowanieData, " +
+    "CONCAT(p2.Imie, ' ', p2.Nazwisko) AS CzyszczeniePracownik, " +
+    "aa.CzyszczenieData, " +
+    "m.TypWyswietlacz AS Type, " +
+    "m.WielkoscMonitor AS Diagonal, " +
+    "c.CountryName AS Country, " +
+    "CASE WHEN aa.CzyTestowany = 1 THEN 'Yes' ELSE 'No' END AS CzyTestowany, " +
+    "CASE WHEN aa.CzyCzyszczony = 1 THEN 'Yes' ELSE 'No' END AS CzyCzyszczony, " +
+    "aa.IdEvk, " +
+    "aa.Zdjecia " +
+    "FROM admin_asset.sprzet AS aa " +
+    "LEFT JOIN admin_asset.pracownik AS p1 ON aa.EtapTestowanie = p1.IdPracownik " +
+    "LEFT JOIN admin_asset.pracownik AS p2 ON aa.EtapCzyszczenie = p2.IdPracownik " +
+    "LEFT JOIN admin_asset.monitor AS m ON aa.IdSprzet = m.IdSprzet " +
+    "LEFT JOIN admin_asset.slownikcountry AS c ON aa.IdCountry = c.IdCountry " +
+    $"WHERE aa.{whereClause} = '{searchValue}'";
 
 
-            databaseManager = new DatabaseManager("localhost", "root", "moodle", "admin_asset");
-            Dictionary<string, string> parameters = databaseManager.ExecuteQuery(query);
+
+            Dictionary<string, string> parameters = databaseManager.ExecuteQueryFindProductAndGet(query);
+
             if (parameters == null || parameters.Count == 0)
             {
-                ShowSnackbar("No data found in the database for the provided IdEvk.");
+                ShowSnackbar($"No data found in the database for the provided {searchBy}: {searchValue}");
             }
             else
             {
-                foreach (var kvp in parameters)
-                {
-                    switch (kvp.Key)
-                    {
-                        case "Manufacturer":
-                            labelAssetManufacturer.Text = kvp.Value;
-                            break;
-                        case "Model":
-                            labelAssetModel.Text = kvp.Value;
-                            break;
-                        case "SerialNumber":
-                            labelAssetSerialNumber.Text = kvp.Value;
-                            break;
-                        case "Class":
-                            labelAssetClass.Text = kvp.Value;
-                            break;
-                        case "TestowaniePracownik":
-                            labelAssetTester.Text = kvp.Value;
-                            break;
-                        case "TestowanieData":
-                            labelAssetDateTesting.Text = kvp.Value;
-                            break;
-                        case "CzyszczeniePracownik":
-                            labelAssetCleaner.Text = kvp.Value;
-                            break;
-                        case "CzyszczenieData":
-                            labelAssetDateCleaning.Text = kvp.Value;
-                            break;
-                        case "CzyTestowany":
-                            labelAssetIsTested.Text = kvp.Value;
-                            break;
-                        case "MiejsceMagazynowe":
-                            labelAssetPlace.Text = kvp.Value;
-                            break;
-                        case "CzyCzyszczony":
-                            labelAssetIsCleaned.Text = kvp.Value;
-                            break;
-                        case "IdEvk":
-                            labelAssetIdEvk.Text = kvp.Value;
-                            break;
+                fillParametersToLabels(parameters);
+            }
+        }
 
-                    }
+
+        private void fillParametersToLabels(Dictionary<string, string> parameters)
+        {
+            foreach (var kvp in parameters)
+            {
+                switch (kvp.Key)
+                {
+                    case "Manufacturer":
+                        labelAssetManufacturer.Text = kvp.Value;
+                        break;
+                    case "Model":
+                        labelAssetModel.Text = kvp.Value;
+                        break;
+                    case "SerialNumber":
+                        labelAssetSerialNumber.Text = kvp.Value;
+                        break;
+                    case "Class":
+                        labelAssetClass.Text = kvp.Value;
+                        break;
+                    case "TestowaniePracownik":
+                        labelAssetTester.Text = kvp.Value;
+                        break;
+                    case "TestowanieData":
+                        labelAssetDateTesting.Text = kvp.Value;
+                        break;
+                    case "CzyszczeniePracownik":
+                        labelAssetCleaner.Text = kvp.Value;
+                        break;
+                    case "CzyszczenieData":
+                        labelAssetDateCleaning.Text = kvp.Value;
+                        break;
+                    case "CzyTestowany":
+                        labelAssetIsTested.Text = kvp.Value;
+                        break;
+                    case "MiejsceMagazynowe":
+                        labelAssetPlace.Text = kvp.Value;
+                        break;
+                    case "CzyCzyszczony":
+                        labelAssetIsCleaned.Text = kvp.Value;
+                        break;
+                    case "IdEvk":
+                        labelAssetIdEvk.Text = kvp.Value;
+                        break;
+                    case "Zdjecia":
+                        labelAssetIsPictured.Text = CheckImageUrls(kvp.Value);
+                        break;
+                    case "Type":
+                        labelAssetType.Text = kvp.Value;
+                        break;
+                    case "Diagonal":
+                        labelAssetDiagonalDB.Text = kvp.Value;
+                        break;
+                    case "Country":
+                        labelAssetCountry.Text = kvp.Value;
+                        break;
+
                 }
             }
-
         }
+
+
+
+        private string CheckImageUrls(string imageUrls)
+        {
+            string[] urls = imageUrls.Split(' ');
+            int y = 0;
+            for (int i = 0; i < urls.Length; i++)
+            {
+                string url = urls[i].Trim();
+
+                if (!string.IsNullOrEmpty(url))
+                {
+                    y++;
+                }
+            }
+            return $"Images available: {y}";
+        }
+
         private void ShowSnackbar(string message)
         {
             var snackbar = new MaterialSnackBar(message, 3000);
             snackbar.Show(this);
+        }
+
+        private void textBoxIdEVK_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                string barcode = textBoxIdEVK.Text.Trim();
+
+                SearchInfoFromAsset(barcode);
+
+                textBoxIdEVK.Clear();
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void labelAssetClass_Click(object sender, EventArgs e)
+        {
+            Label clickedLabel = sender as Label;
+
+            if (clickedLabel != null)
+            {
+                Clipboard.SetText(clickedLabel.Text);
+
+                ShowSnackbar($"{clickedLabel.Text} copied to clipboard.");
+            }
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            if (materialLabelSerialNo.Text != null) SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
+
         }
     }
 

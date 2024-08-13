@@ -4,6 +4,7 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ServiceMonitorEVK.Database
 {
@@ -20,7 +21,7 @@ namespace ServiceMonitorEVK.Database
         }
 
 
-        internal Dictionary<string, string> ExecuteQuery(string query)
+        internal Dictionary<string, string> ExecuteQueryFindProductAndGet(string query)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionStringMysql))
             {
@@ -34,6 +35,16 @@ namespace ServiceMonitorEVK.Database
 
                     while (reader.Read())
                     {
+                        Console.WriteLine("CzyCzyszczony: " + reader["CzyCzyszczony"].ToString());
+                        Console.WriteLine("CzyszczenieData: " + reader["CzyszczenieData"].ToString());
+
+                        string czyszczenieData = "No Data";
+                        if (reader["CzyCzyszczony"].ToString().Equals("Yes"))
+                        {
+                            czyszczenieData = reader["CzyszczenieData"] != DBNull.Value && reader["CzyszczenieData"].ToString() != "0000-00-00 00:00:00"
+                                ? reader["CzyszczenieData"].ToString()
+                                : "No Data";
+                        }
                         parametersStrings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                             {
                     { "Manufacturer", reader["Marka"].ToString() },
@@ -41,17 +52,25 @@ namespace ServiceMonitorEVK.Database
                     { "SerialNumber", reader["NumerSeryjny"].ToString() },
                     { "Class", reader["KlasaEvk"].ToString() },
                     { "TestowaniePracownik", reader["TestowaniePracownik"].ToString() },
-                    { "TestowanieData", reader["TestowanieData"].ToString() },
+                    { "TestowanieData", reader["TestowanieData"] != DBNull.Value && reader["TestowanieData"].ToString() != "0000-00-00 00:00:00" ? reader["TestowanieData"].ToString() : "No Data"},
                     { "CzyszczeniePracownik", reader["CzyszczeniePracownik"].ToString()},
-                    { "CzyszczenieData", reader["CzyszczenieData"].ToString() },
+                    { "CzyszczenieData", czyszczenieData },
                     { "CzyTestowany", reader["CzyTestowany"].ToString() },
                     { "CzyCzyszczony", reader["CzyCzyszczony"].ToString()},
                     { "MiejsceMagazynowe", reader["MiejsceMagazynowe"].ToString() },
                     { "IdEvk", reader["IdEvk"].ToString() },
-                    { "Zdjecia", reader["Zdjecia"].ToString() }
+                    { "Zdjecia", reader["Zdjecia"].ToString() },
+                    { "Type", reader["Type"].ToString() },
+                    { "Diagonal", reader["Diagonal"].ToString() },
+                    { "Country", reader["Country"].ToString() }
                 };
                     }
+                    foreach (var kvp in parametersStrings)
+                    {
+                        Console.WriteLine($"{kvp.Key}: {kvp.Value}");
+                    }
                 }
+
                 catch (MySqlException ex)
                 {
                     Console.WriteLine("Ошибка выполнения запроса: " + ex.Message);
@@ -59,7 +78,32 @@ namespace ServiceMonitorEVK.Database
             }
             return parametersStrings;
         }
+        internal void FillCountryComboBox(ComboBox comboBox)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionStringMysql))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT CountryName FROM slownikcountry ORDER BY CountryName ASC";
+                    MySqlCommand command = new MySqlCommand(query, connection);
+                    MySqlDataReader reader = command.ExecuteReader();
 
+                    while (reader.Read())
+                    {
+                        comboBox.Items.Add(reader["CountryName"].ToString());
+                    }
+
+                    comboBox.DropDownStyle = ComboBoxStyle.DropDown;
+                    comboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                    comboBox.AutoCompleteSource = AutoCompleteSource.ListItems;
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Ошибка загрузки стран: " + ex.Message);
+                }
+            }
+        }
 
         public async Task InsertMonitorInfoPostgres(MonitorInfo monitorInfo)
         {

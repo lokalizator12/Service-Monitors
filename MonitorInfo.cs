@@ -34,7 +34,12 @@ namespace changeResolution1
             MaxHorizontalSize = maxHorizontalSize;
             MaxVerticalSize = maxVerticalSize;
             SizeMonitor = $"{maxHorizontalSize} x {maxVerticalSize}";
-            Diagonal1 = Math.Sqrt(Math.Pow(maxVerticalSize, 2) + Math.Pow(maxHorizontalSize, 2)) / 2.54;
+
+            double diagonalInInches = Math.Sqrt(Math.Pow(maxVerticalSize, 2) + Math.Pow(maxHorizontalSize, 2)) / 2.54;
+
+            Diagonal1 = Math.Floor(diagonalInInches * 2) / 2;
+
+
         }
 
         public void UpdateResolutionAndFrequency(int width, int height, int frequency)

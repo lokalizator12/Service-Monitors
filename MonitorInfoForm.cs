@@ -204,9 +204,6 @@ namespace changeResolution1
             monitors = new MonitorInfo[searcher.Get().Count];
             InitializeComponent();
             monitorInfoManager = new MonitorInfoManager();
-            resolutionManager = new ResolutionDisplayManager();
-            // FillMonitorComboBox();
-            //GetMonitorInfos();
             _ = InitializeAsync();
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
         }

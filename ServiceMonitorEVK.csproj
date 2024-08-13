@@ -424,6 +424,8 @@
     <None Include="Resources\lime.png" />
     <None Include="Resources\delete-symbol-option.png" />
     <None Include="Resources\fix %281%29.png" />
+    <None Include="Resources\gallery.png" />
+    <None Include="Resources\id.png" />
     <Content Include="Resources\logo %281%29.png" />
     <None Include="Resources\select.png" />
     <None Include="Resources\red.png" />
@@ -445,6 +447,9 @@
     <None Include="Resources\pinIn.png" />
     <None Include="Resources\push-pin %281%29.png" />
     <None Include="Resources\searchAsset.png" />
+    <None Include="Resources\monitor.png" />
+    <None Include="Resources\storage.png" />
+    <None Include="Resources\web.png" />
     <Content Include="selenium-manager.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
