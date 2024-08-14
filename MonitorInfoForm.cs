@@ -1,6 +1,4 @@
-﻿using MaterialSkin.Controls;
-using Microsoft.Win32;
-using PdfSharp.Drawing;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +61,7 @@ namespace changeResolution1
                                 { "CTX", "CTX / Chuntex Electronic Co." },
                                 { "DEC", "Digital Equipment Corporation" },
                                 { "DELL", "Dell" },
+                                 {"DEL", "Dell" },
                                 { "DPC", "Delta Electronics, Inc." },
                                 { "DWE", "Daewoo Telecom Ltd" },
                                 { "ECS", "ELITEGROUP Computer Systems" },
@@ -216,7 +215,7 @@ namespace changeResolution1
         {
             _form1.isUpdatingComboBox = true;
             _form1.materialComboBoxMonitors.Items.Clear();
-           
+
             modelToMonitorInfoMap = new Dictionary<string, MonitorInfo>();
 
             var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames();
@@ -225,7 +224,7 @@ namespace changeResolution1
             for (int i = 0; i < monitors.Length; i++)
             {
                 var monitor = monitors[i];
-                var modelName = string.IsNullOrWhiteSpace(monitor.Model) ? "Integrated Monitor" : monitor.Model;
+                var modelName = string.IsNullOrWhiteSpace(monitor.Model) ? "Integrated Monitor5" : monitor.Model;
                 modelToMonitorInfoMap[modelName] = monitor;
                 _form1.materialComboBoxMonitors.Items.Add(modelName);
             }
@@ -257,8 +256,9 @@ namespace changeResolution1
                 Parallel.ForEach(queryObjects, queryObj =>
                 {
                     string manufacturerNameFull = DecodeMonitorString((ushort[])queryObj["ManufacturerName"]);
+                    Console.WriteLine(manufacturerNameFull);
                     string manufacturer = manufacturerDictionary.FirstOrDefault(entry => manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0).Value;
-                    
+
                     var monitorInfo = new MonitorInfo
                     {
                         YearOfProduction = queryObj["YearOfManufacture"].ToString(),
@@ -428,18 +428,18 @@ namespace changeResolution1
         }
         private void DisplayMonitorInfo(MonitorInfo monitorInfo)
         {
-           /* _form1.materialLabelManufacturer.Text = monitorInfo.Manufacturer;
-            _form1.materialLabelModel.Text = monitorInfo.Model;
-            _form1.materialLabelSerialNo.Text = monitorInfo.SerialNumber;
-            _form1.materialLabelYearOfProduction.Text = monitorInfo.YearOfProduction;
-            _form1.materialLabelMonthOfProduction.Text = monitorInfo.MonthOfProduction;
-            _form1.materialLabelProductCodeID.Text = monitorInfo.ProductCodeID;
-            _form1.materialLabelDiagonal1.Text = monitorInfo.Diagonal1.ToString();
-            _form1.materialLabelDiagonal2.Text = monitorInfo.Diagonal2;
-            _form1.materialLabelResolution.Text = monitorInfo.Resolution;
-            _form1.materialLabelFrequency.Text = monitorInfo.Frequency.ToString();
-            _form1.materialLabelPPI.Text = monitorInfo.PPI;
-            _form1.materialLabelSizeMonitor.Text = monitorInfo.SizeMonitor;*/
+            /* _form1.materialLabelManufacturer.Text = monitorInfo.Manufacturer;
+             _form1.materialLabelModel.Text = monitorInfo.Model;
+             _form1.materialLabelSerialNo.Text = monitorInfo.SerialNumber;
+             _form1.materialLabelYearOfProduction.Text = monitorInfo.YearOfProduction;
+             _form1.materialLabelMonthOfProduction.Text = monitorInfo.MonthOfProduction;
+             _form1.materialLabelProductCodeID.Text = monitorInfo.ProductCodeID;
+             _form1.materialLabelDiagonal1.Text = monitorInfo.Diagonal1.ToString();
+             _form1.materialLabelDiagonal2.Text = monitorInfo.Diagonal2;
+             _form1.materialLabelResolution.Text = monitorInfo.Resolution;
+             _form1.materialLabelFrequency.Text = monitorInfo.Frequency.ToString();
+             _form1.materialLabelPPI.Text = monitorInfo.PPI;
+             _form1.materialLabelSizeMonitor.Text = monitorInfo.SizeMonitor;*/
         }
 
         private void CopyToClipboard(string text)

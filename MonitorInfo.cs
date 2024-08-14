@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace changeResolution1
 {
@@ -25,6 +26,9 @@ namespace changeResolution1
         public string FriendlyName { get; set; }
         public string IdEVK { get; set; }
         public string TesterInitials { get; set; }
+        public string Country { get; set; }
+        public string CableTypes { get; set; }
+
 
         public List<string> ParametersMonitorList { get; private set; }
 
@@ -39,7 +43,12 @@ namespace changeResolution1
 
             Diagonal1 = Math.Floor(diagonalInInches * 2) / 2;
 
-
+        }
+        public void UpdateCableTypes(Dictionary<string, int> cables)
+        {
+            CableTypes = string.Join(", ", cables
+                .Where(kvp => kvp.Value > 0)
+                .Select(kvp => kvp.Value > 1 ? $"{kvp.Key} x{kvp.Value}" : kvp.Key));
         }
 
         public void UpdateResolutionAndFrequency(int width, int height, int frequency)
@@ -56,8 +65,9 @@ namespace changeResolution1
                    $"Resolution: {Resolution}, Frequency: {Frequency}, PPI: {PPI}, " +
                    $"SizeMonitor: {SizeMonitor}, MaxVerticalSize: {MaxVerticalSize}, " +
                    $"MaxHorizontalSize: {MaxHorizontalSize}, Identifier: {Identifier}, " +
-                   $"FriendlyName: {FriendlyName}, " +
-                   $"ID EVK: {IdEVK},Tester Initials: {TesterInitials}";
+                   $"FriendlyName: {FriendlyName}, Country: {Country}, " +
+                   $"CableTypes: {CableTypes}, " +
+                   $"ID EVK: {IdEVK}, Tester Initials: {TesterInitials}";
         }
 
         public MonitorInfo()
@@ -76,7 +86,9 @@ namespace changeResolution1
             nameof(PPI),
             nameof(SizeMonitor),
             nameof(IdEVK),
-            nameof(TesterInitials)
+            nameof(TesterInitials),
+            nameof(Country),
+                nameof(CableTypes)
         };
             Manufacturer = "Manufacturer";
             Model = "Model";
@@ -96,6 +108,8 @@ namespace changeResolution1
             Identifier = "DISPLAY";
             IdEVK = "";
             TesterInitials = "";
+            Country = "";  
+            CableTypes = "";
         }
 
     }

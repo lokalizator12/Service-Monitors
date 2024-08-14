@@ -542,7 +542,9 @@ namespace changeResolution1
             {
                 MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
             }
-            Console.WriteLine("frendly names list:" + friendlyNames);
+            foreach (string fr in friendlyNames) { 
+            Console.WriteLine("frendly names list:" + fr);
+        }
             return friendlyNames;
         }
         public string GetIdentifierFromFriendlyName(string friendlyName)

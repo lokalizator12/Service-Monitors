@@ -70,10 +70,24 @@ namespace changeResolution1
                 {
 
                     var monitorInfo = monitors[materialComboBoxMonitors.SelectedIndex];
+                    var cables = new Dictionary<string, int>();
+
+
+                    if (checkBoxHDMI.Checked)
+                        cables.Add("HDMI", (int)numericUpDownHdmi.Value);
+                    if (checkBoxVGA.Checked)
+                        cables.Add("VGA", (int)numericUpDownVga.Value);
+                    if (checkBoxDVI.Checked)
+                        cables.Add("DVI", (int)numericUpDownDvi.Value);
+                    if (checkBoxDisplayPort.Checked)
+                        cables.Add("DisplayPort", (int)numericUpDownDisplayPort.Value);
+                    monitorInfo.UpdateCableTypes(cables);
+                    monitorInfo.IdEVK = textBoxIdEVK.Text;
+                    monitorInfo.Country = comboBoxCountry.SelectedItem?.ToString();
+                    monitorInfo.TesterInitials = textBoxTester.Text;
+
                     databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
                     await databaseManager.InsertMonitorInfoPostgres(monitorInfo);
-                    monitorInfo.IdEVK = textBoxIdEVK.Text;
-                    monitorInfo.TesterInitials = textBoxTester.Text;
                     ShowSnackbar($"Sended to database succesfully");
 
                 }
@@ -435,7 +449,7 @@ namespace changeResolution1
         private void searchAssetButton_Click(object sender, EventArgs e)
         {
             if (textBoxIdEVK.Text != null && textBoxIdEVK.Text.Length > 6) SearchInfoFromAsset(textBoxIdEVK.Text);
-            
+
 
         }
 
@@ -596,6 +610,26 @@ namespace changeResolution1
         {
             if (materialLabelSerialNo.Text != null) SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
 
+        }
+
+        private void materialCheckbox17_CheckedChanged(object sender, EventArgs e)
+        {
+            numericUpDownDisplayPort.Enabled = checkBoxDisplayPort.Checked ? true : false;
+        }
+
+        private void CheckBoxDVI_CheckedChanged(object sender, EventArgs e)
+        {
+            numericUpDownDvi.Enabled = checkBoxDisplayPort.Checked ? true : false;
+        }
+
+        private void CheckboxVGA_CheckedChanged(object sender, EventArgs e)
+        {
+            numericUpDownVga.Enabled = checkBoxVGA.Checked ? true : false;
+        }
+
+        private void checkBoxHDMI_CheckedChanged(object sender, EventArgs e)
+        {
+            numericUpDownHdmi.Enabled = checkBoxHDMI.Checked ? true : false;
         }
     }
 

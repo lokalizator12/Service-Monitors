@@ -114,8 +114,8 @@ namespace ServiceMonitorEVK.Database
             cmd.Connection = connection;
 
             cmd.CommandText = @"
-            INSERT INTO monitors (manufacturer, model, year_of_production, month_of_production, product_code_id, diagonal_hw, diagonal_res, serial_number, frequency, size_monitor, resolution, ppi, id_evk, tester_initials)
-            VALUES (@manufacturer, @model, @year_of_production, @month_of_production, @product_code_id, @diagonal_hw, @diagonal_res, @serial_number, @frequency, @size_monitor, @resolution, @ppi, @id_evk, @tester_initials)";
+INSERT INTO monitors (manufacturer, model, year_of_production, month_of_production, product_code_id, diagonal_hw, diagonal_res, serial_number, frequency, size_monitor, resolution, ppi, id_evk, tester_initials, country, cable_types)
+VALUES (@manufacturer, @model, @year_of_production, @month_of_production, @product_code_id, @diagonal_hw, @diagonal_res, @serial_number, @frequency, @size_monitor, @resolution, @ppi, @id_evk, @tester_initials, @country, @cable_types)";
 
             cmd.Parameters.AddWithValue("manufacturer", monitorInfo.Manufacturer);
             cmd.Parameters.AddWithValue("model", monitorInfo.Model);
@@ -129,8 +129,9 @@ namespace ServiceMonitorEVK.Database
             cmd.Parameters.AddWithValue("size_monitor", monitorInfo.SizeMonitor);
             cmd.Parameters.AddWithValue("resolution", monitorInfo.Resolution);
             cmd.Parameters.AddWithValue("ppi", Convert.ToDecimal(monitorInfo.PPI));
-            //cmd.Parameters.AddWithValue("tester_initials", monitorInfo.TesterInitials);
-
+            cmd.Parameters.AddWithValue("country", monitorInfo.Country);
+            cmd.Parameters.AddWithValue("cable_types", monitorInfo.CableTypes);
+            cmd.Parameters.AddWithValue("tester_initials", monitorInfo.TesterInitials);
 
 
             if (!string.IsNullOrEmpty(monitorInfo.TesterInitials))
