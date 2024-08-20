@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace changeResolution1
 {
-    public partial class MonitorInfoForm : Form
+    public partial class MonitorInfoForm
     {
         private Dictionary<string, MonitorInfo> modelToMonitorInfoMap;
 
@@ -201,7 +201,7 @@ namespace changeResolution1
             _form1 = form1;
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
             monitors = new MonitorInfo[searcher.Get().Count];
-            InitializeComponent();
+           
             monitorInfoManager = new MonitorInfoManager();
             _ = InitializeAsync();
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
@@ -224,7 +224,7 @@ namespace changeResolution1
             for (int i = 0; i < monitors.Length; i++)
             {
                 var monitor = monitors[i];
-                var modelName = string.IsNullOrWhiteSpace(monitor.Model) ? "Integrated Monitor5" : monitor.Model;
+                var modelName = string.IsNullOrWhiteSpace(monitor.Model) ? "Integrated Monitor/ no name" : monitor.Model;
                 modelToMonitorInfoMap[modelName] = monitor;
                 _form1.materialComboBoxMonitors.Items.Add(modelName);
             }
@@ -338,7 +338,8 @@ namespace changeResolution1
             double verticalDpi = mRh / (mV / 2.54);
             double averageDpi = (horizontalDpi + verticalDpi) / 2;
             double diagonalPixels = Math.Sqrt(Math.Pow(mRv, 2) + Math.Pow(mRh, 2));
-            return diagonalPixels / averageDpi;
+            return Math.Floor((diagonalPixels / averageDpi) * 2) / 2;
+
         }
 
         public double CalculatePPI(double widthCm, double heightCm, int widthPx, int heightPx)
@@ -347,59 +348,59 @@ namespace changeResolution1
             double diagonalPx = Math.Sqrt(Math.Pow(widthPx, 2) + Math.Pow(heightPx, 2));
             return diagonalPx / diagonalInches;
         }
-        public MonitorInfo[] SetMonitorSizes(MonitorInfo[] monitors)
-        {
-            double maxHorizontalSizeCm = 0.0d;
-            double maxVerticalSizeCm = 0.0d;
-            int resolutionWidth = 0;
-            int resolutionHeight = 0;
-            int displayFrequency = 0;
-            try
-            {
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBasicDisplayParams");
-                int i = 0;
-                foreach (ManagementObject queryObj in searcher.Get())
-                {
-                    maxHorizontalSizeCm = Convert.ToDouble(queryObj["MaxHorizontalImageSize"]);
-                    maxVerticalSizeCm = Convert.ToDouble(queryObj["MaxVerticalImageSize"]);
-                    monitors[i].UpdateSize(maxHorizontalSizeCm, maxVerticalSizeCm);
-                    i++;
-                }
+        /* public MonitorInfo[] SetMonitorSizes(MonitorInfo[] monitors)
+         {
+             double maxHorizontalSizeCm = 0.0d;
+             double maxVerticalSizeCm = 0.0d;
+             int resolutionWidth = 0;
+             int resolutionHeight = 0;
+             int displayFrequency = 0;
+             try
+             {
+                 ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBasicDisplayParams");
+                 int i = 0;
+                 foreach (ManagementObject queryObj in searcher.Get())
+                 {
+                     maxHorizontalSizeCm = Convert.ToDouble(queryObj["MaxHorizontalImageSize"]);
+                     maxVerticalSizeCm = Convert.ToDouble(queryObj["MaxVerticalImageSize"]);
+                     monitors[i].UpdateSize(maxHorizontalSizeCm, maxVerticalSizeCm);
+                     i++;
+                 }
 
-                DISPLAY_DEVICE d = new DISPLAY_DEVICE();
-                d.cb = Marshal.SizeOf(d);
+                 DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+                 d.cb = Marshal.SizeOf(d);
 
-                int deviceIndex = 0;
-                while (EnumDisplayDevices(null, (uint)deviceIndex, ref d, 0))
-                {
-                    DEVMODE devMode = new DEVMODE();
-                    devMode.dmSize = (ushort)Marshal.SizeOf(typeof(DEVMODE));
+                 int deviceIndex = 0;
+                 while (EnumDisplayDevices(null, (uint)deviceIndex, ref d, 0))
+                 {
+                     DEVMODE devMode = new DEVMODE();
+                     devMode.dmSize = (ushort)Marshal.SizeOf(typeof(DEVMODE));
 
-                    if (EnumDisplaySettings(d.DeviceName, -1, ref devMode))
-                    {
-                        resolutionWidth = (int)devMode.dmPelsWidth;
-                        resolutionHeight = (int)devMode.dmPelsHeight;
-                        displayFrequency = (int)devMode.dmDisplayFrequency;
-                        if (monitors.Length > deviceIndex)
-                        {
-                            monitors[deviceIndex].UpdateResolutionAndFrequency(resolutionWidth, resolutionHeight, displayFrequency);
+                     if (EnumDisplaySettings(d.DeviceName, -1, ref devMode))
+                     {
+                         resolutionWidth = (int)devMode.dmPelsWidth;
+                         resolutionHeight = (int)devMode.dmPelsHeight;
+                         displayFrequency = (int)devMode.dmDisplayFrequency;
+                         if (monitors.Length > deviceIndex)
+                         {
+                             monitors[deviceIndex].UpdateResolutionAndFrequency(resolutionWidth, resolutionHeight, displayFrequency);
 
-                            monitors[deviceIndex].PPI = CalculatePPI(monitors[deviceIndex].MaxVerticalSize, monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
+                             monitors[deviceIndex].PPI = CalculatePPI(monitors[deviceIndex].MaxVerticalSize, monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
 
-                            monitors[deviceIndex].Diagonal2 = GetDiagonalFromResoluton(monitors[deviceIndex].MaxVerticalSize, monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
-                        }
-                    }
+                             monitors[deviceIndex].Diagonal2 = GetDiagonalFromResoluton(monitors[deviceIndex].MaxVerticalSize, monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
+                         }
+                     }
 
-                    deviceIndex++;
-                    d.cb = Marshal.SizeOf(d);
-                }
-            }
-            catch (ManagementException ex)
-            {
-                MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
-            }
-            return monitors;
-        }
+                     deviceIndex++;
+                     d.cb = Marshal.SizeOf(d);
+                 }
+             }
+             catch (ManagementException ex)
+             {
+                 MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
+             }
+             return monitors;
+         }*/
 
         static string DecodeMonitorString(ushort[] data)
         {
@@ -442,78 +443,9 @@ namespace changeResolution1
              _form1.materialLabelSizeMonitor.Text = monitorInfo.SizeMonitor;*/
         }
 
-        private void CopyToClipboard(string text)
-        {
-            Clipboard.SetText(text);
-        }
-        private void lblManufacturer_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblManufacturer.Text);
-        }
+       
 
-        private void lblModel_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblModel.Text);
-        }
-
-        private void lblSerialNo_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblSerialNo.Text);
-        }
-
-        private void lblYearOfProduction_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblYearOfProduction.Text);
-        }
-
-        private void lblMonthOfProduction_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblMonthOfProduction.Text);
-        }
-
-        private void lblProductCodeID_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblProductCodeID.Text);
-        }
-
-        private void lblDiagonal1_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblDiagonal1.Text);
-        }
-
-        private void lblDiagonal2_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblDiagonal2.Text);
-        }
-
-        private void lblResolution_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblResolution.Text);
-        }
-
-        private void lblFrequency_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblFrequency.Text);
-        }
-
-        private void lblPPI_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblPPI.Text);
-        }
-
-        private void lblSizeMonitor_Click(object sender, EventArgs e)
-        {
-            CopyToClipboard(lblSizeMonitor.Text);
-        }
-
-
-        public void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (monitors[0] != null)
-            {
-                DisplayMonitorInfo(monitors[_form1.materialComboBoxMonitors.SelectedIndex]);
-            }
-        }
+        
 
         private void MonitorInfoForm_Load(object sender, EventArgs e)
         {
@@ -537,14 +469,6 @@ namespace changeResolution1
             }
         }
 
-        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
-        {
-            if (keyData == Keys.Escape)
-            {
-                this.Close();
-                return true;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
+       
     }
 }

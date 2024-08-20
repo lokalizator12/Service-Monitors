@@ -8,7 +8,6 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace changeResolution1
 {
@@ -615,7 +614,7 @@ namespace changeResolution1
             RoundPictureBoxCorners(pictureBoxBlack, cornerRadius);
         }
 
-      
+
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
@@ -637,7 +636,7 @@ namespace changeResolution1
                 pictureBox2.Image = ServiceMonitorEVK.Properties.Resources.push_pin;
                 this.Location = originalPosition;
             }
-           
+
         }
 
         private void pictureBox2_Move(object sender, EventArgs e)
@@ -645,6 +644,14 @@ namespace changeResolution1
             if (isPinned)
             {
                 this.Location = pinnedPosition;
+            }
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            if (currentTestOverlay != null)
+            {
+                currentTestOverlay.Close();
             }
         }
     }

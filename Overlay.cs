@@ -106,8 +106,8 @@ namespace changeResolution1
             {
                 DrawGrayscaleGradient(e.Graphics);
             }
-            
-            
+
+
 
         }
 

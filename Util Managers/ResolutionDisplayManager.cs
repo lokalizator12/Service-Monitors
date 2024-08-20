@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace changeResolution1
 {
-    internal class ResolutionDisplayManager
+    public class ResolutionDisplayManager
     {
         private const int DISP_CHANGE_SUCCESSFUL = 0;
         private const int CDS_UPDATEREGISTRY = 0x01;
@@ -87,7 +87,8 @@ namespace changeResolution1
             if (result != DISP_CHANGE_SUCCESSFUL)
             {
                 MessageBox.Show($"Failed to change display settings. Error code: {result}");
-            }}
+            }
+        }
 
         public (int Width, int Height) GetMaxResolution(string displayIdentifier)
         {

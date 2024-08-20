@@ -117,4 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="buttonServiceFixPixel" xml:space="preserve">
+    <value>Ремонт битих пікселів</value>
+  </data>
+  <data name="buttonTestingMonitor" xml:space="preserve">
+    <value>Тестування монітора</value>
+  </data>
+  <data name="checkBoxAutoShow" xml:space="preserve">
+    <value>Автоматично показувати інформацію за серійним номером (тільки для одного монітора)</value>
+  </data>
+  <data name="checkBoxSaveLanguage" xml:space="preserve">
+    <value>Зберегти мову</value>
+  </data>
+  <data name="Form1" xml:space="preserve">
+    <value>Інформація про монітор</value>
+  </data>
+  <data name="fullInfoPage" xml:space="preserve">
+    <value>Показати повну інформацію</value>
+  </data>
+  <data name="labelAsCable" xml:space="preserve">
+    <value>Кабель:</value>
+  </data>
+  <data name="labelAsClass" xml:space="preserve">
+    <value>Клас:</value>
+  </data>
+  <data name="labelAsCleaned" xml:space="preserve">
+    <value>Очищено?:</value>
+  </data>
+  <data name="labelAsCountry" xml:space="preserve">
+    <value>Країна:</value>
+  </data>
+  <data name="labelAsDIagHW" xml:space="preserve">
+    <value>Діагональ (H\W):</value>
+  </data>
+  <data name="labelAsDiagonal" xml:space="preserve">
+    <value>Діагональ:</value>
+  </data>
+  <data name="labelAsManufact" xml:space="preserve">
+    <value>Виробник:</value>
+  </data>
+  <data name="labelAsModel" xml:space="preserve">
+    <value>Модель:</value>
+  </data>
+  <data name="labelAsMonth" xml:space="preserve">
+    <value>Місяць:</value>
+  </data>
+  <data name="labelAsPicture" xml:space="preserve">
+    <value>Знято на фото?:</value>
+  </data>
+  <data name="labelAsPlace" xml:space="preserve">
+    <value>Місце:</value>
+  </data>
+  <data name="labelAsProductId" xml:space="preserve">
+    <value>Код продукту:</value>
+  </data>
+  <data name="labelAsResolution" xml:space="preserve">
+    <value>Роздільна здатність:</value>
+  </data>
+  <data name="labelAsSerial" xml:space="preserve">
+    <value>Серійний номер:</value>
+  </data>
+  <data name="labelAssetCleaner1" xml:space="preserve">
+    <value>Очисник:</value>
+  </data>
+  <data name="labelAsTested" xml:space="preserve">
+    <value>Протестовано?:</value>
+  </data>
+  <data name="labelAsTester" xml:space="preserve">
+    <value>Тестер:</value>
+  </data>
+  <data name="labelAsYear" xml:space="preserve">
+    <value>Рік:</value>
+  </data>
+  <data name="labelCountry" xml:space="preserve">
+    <value>Країна:</value>
+  </data>
+  <data name="labelDiagonal" xml:space="preserve">
+    <value>Діагональ (H\W):</value>
+  </data>
+  <data name="labelFrequency" xml:space="preserve">
+    <value>Частота:</value>
+  </data>
+  <data name="labelManufacturer" xml:space="preserve">
+    <value>Виробник:</value>
+  </data>
+  <data name="labelModel" xml:space="preserve">
+    <value>Модель:</value>
+  </data>
+  <data name="labelMonitor" xml:space="preserve">
+    <value>Дисплей</value>
+  </data>
+  <data name="labelMonth" xml:space="preserve">
+    <value>Місяць:</value>
+  </data>
+  <data name="labelPPI" xml:space="preserve">
+    <value>PPI:</value>
+  </data>
+  <data name="labelProductCode" xml:space="preserve">
+    <value>Код продукту:</value>
+  </data>
+  <data name="labelSerial" xml:space="preserve">
+    <value>Серійний номер:</value>
+  </data>
+  <data name="LabelSerialNo" xml:space="preserve">
+    <value>Серійний номер:</value>
+  </data>
+  <data name="labelSize" xml:space="preserve">
+    <value>Розмір монітора (см.):</value>
+  </data>
+  <data name="labelYear" xml:space="preserve">
+    <value>Рік:</value>
+  </data>
+  <data name="lableChanRes" xml:space="preserve">
+    <value>Змінити роздільну здатність</value>
+  </data>
+  <data name="ResolutionLabel" xml:space="preserve">
+    <value>Роздільна здатність:</value>
+  </data>
+  <data name="resolutionPage" xml:space="preserve">
+    <value>Роздільна здатність</value>
+  </data>
+  <data name="searchInfoPage" xml:space="preserve">
+    <value>Пошук інформації</value>
+  </data>
+  <data name="SetMaxResolution" xml:space="preserve">
+    <value>Встановити макс. роздільну здатність</value>
+  </data>
+  <data name="SetResolution" xml:space="preserve">
+    <value>Встановити роздільну здатність</value>
+  </data>
+  <data name="showInfoPage" xml:space="preserve">
+    <value>Показати інформацію</value>
+  </data>
+  <data name="tabPageMain" xml:space="preserve">
+    <value>Головна</value>
+  </data>
+  <data name="testMonitorPage" xml:space="preserve">
+    <value>Обслуговування</value>
+  </data>
 </root>

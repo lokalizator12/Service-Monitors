@@ -117,13 +117,142 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="colorDialog2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>114, 17</value>
-  </metadata>
-  <metadata name="colorChangeTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>235, 17</value>
-  </metadata>
+  <data name="buttonServiceFixPixel" xml:space="preserve">
+    <value>Рамонт бітых пікселяў</value>
+  </data>
+  <data name="buttonTestingMonitor" xml:space="preserve">
+    <value>Тэставанне манітора</value>
+  </data>
+  <data name="checkBoxAutoShow" xml:space="preserve">
+    <value>Аўтаматычна паказваць інфармацыю па серыйным нумары (толькі для аднаго манітора)</value>
+  </data>
+  <data name="checkBoxSaveLanguage" xml:space="preserve">
+    <value>Захаваць мову</value>
+  </data>
+  <data name="Form1" xml:space="preserve">
+    <value>Інфармацыя пра манітор</value>
+  </data>
+  <data name="fullInfoPage" xml:space="preserve">
+    <value>Паказаць поўную інфармацыю</value>
+  </data>
+  <data name="labelAsCable" xml:space="preserve">
+    <value>Кабель:</value>
+  </data>
+  <data name="labelAsClass" xml:space="preserve">
+    <value>Клас:</value>
+  </data>
+  <data name="labelAsCleaned" xml:space="preserve">
+    <value>Ачыстка?:</value>
+  </data>
+  <data name="labelAsCountry" xml:space="preserve">
+    <value>Краіна:</value>
+  </data>
+  <data name="labelAsDIagHW" xml:space="preserve">
+    <value>Дыяганаль (H\W):</value>
+  </data>
+  <data name="labelAsDiagonal" xml:space="preserve">
+    <value>Дыяганаль:</value>
+  </data>
+  <data name="labelAsManufact" xml:space="preserve">
+    <value>Вытворца:</value>
+  </data>
+  <data name="labelAsModel" xml:space="preserve">
+    <value>Мадэль:</value>
+  </data>
+  <data name="labelAsMonth" xml:space="preserve">
+    <value>Месяц:</value>
+  </data>
+  <data name="labelAsPicture" xml:space="preserve">
+    <value>Зроблены здымак?:</value>
+  </data>
+  <data name="labelAsPlace" xml:space="preserve">
+    <value>Месца:</value>
+  </data>
+  <data name="labelAsProductId" xml:space="preserve">
+    <value>Код прадукту:</value>
+  </data>
+  <data name="labelAsResolution" xml:space="preserve">
+    <value>Дазвол:</value>
+  </data>
+  <data name="labelAsSerial" xml:space="preserve">
+    <value>Серыйны нумар:</value>
+  </data>
+  <data name="labelAssetCleaner1" xml:space="preserve">
+    <value>Ачышчальнік:</value>
+  </data>
+  <data name="labelAsTested" xml:space="preserve">
+    <value>Пратэставана?:</value>
+  </data>
+  <data name="labelAsTester" xml:space="preserve">
+    <value>Тэстар:</value>
+  </data>
+  <data name="labelAsYear" xml:space="preserve">
+    <value>Год:</value>
+  </data>
+  <data name="labelCountry" xml:space="preserve">
+    <value>Краіна:</value>
+  </data>
+  <data name="labelDiagonal" xml:space="preserve">
+    <value>Дыяганаль (H\W):</value>
+  </data>
+  <data name="labelFrequency" xml:space="preserve">
+    <value>Частата:</value>
+  </data>
+  <data name="labelManufacturer" xml:space="preserve">
+    <value>Вытворца:</value>
+  </data>
+  <data name="labelModel" xml:space="preserve">
+    <value>Мадэль:</value>
+  </data>
+  <data name="labelMonitor" xml:space="preserve">
+    <value>Манітор</value>
+  </data>
+  <data name="labelMonth" xml:space="preserve">
+    <value>Месяц:</value>
+  </data>
+  <data name="labelPPI" xml:space="preserve">
+    <value>PPI:</value>
+  </data>
+  <data name="labelProductCode" xml:space="preserve">
+    <value>Код прадукту:</value>
+  </data>
+  <data name="labelSerial" xml:space="preserve">
+    <value>Серыйны нумар:</value>
+  </data>
+  <data name="LabelSerialNo" xml:space="preserve">
+    <value>Серыйны нумар:</value>
+  </data>
+  <data name="labelSize" xml:space="preserve">
+    <value>Памер манітора (см.):</value>
+  </data>
+  <data name="labelYear" xml:space="preserve">
+    <value>Год:</value>
+  </data>
+  <data name="lableChanRes" xml:space="preserve">
+    <value>Змяніць разрозненне</value>
+  </data>
+  <data name="ResolutionLabel" xml:space="preserve">
+    <value>Разрозненне:</value>
+  </data>
+  <data name="resolutionPage" xml:space="preserve">
+    <value>Разрозненне</value>
+  </data>
+  <data name="searchInfoPage" xml:space="preserve">
+    <value>Пошук інфармацыі</value>
+  </data>
+  <data name="SetMaxResolution" xml:space="preserve">
+    <value>Усталяваць макс.разрозненне</value>
+  </data>
+  <data name="SetResolution" xml:space="preserve">
+    <value>Усталяваць дазвол</value>
+  </data>
+  <data name="showInfoPage" xml:space="preserve">
+    <value>Паказаць інфармацыю</value>
+  </data>
+  <data name="tabPageMain" xml:space="preserve">
+    <value>Галоўная</value>
+  </data>
+  <data name="testMonitorPage" xml:space="preserve">
+    <value>Абслугоўванне</value>
+  </data>
 </root>

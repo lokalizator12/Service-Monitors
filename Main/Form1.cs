@@ -2,6 +2,9 @@
 using MaterialSkin.Controls;
 using Microsoft.Win32;
 using ServiceMonitorEVK.Database;
+using ServiceMonitorEVK.Localization;
+using ServiceMonitorEVK.Properties;
+using ServiceMonitorEVK.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,21 +21,26 @@ namespace changeResolution1
         private ResolutionDisplayManager resolutionManager;
         private Dictionary<string, string> monitorNameToIdentifierMap;
         private readonly MaterialSkinManager materialSkinManager;
+        private readonly UIUtil _formAnimator;
         MonitorInfo[] monitors;
 
         MonitorInfoForm monitorInfo;
         internal bool isMonitorFormExist = false;
         private int colorSchemeIndex;
         internal bool isUpdatingComboBox = false;
+        internal string tester = "Anon";
 
-        public Form1()
+        public Form1(string testerFromMain)
         {
+
             InitializeComponent();
+            _formAnimator = new UIUtil(this);
+            _formAnimator.StartOpening();
             displayManager = new DisplayManager();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
             databaseManager = new DatabaseManager("localhost", "root", "moodle", "admin_asset");
-
+            LocalizationHelper.ApplyLocalization(this);
             ///////////////////////
             materialSkinManager = MaterialSkinManager.Instance;
             InitizializeCustomForm();
@@ -40,7 +48,11 @@ namespace changeResolution1
             FillMonitorComboBox();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             SetMaxResolutionForAllMonitors();
+            tester = textBoxTester.Text = mainLabelTester.Text = testerFromMain;
+
         }
+
+
         private void OnDisplaySettingsChanged(object sender, EventArgs e)
         {
             FillMonitorComboBox();
@@ -225,7 +237,7 @@ namespace changeResolution1
                 DialogResult result = materialDialog.ShowDialog(this);
                 if (result == DialogResult.OK)
                 {
-                    this.Close();
+                    _formAnimator.StartClosing();
                 }
                 return true;
             }
@@ -245,7 +257,6 @@ namespace changeResolution1
 
         private void updateColor()
         {
-            //These are just example color schemes
             switch (colorSchemeIndex)
             {
                 case 0:
@@ -413,11 +424,17 @@ namespace changeResolution1
 
         private void textBoxTester_TextChanged(object sender, EventArgs e)
         {
-            if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
+            if (textBoxTester.Text.Length == 2)
             {
-                monitors[materialComboBoxMonitors.SelectedIndex].TesterInitials = textBoxTester.Text;
-                if (textBoxTester.Text.Length == 2) ShowSnackbar("Initials inited succesfully");
+               /* if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
+                {
+                    monitors[materialComboBoxMonitors.SelectedIndex].TesterInitials = textBoxTester.Text;
+                }*/
+                mainLabelTester.Text = textBoxTester.Text;
+                ShowSnackbar("Initials inited succesfully");
+
             }
+
         }
 
         private void materialSliderOpasity_onValueChanged(object sender, int newValue)
@@ -575,7 +592,7 @@ namespace changeResolution1
 
         private void ShowSnackbar(string message)
         {
-            var snackbar = new MaterialSnackBar(message, 3000);
+            var snackbar = new MaterialSnackBar(message, 1000);
             snackbar.Show(this);
         }
 
@@ -619,7 +636,7 @@ namespace changeResolution1
 
         private void CheckBoxDVI_CheckedChanged(object sender, EventArgs e)
         {
-            numericUpDownDvi.Enabled = checkBoxDisplayPort.Checked ? true : false;
+            numericUpDownDvi.Enabled = checkBoxDVI.Checked ? true : false;
         }
 
         private void CheckboxVGA_CheckedChanged(object sender, EventArgs e)
@@ -631,8 +648,100 @@ namespace changeResolution1
         {
             numericUpDownHdmi.Enabled = checkBoxHDMI.Checked ? true : false;
         }
+
+      
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (checkBoxSaveLanguage.Checked)
+            {
+                UserSettingsManager.SetPreferredLanguage(LocalizationManager.Instance.GetCurrentCulture().Name);
+            }
+            _formAnimator.StartClosing();
+        }
+
+        private void SetLanguage(string cultureCode)
+        {
+            var currentCulture = LocalizationManager.Instance.GetCurrentCulture().Name;
+
+            if (currentCulture != cultureCode)
+            {
+                LocalizationManager.Instance.SetLanguage(cultureCode);
+
+                checkBoxSaveLanguage.Enabled = true;
+            }
+            else
+            {
+                checkBoxSaveLanguage.Enabled = false;
+            }
+
+            LocalizationHelper.ApplyLocalization(this);
+        }
+
+        private void picturePlLang_Click(object sender, EventArgs e)
+        {
+            SetLanguage("pl-PL");
+        }
+
+        private void pictureUSEng_Click(object sender, EventArgs e)
+        {
+            SetLanguage("en-US");
+        }
+
+        private void pictureBox36_Click(object sender, EventArgs e)
+        {
+            SetLanguage("uk-UA");
+        }
+
+        private void rusLang_Click(object sender, EventArgs e)
+        {
+            SetLanguage("ru-RU");
+        }
+
+        private void pictureBox37_Click(object sender, EventArgs e)
+        {
+            SetLanguage("be-BY");
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            var preferredLanguage = UserSettingsManager.GetPreferredLanguage();
+
+            if (string.IsNullOrEmpty(preferredLanguage))
+            {
+                preferredLanguage = "pl-PL";
+                UserSettingsManager.SetPreferredLanguage(preferredLanguage);
+            }
+
+            SetLanguage(preferredLanguage);
+        }
+
+        private void textBoxTester_Leave(object sender, EventArgs e)
+        {
+            if (textBoxTester.Text.Length < 2)
+            {
+                textBoxTester.Text = tester;
+            }
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            Application.Exit(); 
+        }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            if (this.Opacity > 0) 
+            {
+                e.Cancel = true;
+                _formAnimator.StartClosing();
+            }
+            else
+            {
+                base.OnFormClosing(e); 
+            }
+        }
+
     }
-
-
 }
 

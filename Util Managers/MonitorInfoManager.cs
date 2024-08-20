@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace changeResolution1
 {
-    internal class MonitorInfoManager
+    public class MonitorInfoManager
     {
 
         private int resolutionWidth;
@@ -90,7 +90,7 @@ namespace changeResolution1
             return stringBuilder.ToString();
         }
 
-       
+
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct DISPLAY_DEVICE
@@ -542,9 +542,10 @@ namespace changeResolution1
             {
                 MessageBox.Show("An error occurred while querying for WMI data: " + ex.Message);
             }
-            foreach (string fr in friendlyNames) { 
-            Console.WriteLine("frendly names list:" + fr);
-        }
+            foreach (string fr in friendlyNames)
+            {
+                Console.WriteLine("frendly names list:" + fr);
+            }
             return friendlyNames;
         }
         public string GetIdentifierFromFriendlyName(string friendlyName)

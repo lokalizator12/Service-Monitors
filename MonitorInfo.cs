@@ -108,7 +108,7 @@ namespace changeResolution1
             Identifier = "DISPLAY";
             IdEVK = "";
             TesterInitials = "";
-            Country = "";  
+            Country = "";
             CableTypes = "";
         }
 

@@ -35,8 +35,7 @@ namespace ServiceMonitorEVK.Database
 
                     while (reader.Read())
                     {
-                        Console.WriteLine("CzyCzyszczony: " + reader["CzyCzyszczony"].ToString());
-                        Console.WriteLine("CzyszczenieData: " + reader["CzyszczenieData"].ToString());
+                       
 
                         string czyszczenieData = "No Data";
                         if (reader["CzyCzyszczony"].ToString().Equals("Yes"))
@@ -112,27 +111,41 @@ namespace ServiceMonitorEVK.Database
 
             var cmd = new NpgsqlCommand();
             cmd.Connection = connection;
-
+            Console.WriteLine("233");
             cmd.CommandText = @"
 INSERT INTO monitors (manufacturer, model, year_of_production, month_of_production, product_code_id, diagonal_hw, diagonal_res, serial_number, frequency, size_monitor, resolution, ppi, id_evk, tester_initials, country, cable_types)
 VALUES (@manufacturer, @model, @year_of_production, @month_of_production, @product_code_id, @diagonal_hw, @diagonal_res, @serial_number, @frequency, @size_monitor, @resolution, @ppi, @id_evk, @tester_initials, @country, @cable_types)";
-
+            Console.WriteLine("234233");
             cmd.Parameters.AddWithValue("manufacturer", monitorInfo.Manufacturer);
+            Console.WriteLine("234233");
             cmd.Parameters.AddWithValue("model", monitorInfo.Model);
+            Console.WriteLine("234233");
             cmd.Parameters.AddWithValue("year_of_production", int.Parse(monitorInfo.YearOfProduction));
+            Console.WriteLine("234233");
             cmd.Parameters.AddWithValue("month_of_production", int.Parse(monitorInfo.MonthOfProduction));
+            Console.WriteLine("234233");
             cmd.Parameters.AddWithValue("product_code_id", monitorInfo.ProductCodeID);
+            Console.WriteLine("234233");
             cmd.Parameters.AddWithValue("diagonal_hw", Convert.ToDecimal(monitorInfo.Diagonal1));
+            Console.WriteLine("234233q");
             cmd.Parameters.AddWithValue("diagonal_res", Convert.ToDecimal(monitorInfo.Diagonal2));
+            Console.WriteLine("2342331w");
             cmd.Parameters.AddWithValue("serial_number", monitorInfo.SerialNumber);
+            Console.WriteLine("23423w3");
             cmd.Parameters.AddWithValue("frequency", monitorInfo.Frequency);
+            Console.WriteLine("23423w253");
             cmd.Parameters.AddWithValue("size_monitor", monitorInfo.SizeMonitor);
+            Console.WriteLine("23423sdfds3");
             cmd.Parameters.AddWithValue("resolution", monitorInfo.Resolution);
+            Console.WriteLine("2342331111111");
             cmd.Parameters.AddWithValue("ppi", Convert.ToDecimal(monitorInfo.PPI));
+            Console.WriteLine("23423gdfg3");
             cmd.Parameters.AddWithValue("country", monitorInfo.Country);
+            Console.WriteLine("234233eeeeeee");
             cmd.Parameters.AddWithValue("cable_types", monitorInfo.CableTypes);
+            Console.WriteLine("23423ddddddddd3");
             cmd.Parameters.AddWithValue("tester_initials", monitorInfo.TesterInitials);
-
+            Console.WriteLine("23423234asd3");
 
             if (!string.IsNullOrEmpty(monitorInfo.TesterInitials))
             {
@@ -150,7 +163,7 @@ VALUES (@manufacturer, @model, @year_of_production, @month_of_production, @produ
             {
                 cmd.Parameters.AddWithValue("id_evk", DBNull.Value);
             }
-
+            Console.WriteLine("234233");
             await cmd.ExecuteNonQueryAsync();
         }
     }

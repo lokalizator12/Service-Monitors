@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace changeResolution1
 {
-    internal class DisplayManager
+    public class DisplayManager
     {
         private const int DM_POSITION = 0x00000020;
         private const int DM_PELSHEIGHT = 0x00100000;
