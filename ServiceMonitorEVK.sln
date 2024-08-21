@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceMonitorEVK", "Servic
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8970A153-853A-4103-B29E-A575EDA134B3}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "..\Setup1\Setup1.vdproj", "{CB0E8BE2-324B-4D51-9C0E-61982E64F61C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,9 @@ Global
 		{3FA8920D-FAB2-4666-91A3-0F7269A95B0F}.h|Any CPU.Build.0 = Release|Any CPU
 		{3FA8920D-FAB2-4666-91A3-0F7269A95B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FA8920D-FAB2-4666-91A3-0F7269A95B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB0E8BE2-324B-4D51-9C0E-61982E64F61C}.Debug|Any CPU.ActiveCfg = Debug
+		{CB0E8BE2-324B-4D51-9C0E-61982E64F61C}.h|Any CPU.ActiveCfg = Debug
+		{CB0E8BE2-324B-4D51-9C0E-61982E64F61C}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

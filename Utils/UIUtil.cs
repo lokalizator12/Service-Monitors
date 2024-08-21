@@ -1,32 +1,26 @@
-﻿using changeResolution1;
+﻿using System;
+using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ServiceMonitorEVK.Utils
 {
-    internal class UIUtil : MaterialForm
+    internal class UiUtil : MaterialForm
     {
-        private int colorSchemeIndex;
+        private readonly Timer animationTimer;
+
+
+        private readonly Form form;
         private readonly MaterialSkinManager materialSkinManager;
-
-
-        private readonly Form _form;
-        private readonly Timer _animationTimer;
         private bool _isClosing;
+        private int colorSchemeIndex;
 
-        public UIUtil(MaterialForm form)
+        public UiUtil(MaterialForm form)
         {
-            _form = form;
-            _animationTimer = new Timer();
-            _animationTimer.Interval = 20; // Интервал обновления таймера в миллисекундах
-            _animationTimer.Tick += AnimationTimer_Tick;
+            this.form = form;
+            animationTimer = new Timer();
+            animationTimer.Interval = 20; // Интервал обновления таймера в миллисекундах
+            animationTimer.Tick += AnimationTimer_Tick;
         }
 
         /* public UIUtil(MaterialForm form)
@@ -39,98 +33,93 @@ namespace ServiceMonitorEVK.Utils
  */
         public void StartOpening()
         {
-            _form.Opacity = 0;
+            form.Opacity = 0;
             _isClosing = false;
-            _animationTimer.Start();
+            animationTimer.Start();
         }
 
         public void StartClosing()
         {
             _isClosing = true;
-            _animationTimer.Start();
+            animationTimer.Start();
         }
 
         private void AnimationTimer_Tick(object sender, EventArgs e)
         {
             if (_isClosing)
             {
-                if (_form.Opacity > 0)
+                if (form.Opacity > 0)
                 {
-                    _form.Opacity -= 0.08; 
+                    form.Opacity -= 0.08;
                 }
                 else
                 {
-                    _animationTimer.Stop();
-                    _form.Close();
+                    animationTimer.Stop();
+                    form.Close();
                 }
             }
             else
             {
-                if (_form.Opacity < 1)
-                {
-                    _form.Opacity += 0.05; 
-                }
+                if (form.Opacity < 1)
+                    form.Opacity += 0.05;
                 else
-                {
-                    _animationTimer.Stop();
-                }
+                    animationTimer.Stop();
             }
         }
 
         private void checkTheme(MaterialSwitch switchTheme)
         {
-           /* if (switchTheme.Checked)
-            {
-                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-                pictureBoxLogo.BackColor = Color.Black;
+            /* if (switchTheme.Checked)
+             {
+                 materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
+                 pictureBoxLogo.BackColor = Color.Black;
 
-            }
-            else
-            {
-                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-                pictureBoxLogo.BackColor = Color.White;
-            }
-            updateColor();*/
+             }
+             else
+             {
+                 materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+                 pictureBoxLogo.BackColor = Color.White;
+             }
+             updateColor();*/
         }
+
         private void updateColor(Form form)
         {
-           /* switch (colorSchemeIndex)
-            {
-                case 0:
-                    materialSkinManager.ColorScheme = new ColorScheme(
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
-                        Accent.Red400,
-                        TextShade.WHITE);
-                     form.pictureBoxLogo.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
-                ? Color.FromArgb(0x21, 0x21, 0x21)
-                : Color.FromArgb(0x37, 0x47, 0x4F);
-                    break;
+            /* switch (colorSchemeIndex)
+             {
+                 case 0:
+                     materialSkinManager.ColorScheme = new ColorScheme(
+                         materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
+                         materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
+                         materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
+                         Accent.Red400,
+                         TextShade.WHITE);
+                      form.pictureBoxLogo.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                 ? Color.FromArgb(0x21, 0x21, 0x21)
+                 : Color.FromArgb(0x37, 0x47, 0x4F);
+                     break;
 
-                case 1:
-                    materialSkinManager.ColorScheme = new ColorScheme(
-                        Primary.Green600,
-                        Primary.Green700,
-                        Primary.Green200,
-                        Accent.Red100,
-                        TextShade.WHITE);
-                    pictureBoxLogo.BackColor = Color.Blue;
-                    break;
+                 case 1:
+                     materialSkinManager.ColorScheme = new ColorScheme(
+                         Primary.Green600,
+                         Primary.Green700,
+                         Primary.Green200,
+                         Accent.Red100,
+                         TextShade.WHITE);
+                     pictureBoxLogo.BackColor = Color.Blue;
+                     break;
 
-                case 2:
-                    materialSkinManager.ColorScheme = new ColorScheme(
-                        Primary.BlueGrey800,
-                        Primary.BlueGrey900,
-                        Primary.BlueGrey500,
-                        Accent.LightBlue200,
-                        TextShade.WHITE);
-                    pictureBoxLogo.BackColor = Color.White;
-                    break;
-            }
-            Invalidate();*/
+                 case 2:
+                     materialSkinManager.ColorScheme = new ColorScheme(
+                         Primary.BlueGrey800,
+                         Primary.BlueGrey900,
+                         Primary.BlueGrey500,
+                         Accent.LightBlue200,
+                         TextShade.WHITE);
+                     pictureBoxLogo.BackColor = Color.White;
+                     break;
+             }
+             Invalidate();*/
         }
-
-
     }
 }

@@ -1,9 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System;
+﻿using System.Windows.Forms;
 using MaterialSkin.Controls;
 
-namespace changeResolution1
+namespace ServiceMonitorEVK.Main
 {
     partial class Form1
     {
@@ -114,19 +112,6 @@ namespace changeResolution1
             this.materialCard2 = new MaterialSkin.Controls.MaterialCard();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.checkBoxHDMI = new MaterialSkin.Controls.MaterialCheckbox();
-            this.numericUpDownHdmi = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
-            this.checkBoxVGA = new MaterialSkin.Controls.MaterialCheckbox();
-            this.numericUpDownVga = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
-            this.checkBoxDisplayPort = new MaterialSkin.Controls.MaterialCheckbox();
-            this.numericUpDownDisplayPort = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
-            this.checkBoxDVI = new MaterialSkin.Controls.MaterialCheckbox();
-            this.numericUpDownDvi = new System.Windows.Forms.NumericUpDown();
             this.comboBoxCountry = new MaterialSkin.Controls.MaterialComboBox();
             this.materialCheckbox6 = new MaterialSkin.Controls.MaterialCheckbox();
             this.pictureBox21 = new System.Windows.Forms.PictureBox();
@@ -182,6 +167,19 @@ namespace changeResolution1
             this.materialLabelYearOfProduction = new MaterialSkin.Controls.MaterialLabel();
             this.materialCheckbox3 = new MaterialSkin.Controls.MaterialCheckbox();
             this.materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
+            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBoxHDMI = new MaterialSkin.Controls.MaterialCheckbox();
+            this.numericUpDownHdmi = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBoxVGA = new MaterialSkin.Controls.MaterialCheckbox();
+            this.numericUpDownVga = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBoxDisplayPort = new MaterialSkin.Controls.MaterialCheckbox();
+            this.numericUpDownDisplayPort = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel5 = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBoxDVI = new MaterialSkin.Controls.MaterialCheckbox();
+            this.numericUpDownDvi = new System.Windows.Forms.NumericUpDown();
             this.sendButton = new MaterialSkin.Controls.MaterialButton();
             this.materialComboBoxMonitors = new MaterialSkin.Controls.MaterialComboBox();
             this.materialButton1 = new MaterialSkin.Controls.MaterialButton();
@@ -252,15 +250,6 @@ namespace changeResolution1
             this.materialCard2.SuspendLayout();
             this.flowLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.flowLayoutPanel7.SuspendLayout();
-            this.flowLayoutPanel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHdmi)).BeginInit();
-            this.flowLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownVga)).BeginInit();
-            this.flowLayoutPanel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDisplayPort)).BeginInit();
-            this.flowLayoutPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDvi)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchAssetButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox29)).BeginInit();
@@ -276,6 +265,15 @@ namespace changeResolution1
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox24)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox33)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox25)).BeginInit();
+            this.flowLayoutPanel7.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHdmi)).BeginInit();
+            this.flowLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownVga)).BeginInit();
+            this.flowLayoutPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDisplayPort)).BeginInit();
+            this.flowLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDvi)).BeginInit();
             this.testMonitorPage.SuspendLayout();
             this.resolutionPage.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -358,7 +356,6 @@ namespace changeResolution1
             this.ResolutionComboBox.StartIndex = 0;
             this.ResolutionComboBox.TabIndex = 27;
             this.ResolutionComboBox.UseTallSize = false;
-            this.ResolutionComboBox.SelectedIndexChanged += new System.EventHandler(this.ResolutionComboBox_SelectedIndexChanged);
             // 
             // SetMaxResolution
             // 
@@ -419,7 +416,7 @@ namespace changeResolution1
             this.materialTabControl1.Multiline = true;
             this.materialTabControl1.Name = "materialTabControl1";
             this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(1419, 735);
+            this.materialTabControl1.Size = new System.Drawing.Size(1451, 813);
             this.materialTabControl1.TabIndex = 35;
             // 
             // tabPageMain
@@ -429,17 +426,16 @@ namespace changeResolution1
             this.tabPageMain.Location = new System.Drawing.Point(4, 39);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMain.Size = new System.Drawing.Size(1411, 692);
+            this.tabPageMain.Size = new System.Drawing.Size(1443, 770);
             this.tabPageMain.TabIndex = 7;
             this.tabPageMain.Text = "Main";
             this.tabPageMain.UseVisualStyleBackColor = true;
             // 
             // materialCard4
             // 
-            this.materialCard4.AutoSize = true;
             this.materialCard4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.materialCard4.Controls.Add(this.materialSliderOpasity);
             this.materialCard4.Controls.Add(this.materialCard5);
+            this.materialCard4.Controls.Add(this.materialSliderOpasity);
             this.materialCard4.Controls.Add(this.materialCheckbox1);
             this.materialCard4.Controls.Add(this.materialSwitch1);
             this.materialCard4.Controls.Add(this.textBoxTester);
@@ -452,14 +448,14 @@ namespace changeResolution1
             this.materialCard4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialCard4.Name = "materialCard4";
             this.materialCard4.Padding = new System.Windows.Forms.Padding(14);
-            this.materialCard4.Size = new System.Drawing.Size(617, 426);
+            this.materialCard4.Size = new System.Drawing.Size(677, 426);
             this.materialCard4.TabIndex = 47;
             // 
             // materialSliderOpasity
             // 
             this.materialSliderOpasity.Depth = 0;
             this.materialSliderOpasity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialSliderOpasity.Location = new System.Drawing.Point(245, 369);
+            this.materialSliderOpasity.Location = new System.Drawing.Point(199, 386);
             this.materialSliderOpasity.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialSliderOpasity.Name = "materialSliderOpasity";
             this.materialSliderOpasity.Size = new System.Drawing.Size(231, 40);
@@ -486,7 +482,7 @@ namespace changeResolution1
             this.materialCard5.Controls.Add(this.PlLang);
             this.materialCard5.Depth = 0;
             this.materialCard5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialCard5.Location = new System.Drawing.Point(47, 267);
+            this.materialCard5.Location = new System.Drawing.Point(14, 329);
             this.materialCard5.Margin = new System.Windows.Forms.Padding(14);
             this.materialCard5.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialCard5.Name = "materialCard5";
@@ -582,6 +578,7 @@ namespace changeResolution1
             this.pictureBox36.TabIndex = 47;
             this.pictureBox36.TabStop = false;
             this.pictureBox36.Click += new System.EventHandler(this.pictureBox36_Click);
+            this.pictureBox36.DoubleClick += new System.EventHandler(this.pictureBox36_DoubleClick);
             // 
             // rusLang
             // 
@@ -623,7 +620,7 @@ namespace changeResolution1
             // 
             this.materialCheckbox1.AutoSize = true;
             this.materialCheckbox1.Depth = 0;
-            this.materialCheckbox1.Location = new System.Drawing.Point(38, 165);
+            this.materialCheckbox1.Location = new System.Drawing.Point(14, 165);
             this.materialCheckbox1.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox1.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox1.MouseState = MaterialSkin.MouseState.HOVER;
@@ -642,7 +639,7 @@ namespace changeResolution1
             this.materialSwitch1.Checked = true;
             this.materialSwitch1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialSwitch1.Depth = 0;
-            this.materialSwitch1.Location = new System.Drawing.Point(89, 372);
+            this.materialSwitch1.Location = new System.Drawing.Point(0, 386);
             this.materialSwitch1.Margin = new System.Windows.Forms.Padding(0);
             this.materialSwitch1.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialSwitch1.MouseState = MaterialSkin.MouseState.HOVER;
@@ -664,7 +661,7 @@ namespace changeResolution1
             this.textBoxTester.HideSelection = true;
             this.textBoxTester.Hint = "Initials (AF)";
             this.textBoxTester.LeadingIcon = null;
-            this.textBoxTester.Location = new System.Drawing.Point(202, 45);
+            this.textBoxTester.Location = new System.Drawing.Point(146, 42);
             this.textBoxTester.MaxLength = 2;
             this.textBoxTester.MouseState = MaterialSkin.MouseState.OUT;
             this.textBoxTester.Name = "textBoxTester";
@@ -676,7 +673,7 @@ namespace changeResolution1
             this.textBoxTester.SelectionLength = 0;
             this.textBoxTester.SelectionStart = 0;
             this.textBoxTester.ShortcutsEnabled = true;
-            this.textBoxTester.Size = new System.Drawing.Size(250, 48);
+            this.textBoxTester.Size = new System.Drawing.Size(371, 48);
             this.textBoxTester.TabIndex = 0;
             this.textBoxTester.TabStop = false;
             this.textBoxTester.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -689,7 +686,7 @@ namespace changeResolution1
             // 
             this.checkBoxAutoShow.AutoSize = true;
             this.checkBoxAutoShow.Depth = 0;
-            this.checkBoxAutoShow.Location = new System.Drawing.Point(38, 216);
+            this.checkBoxAutoShow.Location = new System.Drawing.Point(14, 202);
             this.checkBoxAutoShow.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxAutoShow.MouseLocation = new System.Drawing.Point(-1, -1);
             this.checkBoxAutoShow.MouseState = MaterialSkin.MouseState.HOVER;
@@ -705,7 +702,7 @@ namespace changeResolution1
             // 
             this.checkBoxSaveLanguage.AutoSize = true;
             this.checkBoxSaveLanguage.Depth = 0;
-            this.checkBoxSaveLanguage.Location = new System.Drawing.Point(38, 322);
+            this.checkBoxSaveLanguage.Location = new System.Drawing.Point(312, 336);
             this.checkBoxSaveLanguage.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxSaveLanguage.MouseLocation = new System.Drawing.Point(-1, -1);
             this.checkBoxSaveLanguage.MouseState = MaterialSkin.MouseState.HOVER;
@@ -724,7 +721,7 @@ namespace changeResolution1
             this.fullInfoPage.Location = new System.Drawing.Point(4, 39);
             this.fullInfoPage.Name = "fullInfoPage";
             this.fullInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.fullInfoPage.Size = new System.Drawing.Size(1411, 692);
+            this.fullInfoPage.Size = new System.Drawing.Size(1427, 731);
             this.fullInfoPage.TabIndex = 3;
             this.fullInfoPage.Text = "Show full info";
             this.fullInfoPage.Enter += new System.EventHandler(this.tabPage4_Enter);
@@ -770,7 +767,7 @@ namespace changeResolution1
             this.showInfoPage.Location = new System.Drawing.Point(4, 39);
             this.showInfoPage.Name = "showInfoPage";
             this.showInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.showInfoPage.Size = new System.Drawing.Size(1411, 692);
+            this.showInfoPage.Size = new System.Drawing.Size(1427, 731);
             this.showInfoPage.TabIndex = 1;
             this.showInfoPage.Text = "Show info";
             this.showInfoPage.Enter += new System.EventHandler(this.showInfoPage_Enter);
@@ -1794,224 +1791,6 @@ namespace changeResolution1
             this.tableLayoutPanel2.Size = new System.Drawing.Size(462, 585);
             this.tableLayoutPanel2.TabIndex = 80;
             // 
-            // flowLayoutPanel7
-            // 
-            this.tableLayoutPanel2.SetColumnSpan(this.flowLayoutPanel7, 5);
-            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel4);
-            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel6);
-            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel5);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 521);
-            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(456, 61);
-            this.flowLayoutPanel7.TabIndex = 82;
-            // 
-            // flowLayoutPanel3
-            // 
-            this.flowLayoutPanel3.Controls.Add(this.checkBoxHDMI);
-            this.flowLayoutPanel3.Controls.Add(this.numericUpDownHdmi);
-            this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(82, 69);
-            this.flowLayoutPanel3.TabIndex = 80;
-            // 
-            // checkBoxHDMI
-            // 
-            this.checkBoxHDMI.AutoSize = true;
-            this.checkBoxHDMI.Depth = 0;
-            this.checkBoxHDMI.Location = new System.Drawing.Point(0, 0);
-            this.checkBoxHDMI.Margin = new System.Windows.Forms.Padding(0);
-            this.checkBoxHDMI.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.checkBoxHDMI.MouseState = MaterialSkin.MouseState.HOVER;
-            this.checkBoxHDMI.Name = "checkBoxHDMI";
-            this.checkBoxHDMI.ReadOnly = false;
-            this.checkBoxHDMI.Ripple = true;
-            this.checkBoxHDMI.Size = new System.Drawing.Size(75, 37);
-            this.checkBoxHDMI.TabIndex = 0;
-            this.checkBoxHDMI.Text = "HDMI";
-            this.checkBoxHDMI.UseVisualStyleBackColor = true;
-            this.checkBoxHDMI.CheckedChanged += new System.EventHandler(this.checkBoxHDMI_CheckedChanged);
-            // 
-            // numericUpDownHdmi
-            // 
-            this.numericUpDownHdmi.Enabled = false;
-            this.numericUpDownHdmi.Location = new System.Drawing.Point(3, 40);
-            this.numericUpDownHdmi.Maximum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.numericUpDownHdmi.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownHdmi.Name = "numericUpDownHdmi";
-            this.numericUpDownHdmi.Size = new System.Drawing.Size(38, 20);
-            this.numericUpDownHdmi.TabIndex = 119;
-            this.numericUpDownHdmi.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // flowLayoutPanel4
-            // 
-            this.flowLayoutPanel4.Controls.Add(this.checkBoxVGA);
-            this.flowLayoutPanel4.Controls.Add(this.numericUpDownVga);
-            this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(91, 3);
-            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(73, 67);
-            this.flowLayoutPanel4.TabIndex = 81;
-            // 
-            // checkBoxVGA
-            // 
-            this.checkBoxVGA.AutoSize = true;
-            this.checkBoxVGA.Depth = 0;
-            this.checkBoxVGA.Location = new System.Drawing.Point(0, 0);
-            this.checkBoxVGA.Margin = new System.Windows.Forms.Padding(0);
-            this.checkBoxVGA.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.checkBoxVGA.MouseState = MaterialSkin.MouseState.HOVER;
-            this.checkBoxVGA.Name = "checkBoxVGA";
-            this.checkBoxVGA.ReadOnly = false;
-            this.checkBoxVGA.Ripple = true;
-            this.checkBoxVGA.Size = new System.Drawing.Size(66, 37);
-            this.checkBoxVGA.TabIndex = 1;
-            this.checkBoxVGA.Text = "VGA";
-            this.checkBoxVGA.UseVisualStyleBackColor = true;
-            this.checkBoxVGA.CheckedChanged += new System.EventHandler(this.CheckboxVGA_CheckedChanged);
-            // 
-            // numericUpDownVga
-            // 
-            this.numericUpDownVga.Enabled = false;
-            this.numericUpDownVga.Location = new System.Drawing.Point(3, 40);
-            this.numericUpDownVga.Maximum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.numericUpDownVga.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownVga.Name = "numericUpDownVga";
-            this.numericUpDownVga.Size = new System.Drawing.Size(38, 20);
-            this.numericUpDownVga.TabIndex = 121;
-            this.numericUpDownVga.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // flowLayoutPanel6
-            // 
-            this.flowLayoutPanel6.Controls.Add(this.checkBoxDisplayPort);
-            this.flowLayoutPanel6.Controls.Add(this.numericUpDownDisplayPort);
-            this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(170, 3);
-            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(124, 65);
-            this.flowLayoutPanel6.TabIndex = 81;
-            // 
-            // checkBoxDisplayPort
-            // 
-            this.checkBoxDisplayPort.Appearance = System.Windows.Forms.Appearance.Button;
-            this.checkBoxDisplayPort.AutoSize = true;
-            this.checkBoxDisplayPort.BackColor = System.Drawing.Color.Transparent;
-            this.checkBoxDisplayPort.Depth = 0;
-            this.checkBoxDisplayPort.ImageIndex = 0;
-            this.checkBoxDisplayPort.Location = new System.Drawing.Point(0, 0);
-            this.checkBoxDisplayPort.Margin = new System.Windows.Forms.Padding(0);
-            this.checkBoxDisplayPort.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.checkBoxDisplayPort.MouseState = MaterialSkin.MouseState.HOVER;
-            this.checkBoxDisplayPort.Name = "checkBoxDisplayPort";
-            this.checkBoxDisplayPort.ReadOnly = false;
-            this.checkBoxDisplayPort.Ripple = true;
-            this.checkBoxDisplayPort.Size = new System.Drawing.Size(117, 37);
-            this.checkBoxDisplayPort.TabIndex = 3;
-            this.checkBoxDisplayPort.Text = "DisplayPort";
-            this.checkBoxDisplayPort.UseVisualStyleBackColor = false;
-            this.checkBoxDisplayPort.CheckedChanged += new System.EventHandler(this.materialCheckbox17_CheckedChanged);
-            // 
-            // numericUpDownDisplayPort
-            // 
-            this.numericUpDownDisplayPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.numericUpDownDisplayPort.Enabled = false;
-            this.numericUpDownDisplayPort.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.numericUpDownDisplayPort.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.numericUpDownDisplayPort.Location = new System.Drawing.Point(3, 40);
-            this.numericUpDownDisplayPort.Maximum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.numericUpDownDisplayPort.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownDisplayPort.Name = "numericUpDownDisplayPort";
-            this.numericUpDownDisplayPort.Size = new System.Drawing.Size(38, 22);
-            this.numericUpDownDisplayPort.TabIndex = 122;
-            this.numericUpDownDisplayPort.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // flowLayoutPanel5
-            // 
-            this.flowLayoutPanel5.Controls.Add(this.checkBoxDVI);
-            this.flowLayoutPanel5.Controls.Add(this.numericUpDownDvi);
-            this.flowLayoutPanel5.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(300, 3);
-            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(64, 67);
-            this.flowLayoutPanel5.TabIndex = 81;
-            // 
-            // checkBoxDVI
-            // 
-            this.checkBoxDVI.AutoSize = true;
-            this.checkBoxDVI.Depth = 0;
-            this.checkBoxDVI.Location = new System.Drawing.Point(0, 0);
-            this.checkBoxDVI.Margin = new System.Windows.Forms.Padding(0);
-            this.checkBoxDVI.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.checkBoxDVI.MouseState = MaterialSkin.MouseState.HOVER;
-            this.checkBoxDVI.Name = "checkBoxDVI";
-            this.checkBoxDVI.ReadOnly = false;
-            this.checkBoxDVI.Ripple = true;
-            this.checkBoxDVI.Size = new System.Drawing.Size(60, 37);
-            this.checkBoxDVI.TabIndex = 2;
-            this.checkBoxDVI.Text = "DVI";
-            this.checkBoxDVI.UseVisualStyleBackColor = true;
-            this.checkBoxDVI.CheckedChanged += new System.EventHandler(this.CheckBoxDVI_CheckedChanged);
-            // 
-            // numericUpDownDvi
-            // 
-            this.numericUpDownDvi.Enabled = false;
-            this.numericUpDownDvi.Location = new System.Drawing.Point(3, 40);
-            this.numericUpDownDvi.Maximum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this.numericUpDownDvi.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownDvi.Name = "numericUpDownDvi";
-            this.numericUpDownDvi.Size = new System.Drawing.Size(38, 20);
-            this.numericUpDownDvi.TabIndex = 120;
-            this.numericUpDownDvi.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // comboBoxCountry
             // 
             this.comboBoxCountry.AutoResize = false;
@@ -2840,6 +2619,224 @@ namespace changeResolution1
             this.materialLabel13.TabIndex = 53;
             this.materialLabel13.Text = "ID EVK";
             // 
+            // flowLayoutPanel7
+            // 
+            this.tableLayoutPanel2.SetColumnSpan(this.flowLayoutPanel7, 5);
+            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel3);
+            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel4);
+            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel6);
+            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel5);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 521);
+            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
+            this.flowLayoutPanel7.Size = new System.Drawing.Size(456, 61);
+            this.flowLayoutPanel7.TabIndex = 82;
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.checkBoxHDMI);
+            this.flowLayoutPanel3.Controls.Add(this.numericUpDownHdmi);
+            this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(82, 69);
+            this.flowLayoutPanel3.TabIndex = 80;
+            // 
+            // checkBoxHDMI
+            // 
+            this.checkBoxHDMI.AutoSize = true;
+            this.checkBoxHDMI.Depth = 0;
+            this.checkBoxHDMI.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxHDMI.Margin = new System.Windows.Forms.Padding(0);
+            this.checkBoxHDMI.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.checkBoxHDMI.MouseState = MaterialSkin.MouseState.HOVER;
+            this.checkBoxHDMI.Name = "checkBoxHDMI";
+            this.checkBoxHDMI.ReadOnly = false;
+            this.checkBoxHDMI.Ripple = true;
+            this.checkBoxHDMI.Size = new System.Drawing.Size(75, 37);
+            this.checkBoxHDMI.TabIndex = 0;
+            this.checkBoxHDMI.Text = "HDMI";
+            this.checkBoxHDMI.UseVisualStyleBackColor = true;
+            this.checkBoxHDMI.CheckedChanged += new System.EventHandler(this.checkBoxHDMI_CheckedChanged);
+            // 
+            // numericUpDownHdmi
+            // 
+            this.numericUpDownHdmi.Enabled = false;
+            this.numericUpDownHdmi.Location = new System.Drawing.Point(3, 40);
+            this.numericUpDownHdmi.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDownHdmi.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownHdmi.Name = "numericUpDownHdmi";
+            this.numericUpDownHdmi.Size = new System.Drawing.Size(38, 20);
+            this.numericUpDownHdmi.TabIndex = 119;
+            this.numericUpDownHdmi.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // flowLayoutPanel4
+            // 
+            this.flowLayoutPanel4.Controls.Add(this.checkBoxVGA);
+            this.flowLayoutPanel4.Controls.Add(this.numericUpDownVga);
+            this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(91, 3);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(73, 67);
+            this.flowLayoutPanel4.TabIndex = 81;
+            // 
+            // checkBoxVGA
+            // 
+            this.checkBoxVGA.AutoSize = true;
+            this.checkBoxVGA.Depth = 0;
+            this.checkBoxVGA.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxVGA.Margin = new System.Windows.Forms.Padding(0);
+            this.checkBoxVGA.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.checkBoxVGA.MouseState = MaterialSkin.MouseState.HOVER;
+            this.checkBoxVGA.Name = "checkBoxVGA";
+            this.checkBoxVGA.ReadOnly = false;
+            this.checkBoxVGA.Ripple = true;
+            this.checkBoxVGA.Size = new System.Drawing.Size(66, 37);
+            this.checkBoxVGA.TabIndex = 1;
+            this.checkBoxVGA.Text = "VGA";
+            this.checkBoxVGA.UseVisualStyleBackColor = true;
+            this.checkBoxVGA.CheckedChanged += new System.EventHandler(this.CheckboxVGA_CheckedChanged);
+            // 
+            // numericUpDownVga
+            // 
+            this.numericUpDownVga.Enabled = false;
+            this.numericUpDownVga.Location = new System.Drawing.Point(3, 40);
+            this.numericUpDownVga.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDownVga.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownVga.Name = "numericUpDownVga";
+            this.numericUpDownVga.Size = new System.Drawing.Size(38, 20);
+            this.numericUpDownVga.TabIndex = 121;
+            this.numericUpDownVga.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // flowLayoutPanel6
+            // 
+            this.flowLayoutPanel6.Controls.Add(this.checkBoxDisplayPort);
+            this.flowLayoutPanel6.Controls.Add(this.numericUpDownDisplayPort);
+            this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(170, 3);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(124, 65);
+            this.flowLayoutPanel6.TabIndex = 81;
+            // 
+            // checkBoxDisplayPort
+            // 
+            this.checkBoxDisplayPort.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxDisplayPort.AutoSize = true;
+            this.checkBoxDisplayPort.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxDisplayPort.Depth = 0;
+            this.checkBoxDisplayPort.ImageIndex = 0;
+            this.checkBoxDisplayPort.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxDisplayPort.Margin = new System.Windows.Forms.Padding(0);
+            this.checkBoxDisplayPort.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.checkBoxDisplayPort.MouseState = MaterialSkin.MouseState.HOVER;
+            this.checkBoxDisplayPort.Name = "checkBoxDisplayPort";
+            this.checkBoxDisplayPort.ReadOnly = false;
+            this.checkBoxDisplayPort.Ripple = true;
+            this.checkBoxDisplayPort.Size = new System.Drawing.Size(117, 37);
+            this.checkBoxDisplayPort.TabIndex = 3;
+            this.checkBoxDisplayPort.Text = "DisplayPort";
+            this.checkBoxDisplayPort.UseVisualStyleBackColor = false;
+            this.checkBoxDisplayPort.CheckedChanged += new System.EventHandler(this.materialCheckbox17_CheckedChanged);
+            // 
+            // numericUpDownDisplayPort
+            // 
+            this.numericUpDownDisplayPort.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numericUpDownDisplayPort.Enabled = false;
+            this.numericUpDownDisplayPort.Font = new System.Drawing.Font("Yu Gothic UI Semibold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.numericUpDownDisplayPort.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.numericUpDownDisplayPort.Location = new System.Drawing.Point(3, 40);
+            this.numericUpDownDisplayPort.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDownDisplayPort.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownDisplayPort.Name = "numericUpDownDisplayPort";
+            this.numericUpDownDisplayPort.Size = new System.Drawing.Size(38, 22);
+            this.numericUpDownDisplayPort.TabIndex = 122;
+            this.numericUpDownDisplayPort.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // flowLayoutPanel5
+            // 
+            this.flowLayoutPanel5.Controls.Add(this.checkBoxDVI);
+            this.flowLayoutPanel5.Controls.Add(this.numericUpDownDvi);
+            this.flowLayoutPanel5.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(300, 3);
+            this.flowLayoutPanel5.Name = "flowLayoutPanel5";
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(64, 67);
+            this.flowLayoutPanel5.TabIndex = 81;
+            // 
+            // checkBoxDVI
+            // 
+            this.checkBoxDVI.AutoSize = true;
+            this.checkBoxDVI.Depth = 0;
+            this.checkBoxDVI.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxDVI.Margin = new System.Windows.Forms.Padding(0);
+            this.checkBoxDVI.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.checkBoxDVI.MouseState = MaterialSkin.MouseState.HOVER;
+            this.checkBoxDVI.Name = "checkBoxDVI";
+            this.checkBoxDVI.ReadOnly = false;
+            this.checkBoxDVI.Ripple = true;
+            this.checkBoxDVI.Size = new System.Drawing.Size(60, 37);
+            this.checkBoxDVI.TabIndex = 2;
+            this.checkBoxDVI.Text = "DVI";
+            this.checkBoxDVI.UseVisualStyleBackColor = true;
+            this.checkBoxDVI.CheckedChanged += new System.EventHandler(this.CheckBoxDVI_CheckedChanged);
+            // 
+            // numericUpDownDvi
+            // 
+            this.numericUpDownDvi.Enabled = false;
+            this.numericUpDownDvi.Location = new System.Drawing.Point(3, 40);
+            this.numericUpDownDvi.Maximum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this.numericUpDownDvi.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownDvi.Name = "numericUpDownDvi";
+            this.numericUpDownDvi.Size = new System.Drawing.Size(38, 20);
+            this.numericUpDownDvi.TabIndex = 120;
+            this.numericUpDownDvi.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // sendButton
             // 
             this.sendButton.AutoSize = false;
@@ -2918,7 +2915,7 @@ namespace changeResolution1
             this.searchInfoPage.Location = new System.Drawing.Point(4, 39);
             this.searchInfoPage.Name = "searchInfoPage";
             this.searchInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.searchInfoPage.Size = new System.Drawing.Size(1411, 692);
+            this.searchInfoPage.Size = new System.Drawing.Size(1427, 731);
             this.searchInfoPage.TabIndex = 4;
             this.searchInfoPage.Text = "Search info";
             this.searchInfoPage.UseVisualStyleBackColor = true;
@@ -2937,7 +2934,7 @@ namespace changeResolution1
             this.testMonitorPage.Location = new System.Drawing.Point(4, 39);
             this.testMonitorPage.Name = "testMonitorPage";
             this.testMonitorPage.Padding = new System.Windows.Forms.Padding(3);
-            this.testMonitorPage.Size = new System.Drawing.Size(1411, 692);
+            this.testMonitorPage.Size = new System.Drawing.Size(1427, 731);
             this.testMonitorPage.TabIndex = 6;
             this.testMonitorPage.Text = "Service";
             this.testMonitorPage.UseVisualStyleBackColor = true;
@@ -3058,7 +3055,7 @@ namespace changeResolution1
             this.resolutionPage.Location = new System.Drawing.Point(4, 39);
             this.resolutionPage.Name = "resolutionPage";
             this.resolutionPage.Padding = new System.Windows.Forms.Padding(3);
-            this.resolutionPage.Size = new System.Drawing.Size(1411, 692);
+            this.resolutionPage.Size = new System.Drawing.Size(1427, 731);
             this.resolutionPage.TabIndex = 0;
             this.resolutionPage.Text = "Resolution";
             // 
@@ -3069,7 +3066,7 @@ namespace changeResolution1
             this.tabPage6.Location = new System.Drawing.Point(4, 39);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1411, 692);
+            this.tabPage6.Size = new System.Drawing.Size(1427, 731);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Knowlenge base";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -3250,7 +3247,7 @@ namespace changeResolution1
             this.mainLabelTester.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.mainLabelTester.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
             this.mainLabelTester.ForeColor = System.Drawing.Color.Transparent;
-            this.mainLabelTester.Location = new System.Drawing.Point(1386, 0);
+            this.mainLabelTester.Location = new System.Drawing.Point(1418, 0);
             this.mainLabelTester.MouseState = MaterialSkin.MouseState.HOVER;
             this.mainLabelTester.Name = "mainLabelTester";
             this.mainLabelTester.Size = new System.Drawing.Size(30, 24);
@@ -3261,7 +3258,7 @@ namespace changeResolution1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(1311, 0);
+            this.label1.Location = new System.Drawing.Point(1343, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 23);
             this.label1.TabIndex = 43;
@@ -3275,10 +3272,10 @@ namespace changeResolution1
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 775);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 853);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1419, 24);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1451, 24);
             this.flowLayoutPanel1.TabIndex = 47;
             // 
             // flowLayoutPanel2
@@ -3293,7 +3290,7 @@ namespace changeResolution1
             // Form1
             // 
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1425, 802);
+            this.ClientSize = new System.Drawing.Size(1457, 880);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.materialTabControl1);
@@ -3313,7 +3310,6 @@ namespace changeResolution1
             this.Load += new System.EventHandler(this.Form1_Load);
             this.materialTabControl1.ResumeLayout(false);
             this.tabPageMain.ResumeLayout(false);
-            this.tabPageMain.PerformLayout();
             this.materialCard4.ResumeLayout(false);
             this.materialCard4.PerformLayout();
             this.materialCard5.ResumeLayout(false);
@@ -3355,19 +3351,6 @@ namespace changeResolution1
             this.flowLayoutPanel8.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.flowLayoutPanel7.ResumeLayout(false);
-            this.flowLayoutPanel3.ResumeLayout(false);
-            this.flowLayoutPanel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHdmi)).EndInit();
-            this.flowLayoutPanel4.ResumeLayout(false);
-            this.flowLayoutPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownVga)).EndInit();
-            this.flowLayoutPanel6.ResumeLayout(false);
-            this.flowLayoutPanel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDisplayPort)).EndInit();
-            this.flowLayoutPanel5.ResumeLayout(false);
-            this.flowLayoutPanel5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDvi)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.searchAssetButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox29)).EndInit();
@@ -3383,6 +3366,19 @@ namespace changeResolution1
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox24)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox33)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox25)).EndInit();
+            this.flowLayoutPanel7.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHdmi)).EndInit();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownVga)).EndInit();
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDisplayPort)).EndInit();
+            this.flowLayoutPanel5.ResumeLayout(false);
+            this.flowLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDvi)).EndInit();
             this.testMonitorPage.ResumeLayout(false);
             this.resolutionPage.ResumeLayout(false);
             this.resolutionPage.PerformLayout();

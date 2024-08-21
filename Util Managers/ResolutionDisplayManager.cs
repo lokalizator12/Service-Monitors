@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace changeResolution1
+namespace ServiceMonitorEVK.Util_Managers
 {
     public class ResolutionDisplayManager
     {
@@ -14,61 +14,22 @@ namespace changeResolution1
         private const int DM_PELSHEIGHT = 0x100000;
 
         [DllImport("user32.dll")]
-        private static extern int ChangeDisplaySettingsEx(string lpszDeviceName, ref DEVMODE lpDevMode, IntPtr hwnd, int dwflags, IntPtr lParam);
+        private static extern int ChangeDisplaySettingsEx(string lpszDeviceName, ref DEVMODE lpDevMode, IntPtr hwnd,
+            int dwflags, IntPtr lParam);
 
         [DllImport("user32.dll")]
         private static extern bool EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct DEVMODE
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string dmDeviceName;
-            public ushort dmSpecVersion;
-            public ushort dmDriverVersion;
-            public ushort dmSize;
-            public ushort dmDriverExtra;
-            public uint dmFields;
-            public int dmPositionX;
-            public int dmPositionY;
-            public uint dmDisplayOrientation;
-            public uint dmDisplayFixedOutput;
-            public short dmColor;
-            public short dmDuplex;
-            public short dmYResolution;
-            public short dmTTOption;
-            public short dmCollate;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string dmFormName;
-            public ushort dmLogPixels;
-            public uint dmBitsPerPel;
-            public uint dmPelsWidth;
-            public uint dmPelsHeight;
-            public uint dmDisplayFlags;
-            public uint dmDisplayFrequency;
-            public uint dmICMMethod;
-            public uint dmICMIntent;
-            public uint dmMediaType;
-            public uint dmDitherType;
-            public uint dmReserved1;
-            public uint dmReserved2;
-            public uint dmPanningWidth;
-            public uint dmPanningHeight;
-        }
-
         public List<string> GetAvailableResolutions(string displayIdentifier)
         {
             var resolutions = new List<string>();
-            DEVMODE devMode = new DEVMODE();
-            int modeIndex = 0;
+            var devMode = new DEVMODE();
+            var modeIndex = 0;
 
             while (EnumDisplaySettings(displayIdentifier, modeIndex, ref devMode))
             {
-                string resolution = $"{devMode.dmPelsWidth}x{devMode.dmPelsHeight}";
-                if (!resolutions.Contains(resolution))
-                {
-                    resolutions.Add(resolution);
-                }
+                var resolution = $"{devMode.dmPelsWidth}x{devMode.dmPelsHeight}";
+                if (!resolutions.Contains(resolution)) resolutions.Add(resolution);
                 modeIndex++;
             }
 
@@ -77,17 +38,16 @@ namespace changeResolution1
 
         public void SetResolution(string displayIdentifier, int width, int height)
         {
-            DEVMODE devMode = new DEVMODE();
+            var devMode = new DEVMODE();
             devMode.dmSize = (ushort)Marshal.SizeOf(devMode);
             devMode.dmPelsWidth = (uint)width;
             devMode.dmPelsHeight = (uint)height;
             devMode.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
 
-            int result = ChangeDisplaySettingsEx(displayIdentifier, ref devMode, IntPtr.Zero, CDS_UPDATEREGISTRY, IntPtr.Zero);
+            var result = ChangeDisplaySettingsEx(displayIdentifier, ref devMode, IntPtr.Zero, CDS_UPDATEREGISTRY,
+                IntPtr.Zero);
             if (result != DISP_CHANGE_SUCCESSFUL)
-            {
-                MessageBox.Show($"Failed to change display settings. Error code: {result}");
-            }
+                MessageBox.Show($@"Failed to change display settings. Error code: {result}");
         }
 
         public (int Width, int Height) GetMaxResolution(string displayIdentifier)
@@ -113,18 +73,52 @@ namespace changeResolution1
 
         public (int Width, int Height) GetCurrentResolution(string displayIdentifier)
         {
-            DEVMODE devMode = new DEVMODE();
+            var devMode = new DEVMODE();
             devMode.dmSize = (ushort)Marshal.SizeOf(devMode);
 
             if (EnumDisplaySettings(displayIdentifier, -1, ref devMode))
-            {
                 return ((int)devMode.dmPelsWidth, (int)devMode.dmPelsHeight);
-            }
-            else
-            {
-                return (0, 0);
-            }
+            return (0, 0);
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct DEVMODE
+        {
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string dmDeviceName;
+
+            public ushort dmSpecVersion;
+            public ushort dmDriverVersion;
+            public ushort dmSize;
+            public ushort dmDriverExtra;
+            public uint dmFields;
+            public int dmPositionX;
+            public int dmPositionY;
+            public uint dmDisplayOrientation;
+            public uint dmDisplayFixedOutput;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string dmFormName;
+
+            public ushort dmLogPixels;
+            public uint dmBitsPerPel;
+            public uint dmPelsWidth;
+            public uint dmPelsHeight;
+            public uint dmDisplayFlags;
+            public uint dmDisplayFrequency;
+            public uint dmICMMethod;
+            public uint dmICMIntent;
+            public uint dmMediaType;
+            public uint dmDitherType;
+            public uint dmReserved1;
+            public uint dmReserved2;
+            public uint dmPanningWidth;
+            public uint dmPanningHeight;
         }
     }
 }
-

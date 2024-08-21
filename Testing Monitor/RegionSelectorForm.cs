@@ -3,30 +3,35 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace changeResolution1
+namespace ServiceMonitorEVK.Testing_Monitor
 {
     public partial class RegionSelectorForm : Form
     {
-        public List<Rectangle> SelectedRegions { get; private set; } = new List<Rectangle>();
-        private bool isSelecting = false;
+        private bool isSelecting;
         private Point startPoint;
-        private Screen selectedScreen;
 
         public RegionSelectorForm(Screen screen)
         {
             InitializeComponent();
-            this.selectedScreen = screen;
-            this.BackColor = Color.White;
-            this.Opacity = 0.5;
-            this.StartPosition = FormStartPosition.Manual;
-            this.Location = screen.Bounds.Location;
-            this.Size = screen.Bounds.Size;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
-            this.MouseDown += RegionSelectorForm_MouseDown;
-            this.MouseMove += RegionSelectorForm_MouseMove;
-            this.MouseUp += RegionSelectorForm_MouseUp;
+            BackColor = Color.White;
+            Opacity = 0.5;
+            StartPosition = FormStartPosition.Manual;
+            Location = screen.Bounds.Location;
+            Size = screen.Bounds.Size;
+            FormBorderStyle = FormBorderStyle.None;
+            WindowState = FormWindowState.Maximized;
+            MouseDown += RegionSelectorForm_MouseDown;
+            MouseMove += RegionSelectorForm_MouseMove;
+            MouseUp += RegionSelectorForm_MouseUp;
         }
+
+        public sealed override Color BackColor
+        {
+            get => base.BackColor;
+            set => base.BackColor = value;
+        }
+
+        public List<Rectangle> SelectedRegions { get; } = new List<Rectangle>();
 
         private void RegionSelectorForm_MouseDown(object sender, MouseEventArgs e)
         {
@@ -40,14 +45,12 @@ namespace changeResolution1
         private void RegionSelectorForm_MouseMove(object sender, MouseEventArgs e)
         {
             if (isSelecting)
-            {
-                using (Graphics g = this.CreateGraphics())
+                using (var g = CreateGraphics())
                 {
                     g.Clear(Color.White);
-                    Rectangle rect = GetRectangle(startPoint, e.Location);
+                    var rect = GetRectangle(startPoint, e.Location);
                     g.DrawRectangle(Pens.Red, rect);
                 }
-            }
         }
 
         private void RegionSelectorForm_MouseUp(object sender, MouseEventArgs e)
@@ -55,10 +58,10 @@ namespace changeResolution1
             if (isSelecting)
             {
                 isSelecting = false;
-                Rectangle rect = GetRectangle(startPoint, e.Location);
+                var rect = GetRectangle(startPoint, e.Location);
                 SelectedRegions.Add(rect);
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
 

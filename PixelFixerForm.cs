@@ -1,41 +1,42 @@
-﻿using MaterialSkin;
-using MaterialSkin.Controls;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
+using Microsoft.Win32;
+using ServiceMonitorEVK.Main;
+using ServiceMonitorEVK.Testing_Monitor;
+using ServiceMonitorEVK.Util_Managers;
 
-namespace changeResolution1
+namespace ServiceMonitorEVK
 {
     public partial class PixelFixerForm : MaterialForm
     {
-        private bool isFlashing, isSingleColor = false;
-        private Color currentColor = Color.Green;
-        private Overlay monitorForm;
-        Form1 form1;
-        private List<Color> repairColors = new List<Color> { Color.Red, Color.Green, Color.Blue, Color.White, Color.Black };
-        private List<Rectangle> repairRegions = new List<Rectangle>(); // Список областей для ремонта
-        //private ToolTip toolTip;
-        private Stopwatch stopwatch;
-        private Screen selectedScreen;
-        private Dictionary<string, string> monitorNameToIdentifierMap;
-
-        private readonly MaterialSkinManager materialSkinManager;
-        MonitorInfoManager monitorInfoManager;
-
-        private int progressValue = 0;
-        private int totalTimeInMilliseconds;
         private const int MaxTimeInMilliseconds = 24 * 60 * 60 * 1000;
 
-        public PixelFixerForm()
-        {
-            InitializeComponent();
-            stopwatch = new Stopwatch();
-            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
-        }
+        private readonly MaterialSkinManager materialSkinManager;
+        private Color currentColor = Color.Green;
+        private readonly Form1 form1;
+        private bool isFlashing, isSingleColor;
+        private Overlay monitorForm;
+        private readonly MonitorInfoManager monitorInfoManager;
+        private Dictionary<string, string> monitorNameToIdentifierMap;
+
+
+        private List<Color> repairColors = new List<Color>
+            { Color.Red, Color.Green, Color.Blue, Color.White, Color.Black };
+
+        private List<Rectangle> repairRegions = new List<Rectangle>(); // Список областей для ремонта
+
+        private Screen selectedScreen;
+
+        private readonly Stopwatch stopwatch;
+        private int totalTimeInMilliseconds;
+
+        
 
         public PixelFixerForm(Form1 form)
         {
@@ -48,41 +49,35 @@ namespace changeResolution1
             InitializeCustomComponents();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
         }
+
         public void InitizializeCustomForm()
         {
-
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
             materialSkinManager.AddFormToManage(this);
-            checkTheme();
+            CheckTheme();
             DrawerAutoShow = true;
         }
-        private void checkTheme()
+
+        private void CheckTheme()
         {
-            if (form1.materialSwitch1.Checked)
-            {
-                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-
-            }
-            else
-            {
-                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-
-            }
+            materialSkinManager.Theme = form1.materialSwitch1.Checked ? MaterialSkinManager.Themes.DARK : MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new ColorScheme(
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
-                        Accent.Red400,
-                        TextShade.WHITE);
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
+                Accent.Red400,
+                TextShade.WHITE);
 
             materialCard1.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
                 ? Color.FromArgb(0x21, 0x21, 0x21)
                 : Color.FromArgb(0x37, 0x47, 0x4F);
         }
+
         private void OnDisplaySettingsChanged(object sender, EventArgs e)
         {
             FillMonitorComboBox();
         }
+
         private void FillMonitorComboBox()
         {
             monitorComboBox1.Items.Clear();
@@ -91,7 +86,7 @@ namespace changeResolution1
             var monitorNames = Screen.AllScreens.Select(screen => screen.DeviceName).ToList();
             var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames();
 
-            for (int i = 0; i < monitorNames.Count; i++)
+            for (var i = 0; i < monitorNames.Count; i++)
             {
                 var identifier = monitorNames[i];
                 var friendlyName = friendlyNames[i];
@@ -99,11 +94,11 @@ namespace changeResolution1
                 monitorComboBox1.Items.Add(friendlyName);
             }
 
-            int nonIntegratedIndex = monitorComboBox1.Items.Count > 1 ? 1 : 0;
+            var nonIntegratedIndex = monitorComboBox1.Items.Count > 1 ? 1 : 0;
             monitorComboBox1.SelectedIndex = nonIntegratedIndex;
             selectedScreen = Screen.AllScreens[nonIntegratedIndex];
-
         }
+
         private void InitializeCustomComponents()
         {
             FillMonitorComboBox();
@@ -113,16 +108,13 @@ namespace changeResolution1
 
         private void ShowOnMonitor()
         {
-            if (monitorForm != null)
-            {
-                monitorForm.Close();
-            }
+            monitorForm?.Close();
 
 
             monitorForm = new Overlay(currentColor, intervalTrackBar1.Value,
-                isMulticolor: multi_colorCheckBox1.Checked,
-                isSingleColor, repairColors: repairColors,
-                repairRegions: repairRegions, testMode: testModeComboBox1.SelectedItem.ToString());
+                multi_colorCheckBox1.Checked,
+                isSingleColor, repairColors,
+                repairRegions, testModeComboBox1.SelectedItem.ToString());
             monitorForm.StartPosition = FormStartPosition.Manual;
             monitorForm.Location = selectedScreen.Bounds.Location;
             monitorForm.Size = selectedScreen.Bounds.Size;
@@ -131,7 +123,6 @@ namespace changeResolution1
             monitorForm.Show();
             monitorForm.StartFlashing();
         }
-
 
 
         private void colorPickerButton_Click_1(object sender, EventArgs e)
@@ -153,20 +144,18 @@ namespace changeResolution1
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                int hours = (int)hoursUpDown.Value;
-                int minutes = (int)minutesUpDown.Value;
-                int seconds = (int)secondsUpDown.Value;
+                var hours = (int)hoursUpDown.Value;
+                var minutes = (int)minutesUpDown.Value;
+                var seconds = (int)secondsUpDown.Value;
                 totalTimeInMilliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
 
-                if (hours == 0 && minutes == 0 && seconds == 0)
-                {
-                    totalTimeInMilliseconds = 0;
-                }
+                if (hours == 0 && minutes == 0 && seconds == 0) totalTimeInMilliseconds = 0;
                 if (totalTimeInMilliseconds > MaxTimeInMilliseconds)
                 {
-                    MessageBox.Show("Max. czas wykonania  - 24 godziny ", "błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Max. czas wykonania  - 24 godziny ", "błąd", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     isFlashing = false;
-                    (sender as Button).Text = "Start";
+                    (sender as Button).Text = @"Start";
                     return;
                 }
 
@@ -175,7 +164,7 @@ namespace changeResolution1
                 timer1.Interval = 1000;
                 timer1.Start();
                 ShowOnMonitor();
-                (sender as Button).Text = "Stop";
+                ((Button)sender).Text = @"Stop";
             }
             else
             {
@@ -186,7 +175,8 @@ namespace changeResolution1
                     monitorForm.StopFlashing();
                     monitorForm.Close();
                 }
-                (sender as Button).Text = "Start";
+
+                ((Button)sender).Text = @"Start";
                 isSingleColor = false;
                 progressBar1.Value = 0;
                 timeLeftLabel1.Text = string.Empty;
@@ -197,10 +187,9 @@ namespace changeResolution1
         }
 
 
-
         private void locateButton_Click(object sender, EventArgs e)
         {
-            using (RegionSelectorForm regionSelector = new RegionSelectorForm(selectedScreen))
+            using (var regionSelector = new RegionSelectorForm(selectedScreen))
             {
                 regionSelector.Cursor = Cursors.Cross;
                 if (regionSelector.ShowDialog() == DialogResult.OK)
@@ -239,17 +228,13 @@ namespace changeResolution1
                 {
                     if (totalTimeInMilliseconds > 0)
                     {
-                        int elapsedMilliseconds = (int)stopwatch.ElapsedMilliseconds;
+                        var elapsedMilliseconds = (int)stopwatch.ElapsedMilliseconds;
                         progressBar1.Value = elapsedMilliseconds / 1000;
 
                         if (progressBar1.Value < progressBar1.Maximum)
-                        {
                             UpdateTimeLeft(elapsedMilliseconds);
-                        }
                         else
-                        {
                             CompleteFlashing();
-                        }
                     }
                 }));
             }
@@ -257,18 +242,13 @@ namespace changeResolution1
             {
                 if (totalTimeInMilliseconds > 0)
                 {
-                    int elapsedMilliseconds = (int)stopwatch.ElapsedMilliseconds;
+                    var elapsedMilliseconds = (int)stopwatch.ElapsedMilliseconds;
                     progressBar1.Value = elapsedMilliseconds / 1000;
 
                     if (progressBar1.Value < progressBar1.Maximum)
-                    {
                         UpdateTimeLeft(elapsedMilliseconds);
-                    }
                     else
-                    {
                         CompleteFlashing();
-
-                    }
                 }
             }
         }
@@ -276,9 +256,9 @@ namespace changeResolution1
 
         private void UpdateTimeLeft(int elapsedMilliseconds)
         {
-            int remainingTime = totalTimeInMilliseconds - elapsedMilliseconds;
-            TimeSpan timeSpan = TimeSpan.FromMilliseconds(remainingTime);
-            timeLeftLabel1.Text = $"Zostało {timeSpan.Hours}g. {timeSpan.Minutes}m. {timeSpan.Seconds}sek.";
+            var remainingTime = totalTimeInMilliseconds - elapsedMilliseconds;
+            var timeSpan = TimeSpan.FromMilliseconds(remainingTime);
+            timeLeftLabel1.Text = $@"Zostało {timeSpan.Hours}g. {timeSpan.Minutes}m. {timeSpan.Seconds}sek.";
         }
 
         private void CompleteFlashing()
@@ -289,19 +269,22 @@ namespace changeResolution1
                 monitorForm.StopFlashing();
                 monitorForm.Close();
             }
-            startStopButton1.Text = "Start";
+
+            startStopButton1.Text = @"Start";
             isFlashing = false;
             progressBar1.Value = 0;
             timeLeftLabel1.Text = string.Empty;
             MessageBox.Show("Naprawa skończona", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Escape)
             {
-                this.Close();
+                Close();
                 return true;
             }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -318,7 +301,7 @@ namespace changeResolution1
 
                 if (monitorForm != null)
                 {
-                    monitorForm.currentInterval = intervalTrackBar1.Value;
+                    monitorForm.CurrentInterval = intervalTrackBar1.Value;
                     monitorForm.StopFlashing();
                     monitorForm.StartFlashing();
                 }
@@ -327,18 +310,11 @@ namespace changeResolution1
 
         private void multi_colorCheckBox1_CheckedChanged(object sender, EventArgs e)
         {
-            bool isChecked = multi_colorCheckBox1.Checked;
+            var isChecked = multi_colorCheckBox1.Checked;
             colorPickerButton1.Enabled = !isChecked;
             presetColorComboBox1.Enabled = isChecked;
 
-            if (!multi_colorCheckBox1.Checked)
-            {
-                multi_colorCheckBox1.Text = "Single color";
-            }
-            else
-            {
-                multi_colorCheckBox1.Text = "Multicolor";
-            }
+            multi_colorCheckBox1.Text = !multi_colorCheckBox1.Checked ? "Single color" : "Multicolor";
         }
 
         private void materialComboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -360,9 +336,5 @@ namespace changeResolution1
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
 using Microsoft.Win32;
+using ServiceMonitorEVK.Main;
+using ServiceMonitorEVK.Properties;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,130 +11,90 @@ using System.Management;
 using System.Text;
 using System.Windows.Forms;
 
-namespace changeResolution1
+namespace ServiceMonitorEVK.Testing_Monitor
 {
     public partial class MonitorTestForm : MaterialForm
     {
+        public bool AutoCycle = true;
+
+        private readonly List<Color> colors = new List<Color>
+        {
+            Color.Red,
+            Color.Lime,
+            Color.Yellow,
+            Color.Aqua,
+            Color.Magenta,
+            Color.Blue,
+            Color.Silver,
+            Color.Black,
+            Color.White
+        };
+
+        private int currentColorIndex;
         private TestOverlay currentTestOverlay;
+        private Color customColor = Color.Blue;
+        private readonly Form1 form1;
+        private bool isPinned;
+        private MaterialSkinManager materialSkinManager;
+
+        private Point originalPosition;
+        private readonly Dictionary<PictureBox, Color> pictureBoxColors = new Dictionary<PictureBox, Color>();
+        private Point pinnedPosition;
+        private PictureBox previousPictureBox;
+        private Screen selectedScreen;
         private string testMode = "Default";
         private string testPattern = "Default";
-        private Color customColor = Color.Blue;
-        MonitorInfo monitorInfo;
-        private bool isPinned = false;
-        Form1 form1;
-        private ResolutionDisplayManager resolutionManager;
 
-        private Dictionary<string, string> monitorNameToIdentifierMap;
-        private PictureBox previousPictureBox = null;
-        private int currentColorIndex = 0;
-        private List<Color> colors = new List<Color>
-                            {
-                                Color.Red,
-                                Color.Lime,
-                                Color.Yellow,
-                                Color.Aqua,
-                                Color.Magenta,
-                                Color.Blue,
-                                Color.Silver,
-                                Color.Black,
-                                Color.White
-                            };
-        private bool autoCycle = true;
-        private Screen selectedScreen;
-        private MaterialSkinManager materialSkinManager;
-        private MonitorInfoManager monitorInfoManager;
-        private Point pinnedPosition;
-        private Point originalPosition;
-        private Dictionary<PictureBox, Color> pictureBoxColors = new Dictionary<PictureBox, Color>();
-
-
-        public MonitorTestForm()
-        {
-            monitorInfo = new MonitorInfo();
-            resolutionManager = new ResolutionDisplayManager();
-            monitorInfoManager = new MonitorInfoManager();
-            InitializeComponent();
-            FillMonitorComboBox();
-            // InitializeCustomComponents();
-            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
-        }
 
         public MonitorTestForm(Form1 form)
         {
-            resolutionManager = new ResolutionDisplayManager();
-            monitorInfoManager = new MonitorInfoManager();
             form1 = form;
             InitializeComponent();
             FillMonitorComboBox();
             InitizializeCustomForm();
 
-            //InitializeCustomComponents();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
         }
 
 
         private void OnDisplaySettingsChanged(object sender, EventArgs e)
         {
-
             InitizializeCustomForm();
             FillMonitorComboBox();
-
-
         }
-        private void InitializeCustomComponents()
-        {
-            // selectedScreen = monitorInfoManager.SetScreenToComboBoxAndGetNonIntegred(monitorComboBox1);\
-            FillMonitorComboBox();
 
-        }
+
+
         public void InitizializeCustomForm()
         {
-            monitorInfo = new MonitorInfo();
 
-            foreach (Control control in colorPanel.Controls)
-            {
+            foreach (Control control in flowLayoutPanel1.Controls)
                 if (control is PictureBox pictureBox)
-                {
                     pictureBoxColors[pictureBox] = pictureBox.BackColor;
-                }
-            }
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
             materialSkinManager.AddFormToManage(this);
-            checkTheme();
+            CheckTheme();
             DrawerAutoShow = true;
         }
-        private void checkTheme()
+
+        private void CheckTheme()
         {
             materialSkinManager.EnforceBackcolorOnAllComponents = false;
 
             if (form1.materialSwitch1.Checked)
-            {
                 materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-
-            }
             else
-            {
                 materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-
-            }
             materialSkinManager.ColorScheme = new ColorScheme(
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
-                        Accent.Red400,
-                        TextShade.WHITE);
-            foreach (var entry in pictureBoxColors)
-            {
-                entry.Key.BackColor = entry.Value;
-            }
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
+                Accent.Red400,
+                TextShade.WHITE);
+            foreach (var entry in pictureBoxColors) entry.Key.BackColor = entry.Value;
         }
 
-
-        private void testMonitorButton_Click(object sender, EventArgs e)
-        {
-            startTest();
-        }
 
         private void testModeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -154,19 +116,15 @@ namespace changeResolution1
             {
                 colorChangeTimer.Stop();
                 if (currentTestOverlay != null)
-                {
                     currentTestOverlay.BackColor = colorDialog2.Color;
-                }
                 else
-                {
                     TestMonitor(testMode, testPattern, colorDialog2.Color);
-                }
 
-                autoCycle = false;
+                AutoCycle = false;
             }
         }
 
-        private void startTest()
+        private void StartTest()
         {
             if (currentTestOverlay != null)
             {
@@ -175,13 +133,15 @@ namespace changeResolution1
             }
 
             testMode = testModeComboBox1.SelectedItem.ToString();
-            testPattern = testPatternComboBox1.SelectedItem == null ? "Default" : testPatternComboBox1.SelectedItem.ToString();
+            testPattern = testPatternComboBox1.SelectedItem == null
+                ? "Default"
+                : testPatternComboBox1.SelectedItem.ToString();
             TestMonitor(testMode, testPattern, customColor);
         }
 
         private TestOverlay TestMonitor(string testMode, string testPattern, Color customColor)
         {
-            Screen selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
+            var selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
             currentTestOverlay = new TestOverlay(testMode, testPattern, customColor)
             {
                 StartPosition = FormStartPosition.Manual,
@@ -195,6 +155,7 @@ namespace changeResolution1
             currentTestOverlay.Show();
             return currentTestOverlay;
         }
+
         private void FillMonitorComboBox()
         {
             monitorComboBox1.Items.Clear();
@@ -204,27 +165,20 @@ namespace changeResolution1
 
             foreach (var queryObj in queryObjects)
             {
-                string model = DecodeMonitorString((ushort[])queryObj["UserFriendlyName"]);
-                if (string.IsNullOrWhiteSpace(model))
-                {
-                    model = "Integrated Monitor";
-                }
+                var model = DecodeMonitorString((ushort[])queryObj["UserFriendlyName"]);
+                if (string.IsNullOrWhiteSpace(model)) model = "Integrated Monitor";
                 monitorComboBox1.Items.Add(model);
             }
 
-            if (monitorComboBox1.Items.Count > 0)
-            {
-                monitorComboBox1.SelectedIndex = 0;
-            }
-
+            if (monitorComboBox1.Items.Count > 0) monitorComboBox1.SelectedIndex = 0;
         }
 
         private static string DecodeMonitorString(ushort[] data)
         {
             if (data == null) return string.Empty;
 
-            StringBuilder result = new StringBuilder();
-            foreach (ushort code in data)
+            var result = new StringBuilder();
+            foreach (var code in data)
             {
                 if (code == 0) break;
                 result.Append((char)code);
@@ -232,9 +186,10 @@ namespace changeResolution1
 
             return result.ToString();
         }
+
         private TestOverlay TestMonitor(Color customColor)
         {
-            Screen selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
+            var selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
             currentTestOverlay = new TestOverlay(customColor)
             {
                 StartPosition = FormStartPosition.Manual,
@@ -248,6 +203,7 @@ namespace changeResolution1
             currentTestOverlay.Show();
             return currentTestOverlay;
         }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             PictureBox currentPictureBox = null;
@@ -313,6 +269,7 @@ namespace changeResolution1
                         currentPictureBox = pictureBoxChoose;
                         changeColorFromPanel(colorDialog2.Color);
                     }
+
                     return true;
                 case Keys.Space:
                 case Keys.Right:
@@ -335,10 +292,7 @@ namespace changeResolution1
                     SaveImage();
                     return true;
                 case Keys.X:
-                    if (currentTestOverlay != null)
-                    {
-                        currentTestOverlay.ClearMarks();
-                    }
+                    if (currentTestOverlay != null) currentTestOverlay.ClearMarks();
                     return true;
                 case Keys.A:
                     SetMark(Color.Yellow);
@@ -350,27 +304,20 @@ namespace changeResolution1
                     SetMark(Color.Red);
                     return true;
                 case Keys.Escape:
-                    this.Close();
+                    Close();
                     return true;
-                default:
-                    break;
             }
 
-            if (previousPictureBox != null)
-            {
-                previousPictureBox.BorderStyle = BorderStyle.FixedSingle;
-            }
+            if (previousPictureBox != null) previousPictureBox.BorderStyle = BorderStyle.FixedSingle;
 
             if (currentPictureBox != null)
             {
                 currentPictureBox.BorderStyle = BorderStyle.Fixed3D;
                 previousPictureBox = currentPictureBox;
             }
-            this.Invalidate();
+
+            Invalidate();
             return base.ProcessCmdKey(ref msg, keyData);
-
-
-
         }
 
 
@@ -435,36 +382,34 @@ namespace changeResolution1
         private void pictureBoxBlack_Click(object sender, EventArgs e)
         {
             changeColorFromPanel(Color.Black);
-
         }
+
         private void changeColorFromPanel(Color color)
         {
             if (currentTestOverlay != null)
             {
-                TestOverlay tmp = currentTestOverlay;
+                var tmp = currentTestOverlay;
                 currentTestOverlay.Close();
-                currentTestOverlay = (!currentTestOverlay.testMode.Equals("Default") ? TestMonitor("Default", "Default", color) : TestMonitor(tmp.testMode, tmp.testPattern, color));
+                currentTestOverlay = !currentTestOverlay.TestMode.Equals("Default")
+                    ? TestMonitor("Default", "Default", color)
+                    : TestMonitor(tmp.TestMode, tmp.TestPattern, color);
             }
             else
             {
                 currentTestOverlay = TestMonitor("Default", "Default", color);
             }
         }
+
         private void pictureBoxChoose_Click(object sender, EventArgs e)
         {
             if (colorDialog2.ShowDialog() == DialogResult.OK)
             {
-
                 if (currentTestOverlay != null)
-                {
                     currentTestOverlay.BackColor = colorDialog2.Color;
-                }
                 else
-                {
                     TestMonitor(testMode, testPattern, colorDialog2.Color);
-                }
 
-                autoCycle = false;
+                AutoCycle = false;
             }
         }
 
@@ -472,21 +417,21 @@ namespace changeResolution1
         {
             if (newValue > 1)
             {
-                this.Opacity = newValue / 100.0;
-                this.Invalidate();
+                Opacity = newValue / 100.0;
+                Invalidate();
             }
         }
 
         private void testModeComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             testMode = testModeComboBox1.SelectedIndex.ToString();
-            startTest();
+            StartTest();
         }
 
         private void testPatternComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             testPattern = testPatternComboBox1.SelectedIndex.ToString();
-            startTest();
+            StartTest();
         }
 
         private void pictureBox1_Click_1(object sender, EventArgs e)
@@ -503,30 +448,25 @@ namespace changeResolution1
         {
             SaveImage();
         }
+
         private void SetMark(Color color)
         {
-            this.Cursor = Cursors.Cross;
-            if (currentTestOverlay != null)
-            {
-                currentTestOverlay.SetMarkColor(color);
-            }
-            this.Cursor = Cursors.Default;
+            Cursor = Cursors.Cross;
+            if (currentTestOverlay != null) currentTestOverlay.SetMarkColor(color);
+            Cursor = Cursors.Default;
         }
+
         private void Clean()
         {
-            if (currentTestOverlay != null)
-            {
-                currentTestOverlay.ClearMarks();
-            }
+            if (currentTestOverlay != null) currentTestOverlay.ClearMarks();
         }
 
         private void SaveImage()
         {
             if (currentTestOverlay != null)
             {
-                string fileName = $"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                var fileName = $"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
                 currentTestOverlay.CaptureScreenshot(fileName);
-
             }
         }
 
@@ -539,7 +479,6 @@ namespace changeResolution1
         {
             SetMark(Color.Yellow);
         }
-
 
 
         private void pictureBox6_Click(object sender, EventArgs e)
@@ -564,22 +503,18 @@ namespace changeResolution1
             }
             else
             {
-                Color selectedColor = pictureBox.BackColor;
+                var selectedColor = pictureBox.BackColor;
                 if (currentTestOverlay != null)
-                {
                     currentTestOverlay.BackColor = selectedColor;
-                }
                 else
-                {
                     TestMonitor(testMode, testPattern, selectedColor);
-                }
             }
         }
 
 
         private TestOverlay TestMonitorWithBackgroundImage(Image backgroundImage, ImageLayout layout)
         {
-            Screen selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
+            var selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
             currentTestOverlay = new TestOverlay(testMode, testPattern, customColor)
             {
                 StartPosition = FormStartPosition.Manual,
@@ -596,7 +531,6 @@ namespace changeResolution1
         }
 
 
-
         private void pictureBox5_Click(object sender, EventArgs e)
         {
             SetOverlayBackgroundFromPictureBox(pictureBox5);
@@ -604,56 +538,46 @@ namespace changeResolution1
 
         private void MonitorTestForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            form1.isMonitorFormExist = false;
+            currentTestOverlay?.Close();
+            form1.IsMonitorFormExist = false;
         }
 
         private void MonitorTestForm_Load(object sender, EventArgs e)
         {
-
             RoundPictureBoxCorners(pictureBoxSilver, cornerRadius);
             RoundPictureBoxCorners(pictureBoxBlack, cornerRadius);
         }
 
 
-
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-
             isPinned = !isPinned;
 
             if (isPinned)
             {
-                pictureBox2.Image = ServiceMonitorEVK.Properties.Resources.pinOut;
-                originalPosition = this.Location;
+                pictureBox2.Image = Resources.pinOut;
+                originalPosition = Location;
 
-                this.Location = new Point(
-                    Screen.PrimaryScreen.WorkingArea.Width - this.Width,
-                    Screen.PrimaryScreen.WorkingArea.Height - this.Height
+                Location = new Point(
+                    Screen.PrimaryScreen.WorkingArea.Width - Width,
+                    Screen.PrimaryScreen.WorkingArea.Height - Height
                 );
             }
             else
             {
-                pictureBox2.Image = ServiceMonitorEVK.Properties.Resources.push_pin;
-                this.Location = originalPosition;
+                pictureBox2.Image = Resources.push_pin;
+                Location = originalPosition;
             }
-
         }
 
         private void pictureBox2_Move(object sender, EventArgs e)
         {
-            if (isPinned)
-            {
-                this.Location = pinnedPosition;
-            }
+            if (isPinned) Location = pinnedPosition;
         }
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
-            if (currentTestOverlay != null)
-            {
-                currentTestOverlay.Close();
-            }
+            if (currentTestOverlay != null) currentTestOverlay.Close();
         }
     }
 }
-

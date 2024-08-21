@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -65,23 +65,8 @@
     <Reference Include="HtmlAgilityPack, Version=1.11.62.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>packages\HtmlAgilityPack.1.11.62\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
-    </Reference>
-    <Reference Include="K4os.Compression.LZ4, Version=1.3.8.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
-      <HintPath>packages\K4os.Compression.LZ4.1.3.8\lib\net462\K4os.Compression.LZ4.dll</HintPath>
-    </Reference>
     <Reference Include="K4os.Compression.LZ4.Streams, Version=1.3.8.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
       <HintPath>packages\K4os.Compression.LZ4.Streams.1.3.8\lib\net462\K4os.Compression.LZ4.Streams.dll</HintPath>
-    </Reference>
-    <Reference Include="K4os.Hash.xxHash, Version=1.0.8.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
-      <HintPath>packages\K4os.Hash.xxHash.1.0.8\lib\net462\K4os.Hash.xxHash.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialDesignColors, Version=3.1.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>packages\MaterialDesignColors.3.1.0\lib\net462\MaterialDesignColors.dll</HintPath>
-    </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf, Version=5.1.0.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
-      <HintPath>packages\MaterialDesignThemes.5.1.0\lib\net462\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="MaterialSkin, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MaterialSkin.2.2.3.1\lib\net48\MaterialSkin.dll</HintPath>
@@ -92,47 +77,11 @@
     <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore, Version=3.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.EntityFrameworkCore.3.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions, Version=3.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.EntityFrameworkCore.Abstractions.3.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=3.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.EntityFrameworkCore.Relational.3.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=3.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Extensions.Caching.Abstractions.3.1.1\lib\netstandard2.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Caching.Memory, Version=3.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Extensions.Caching.Memory.3.1.1\lib\netstandard2.0\Microsoft.Extensions.Caching.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Extensions.DependencyInjection.6.0.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Logging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Extensions.Logging.6.0.0\lib\net461\Microsoft.Extensions.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Extensions.Logging.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.Options, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Extensions.Options.6.0.0\lib\net461\Microsoft.Extensions.Options.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Extensions.Primitives.6.0.0\lib\net461\Microsoft.Extensions.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Xaml.Behaviors.Wpf.1.1.39\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data, Version=9.0.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>packages\MySql.Data.9.0.0\lib\net48\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data.EntityFrameworkCore, Version=8.0.22.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>packages\MySql.Data.EntityFrameworkCore.8.0.22\lib\netstandard2.0\MySql.Data.EntityFrameworkCore.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -140,52 +89,25 @@
     <Reference Include="Npgsql, Version=8.0.3.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>packages\Npgsql.8.0.3\lib\netstandard2.0\Npgsql.dll</HintPath>
     </Reference>
-    <Reference Include="PdfiumViewer, Version=2.13.0.0, Culture=neutral, PublicKeyToken=91e4789cfb0609e0, processorArchitecture=MSIL">
-      <HintPath>packages\PdfiumViewer.2.13.0.0\lib\net20\PdfiumViewer.dll</HintPath>
-    </Reference>
     <Reference Include="PdfSharp, Version=6.1.1.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>packages\PDFsharp.6.1.1\lib\netstandard2.0\PdfSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="PdfSharp.Charting, Version=6.1.1.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>packages\PDFsharp.6.1.1\lib\netstandard2.0\PdfSharp.Charting.dll</HintPath>
-    </Reference>
-    <Reference Include="PdfSharp.Quality, Version=6.1.1.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>packages\PDFsharp.6.1.1\lib\netstandard2.0\PdfSharp.Quality.dll</HintPath>
-    </Reference>
-    <Reference Include="PdfSharp.Snippets, Version=6.1.1.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>packages\PDFsharp.6.1.1\lib\netstandard2.0\PdfSharp.Snippets.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.System, Version=6.1.1.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>packages\PDFsharp.6.1.1\lib\netstandard2.0\PdfSharp.System.dll</HintPath>
     </Reference>
-    <Reference Include="PdfSharp.WPFonts, Version=6.1.1.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>packages\PDFsharp.6.1.1\lib\netstandard2.0\PdfSharp.WPFonts.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
-    <Reference Include="System.CodeDom, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.CodeDom.8.0.0\lib\net462\System.CodeDom.dll</HintPath>
-    </Reference>
     <Reference Include="System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Collections.Immutable.8.0.0\lib\net462\System.Collections.Immutable.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.ConfigurationManager, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Configuration.ConfigurationManager.8.0.0\lib\net462\System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SqlXml">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Design" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -194,9 +116,6 @@
       <HintPath>packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.Pipelines, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.IO.Pipelines.5.0.2\lib\net461\System.IO.Pipelines.dll</HintPath>
     </Reference>
     <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -208,9 +127,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
     <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
       <Private>True</Private>
@@ -239,9 +155,6 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
-    </Reference>
     <Reference Include="System.Text.Json, Version=8.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Text.Json.8.0.4\lib\net462\System.Text.Json.dll</HintPath>
     </Reference>
@@ -256,40 +169,13 @@
       <HintPath>packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UglyToad.PdfPig, Version=0.1.8.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>packages\PdfPig.0.1.8\lib\net47\UglyToad.PdfPig.dll</HintPath>
-    </Reference>
-    <Reference Include="UglyToad.PdfPig.Core, Version=0.1.8.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>packages\PdfPig.0.1.8\lib\net47\UglyToad.PdfPig.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="UglyToad.PdfPig.DocumentLayoutAnalysis, Version=0.1.8.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>packages\PdfPig.0.1.8\lib\net47\UglyToad.PdfPig.DocumentLayoutAnalysis.dll</HintPath>
-    </Reference>
-    <Reference Include="UglyToad.PdfPig.Fonts, Version=0.1.8.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>packages\PdfPig.0.1.8\lib\net47\UglyToad.PdfPig.Fonts.dll</HintPath>
-    </Reference>
-    <Reference Include="UglyToad.PdfPig.Package, Version=0.1.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\PdfPig.0.1.8\lib\net47\UglyToad.PdfPig.Package.dll</HintPath>
-    </Reference>
-    <Reference Include="UglyToad.PdfPig.Tokenization, Version=0.1.8.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>packages\PdfPig.0.1.8\lib\net47\UglyToad.PdfPig.Tokenization.dll</HintPath>
-    </Reference>
-    <Reference Include="UglyToad.PdfPig.Tokens, Version=0.1.8.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>packages\PdfPig.0.1.8\lib\net47\UglyToad.PdfPig.Tokens.dll</HintPath>
-    </Reference>
     <Reference Include="WebDriver, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Selenium.WebDriver.4.23.0\lib\netstandard2.0\WebDriver.dll</HintPath>
-    </Reference>
-    <Reference Include="WebDriver.Support, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Selenium.Support.4.23.0\lib\netstandard2.0\WebDriver.Support.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="ZstdSharp, Version=0.8.0.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
@@ -298,7 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DatabaseManager.cs" />
-    <Compile Include="Database\MonitorDatabaseService.cs" />
     <Compile Include="Main\InitialsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -365,7 +250,6 @@
     <Compile Include="Testing Monitor\RegionSelectorForm.Designer.cs">
       <DependentUpon>RegionSelectorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Util Managers\MonitorManager.cs" />
     <Compile Include="Util Managers\ResolutionDisplayManager.cs" />
     <Compile Include="Properties\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -386,6 +270,18 @@
     <Compile Include="Utils\UIUtil.cs">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="Main\Form1.be-by.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main\Form1.pl-pl.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main\Form1.ru-ru.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main\Form1.uk-ua.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main\InitialsForm.resx">
       <DependentUpon>InitialsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -440,7 +336,6 @@
     <EmbeddedResource Include="Testing Monitor\TestOverlay.resx">
       <DependentUpon>TestOverlay.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -527,10 +422,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\Selenium.WebDriver.4.23.0\build\Selenium.WebDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Selenium.WebDriver.4.23.0\build\Selenium.WebDriver.targets'))" />
-    <Error Condition="!Exists('packages\Selenium.WebDriver.ChromeDriver.126.0.6478.18200\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Selenium.WebDriver.ChromeDriver.126.0.6478.18200\build\Selenium.WebDriver.ChromeDriver.targets'))" />
     <Error Condition="!Exists('packages\MaterialDesignThemes.5.1.0\build\MaterialDesignThemes.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\MaterialDesignThemes.5.1.0\build\MaterialDesignThemes.targets'))" />
   </Target>
   <Import Project="packages\Selenium.WebDriver.4.23.0\build\Selenium.WebDriver.targets" Condition="Exists('packages\Selenium.WebDriver.4.23.0\build\Selenium.WebDriver.targets')" />
-  <Import Project="packages\Selenium.WebDriver.ChromeDriver.126.0.6478.18200\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('packages\Selenium.WebDriver.ChromeDriver.126.0.6478.18200\build\Selenium.WebDriver.ChromeDriver.targets')" />
   <Import Project="packages\MaterialDesignThemes.5.1.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.5.1.0\build\MaterialDesignThemes.targets')" />
 </Project>

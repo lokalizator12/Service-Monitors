@@ -1,246 +1,195 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Microsoft.Win32;
+using ServiceMonitorEVK.Main;
+using ServiceMonitorEVK.Util_Managers;
 
-namespace changeResolution1
+namespace ServiceMonitorEVK
 {
-    public partial class MonitorInfoForm
+    public class MonitorInfoForm
     {
+        private readonly Form1 _form1;
+
+        private readonly Dictionary<string, string> manufacturerDictionary =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "ACER", "Acer" },
+                { "ACR", "Acer" },
+                { "ACI", "Asus (ASUSTeK Computer Inc.)" },
+                { "ACT", "Targa" },
+                { "ADI", "ADI Corporation" },
+                { "AMW", "AMW" },
+                { "AOC", "AOC International (USA) Ltd." },
+                { "API", "Acer America Corp." },
+                { "APP", "Apple" },
+                { "ART", "ArtMedia" },
+                { "AST", "AST Research" },
+                { "ASUS", "ASUS" },
+                { "AUO", "AU Optronics" },
+                { "BENQ", "BenQ" },
+                { "BNQ", "BenQ Corporation" },
+                { "BOE", "BOE Display Technology" },
+                { "CASIO", "Casio" },
+                { "CMN", "Chi Mei" },
+                { "CPQ", "COMPAQ Computer Corp." },
+                { "CPL", "Compal Electronics, Inc. / ALFA" },
+                { "CTX", "CTX / Chuntex Electronic Co." },
+                { "DEC", "Digital Equipment Corporation" },
+                { "DELL", "Dell" },
+                { "DEL", "Dell" },
+                { "DPC", "Delta Electronics, Inc." },
+                { "DWE", "Daewoo Telecom Ltd" },
+                { "ECS", "ELITEGROUP Computer Systems" },
+                { "EIZ", "EIZO Corporation" },
+                { "EPI", "Envision Peripherals, Inc." },
+                { "FCM", "Funai Electric Company of Taiwan" },
+                { "FUS", "Fujitsu Siemens" },
+                { "GIGABYTE", "Gigabyte" },
+                { "GSM", "LG Electronics Inc. (GoldStar Technology, Inc.)" },
+                { "GWY", "Gateway 2000" },
+                { "HAIER", "Haier" },
+                { "HANNSTAR", "HannStar" },
+                { "HISENSE", "Hisense" },
+                { "HEI", "Hyundai Electronics Industries Co., Ltd." },
+                { "HIQ", "Hyundai ImageQuest" },
+                { "HIT", "Hitachi" },
+                { "HP", "Hewlett-Packard" },
+                { "HSD", "Hannspree Inc." },
+                { "HSL", "Hansol Electronics" },
+                { "HTC", "Hitachi Ltd. / Nissei Sangyo America Ltd." },
+                { "HUA", "Huawei" },
+                { "HWP", "Hewlett Packard (HP)" },
+                { "IBM", "IBM PC Company" },
+                { "ICL", "Fujitsu ICL" },
+                { "IFS", "InFocus" },
+                { "INSIGNIA", "Insignia" },
+                { "IQT", "Hyundai" },
+                { "IVM", "Iiyama" },
+                { "JVC", "JVC" },
+                { "KDS", "KDS USA" },
+                { "KFC", "KFC Computek" },
+                { "KOIZUMI", "Koizumi" },
+                { "KONKA", "Konka" },
+                { "LEN", "Lenovo" },
+                { "LG", "LG" },
+                { "LGD", "LG Display" },
+                { "LKM", "ADLAS / AZALEA" },
+                { "LNK", "LINK Technologies, Inc." },
+                { "LPL", "LG Philips" },
+                { "LTN", "Lite-On" },
+                { "MAG", "MAG InnoVision" },
+                { "MAX", "Maxdata Computer GmbH" },
+                { "MEI", "Panasonic Comm. & Systems Co." },
+                { "MEL", "Mitsubishi Electronics" },
+                { "MIC", "Microsoft" },
+                { "MIR", "Miro Computer Products AG" },
+                { "MITSUBISHI", "Mitsubishi Electric" },
+                { "MSI", "MSI" },
+                { "NAN", "NANAO" },
+                { "NEC", "NEC Display Solutions" },
+                { "NOK", "Nokia" },
+                { "NVD", "Nvidia" },
+                { "OQI", "OPTIQUEST" },
+                { "PACKARD BELL", "Packard Bell" },
+                { "PBN", "Packard Bell" },
+                { "PCK", "Daewoo" },
+                { "PDC", "Polaroid" },
+                { "PHILIPS", "Philips" },
+                { "PHL", "Philips Consumer Electronics Co." },
+                { "PLANAR", "Planar Systems" },
+                { "PGS", "Princeton Graphic Systems" },
+                { "PROVIEW", "Proview" },
+                { "PRT", "Princeton" },
+                { "RAZER", "Razer" },
+                { "REL", "Relisys" },
+                { "SAMSUNG", "Samsung" },
+                { "SANYO", "Sanyo" },
+                { "SEC", "Seiko Epson Corporation" },
+                { "SHARP", "Sharp" },
+                { "SKYWORTH", "Skyworth" },
+                { "SMC", "Samtron" },
+                { "SMI", "Smile" },
+                { "SNI", "Siemens Nixdorf" },
+                { "SONY", "Sony" },
+                { "SPT", "Sceptre" },
+                { "SRC", "Shamrock Technology" },
+                { "STN", "Samtron" },
+                { "STP", "Sceptre" },
+                { "TAT", "Tatung Co. of America, Inc." },
+                { "TATUNG", "Tatung" },
+                { "TCL", "TCL Technology" },
+                { "THOMSON", "Thomson" },
+                { "TSB", "Toshiba" },
+                { "UNM", "Unisys Corporation" },
+                { "VESTEL", "Vestel" },
+                { "VIEW", "ViewSonic" },
+                { "VIZIO", "Vizio" },
+                { "VSC", "ViewSonic Corporation" },
+                { "WTC", "Wen Technology" },
+                { "ZCM", "Zenith Data Systems" },
+                { "WESTINGHOUSE", "Westinghouse" }
+            };
+
         private Dictionary<string, MonitorInfo> modelToMonitorInfoMap;
 
-        private Dictionary<string, string> monitorNameToIdentifierMap;
-        private MonitorInfoManager monitorInfoManager;
-        private ResolutionDisplayManager resolutionManager;
-        private Form1 _form1;
-        public MonitorInfo[] monitors { get; set; }
 
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-        public struct DISPLAY_DEVICE
-        {
-            public int cb;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string DeviceName;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceString;
-            public int StateFlags;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceID;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string DeviceKey;
-        }
-
-        Dictionary<string, string> manufacturerDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-                            {
-                                { "ACER", "Acer" },
-                                {"ACR", "Acer" },
-                                { "ACI", "Asus (ASUSTeK Computer Inc.)" },
-                                { "ACT", "Targa" },
-                                { "ADI", "ADI Corporation" },
-                                { "AMW", "AMW" },
-                                { "AOC", "AOC International (USA) Ltd." },
-                                { "API", "Acer America Corp." },
-                                { "APP", "Apple" },
-                                { "ART", "ArtMedia" },
-                                { "AST", "AST Research" },
-                                { "ASUS", "ASUS" },
-                                { "AUO", "AU Optronics" },
-                                { "BENQ", "BenQ" },
-                                { "BNQ", "BenQ Corporation" },
-                                { "BOE", "BOE Display Technology" },
-                                { "CASIO", "Casio" },
-                                { "CMN", "Chi Mei" },
-                                { "CPQ", "COMPAQ Computer Corp." },
-                                { "CPL", "Compal Electronics, Inc. / ALFA" },
-                                { "CTX", "CTX / Chuntex Electronic Co." },
-                                { "DEC", "Digital Equipment Corporation" },
-                                { "DELL", "Dell" },
-                                 {"DEL", "Dell" },
-                                { "DPC", "Delta Electronics, Inc." },
-                                { "DWE", "Daewoo Telecom Ltd" },
-                                { "ECS", "ELITEGROUP Computer Systems" },
-                                { "EIZ", "EIZO Corporation" },
-                                { "EPI", "Envision Peripherals, Inc." },
-                                { "FCM", "Funai Electric Company of Taiwan" },
-                                { "FUS", "Fujitsu Siemens" },
-                                { "GIGABYTE", "Gigabyte" },
-                                { "GSM", "LG Electronics Inc. (GoldStar Technology, Inc.)" },
-                                { "GWY", "Gateway 2000" },
-                                { "HAIER", "Haier" },
-                                { "HANNSTAR", "HannStar" },
-                                { "HISENSE", "Hisense" },
-                                { "HEI", "Hyundai Electronics Industries Co., Ltd." },
-                                { "HIQ", "Hyundai ImageQuest" },
-                                { "HIT", "Hitachi" },
-                                { "HP", "Hewlett-Packard" },
-                                { "HSD", "Hannspree Inc." },
-                                { "HSL", "Hansol Electronics" },
-                                { "HTC", "Hitachi Ltd. / Nissei Sangyo America Ltd." },
-                                { "HUA", "Huawei" },
-                                { "HWP", "Hewlett Packard (HP)" },
-                                { "IBM", "IBM PC Company" },
-                                { "ICL", "Fujitsu ICL" },
-                                { "IFS", "InFocus" },
-                                { "INSIGNIA", "Insignia" },
-                                { "IQT", "Hyundai" },
-                                { "IVM", "Iiyama" },
-                                { "JVC", "JVC" },
-                                { "KDS", "KDS USA" },
-                                { "KFC", "KFC Computek" },
-                                { "KOIZUMI", "Koizumi" },
-                                { "KONKA", "Konka" },
-                                { "LEN", "Lenovo" },
-                                { "LG", "LG" },
-                                { "LGD", "LG Display" },
-                                { "LKM", "ADLAS / AZALEA" },
-                                { "LNK", "LINK Technologies, Inc." },
-                                { "LPL", "LG Philips" },
-                                { "LTN", "Lite-On" },
-                                { "MAG", "MAG InnoVision" },
-                                { "MAX", "Maxdata Computer GmbH" },
-                                { "MEI", "Panasonic Comm. & Systems Co." },
-                                { "MEL", "Mitsubishi Electronics" },
-                                { "MIC", "Microsoft" },
-                                { "MIR", "Miro Computer Products AG" },
-                                { "MITSUBISHI", "Mitsubishi Electric" },
-                                { "MSI", "MSI" },
-                                { "NAN", "NANAO" },
-                                { "NEC", "NEC Display Solutions" },
-                                { "NOK", "Nokia" },
-                                { "NVD", "Nvidia" },
-                                { "OQI", "OPTIQUEST" },
-                                { "PACKARD BELL", "Packard Bell" },
-                                { "PBN", "Packard Bell" },
-                                { "PCK", "Daewoo" },
-                                { "PDC", "Polaroid" },
-                                { "PHILIPS", "Philips" },
-                                { "PHL", "Philips Consumer Electronics Co." },
-                                { "PLANAR", "Planar Systems" },
-                                { "PGS", "Princeton Graphic Systems" },
-                                { "PROVIEW", "Proview" },
-                                { "PRT", "Princeton" },
-                                { "RAZER", "Razer" },
-                                { "REL", "Relisys" },
-                                { "SAMSUNG", "Samsung" },
-                                { "SANYO", "Sanyo" },
-                                { "SEC", "Seiko Epson Corporation" },
-                                { "SHARP", "Sharp" },
-                                { "SKYWORTH", "Skyworth" },
-                                { "SMC", "Samtron" },
-                                { "SMI", "Smile" },
-                                { "SNI", "Siemens Nixdorf" },
-                                { "SONY", "Sony" },
-                                { "SPT", "Sceptre" },
-                                { "SRC", "Shamrock Technology" },
-                                { "STN", "Samtron" },
-                                { "STP", "Sceptre" },
-                                { "TAT", "Tatung Co. of America, Inc." },
-                                { "TATUNG", "Tatung" },
-                                { "TCL", "TCL Technology" },
-                                { "THOMSON", "Thomson" },
-                                { "TSB", "Toshiba" },
-                                { "UNM", "Unisys Corporation" },
-                                { "VESTEL", "Vestel" },
-                                { "VIEW", "ViewSonic" },
-                                { "VIZIO", "Vizio" },
-                                { "VSC", "ViewSonic Corporation" },
-                                { "WTC", "Wen Technology" },
-                                { "ZCM", "Zenith Data Systems" },
-                                { "WESTINGHOUSE", "Westinghouse" }
-                            };
-        [StructLayout(LayoutKind.Sequential)]
-        private struct DEVMODE
-        {
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string dmDeviceName;
-            public ushort dmSpecVersion;
-            public ushort dmDriverVersion;
-            public ushort dmSize;
-            public ushort dmDriverExtra;
-            public uint dmFields;
-            public int dmPositionX;
-            public int dmPositionY;
-            public uint dmDisplayOrientation;
-            public uint dmDisplayFixedOutput;
-            public short dmColor;
-            public short dmDuplex;
-            public short dmYResolution;
-            public short dmTTOption;
-            public short dmCollate;
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-            public string dmFormName;
-            public ushort dmLogPixels;
-            public uint dmBitsPerPel;
-            public uint dmPelsWidth;
-            public uint dmPelsHeight;
-            public uint dmDisplayFlags;
-            public uint dmDisplayFrequency;
-            public uint dmICMMethod;
-            public uint dmICMIntent;
-            public uint dmMediaType;
-            public uint dmDitherType;
-            public uint dmReserved1;
-            public uint dmReserved2;
-            public uint dmPanningWidth;
-            public uint dmPanningHeight;
-        }
-
-        [DllImport("user32.dll")]
-        public static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
-
-        [DllImport("user32.dll")]
-        private static extern bool EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
         public MonitorInfoForm(Form1 form1)
         {
             _form1 = form1;
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
-            monitors = new MonitorInfo[searcher.Get().Count];
-           
-            monitorInfoManager = new MonitorInfoManager();
+            var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
+            Monitors = new MonitorInfo[searcher.Get().Count];
+
             _ = InitializeAsync();
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
         }
+
+        public MonitorInfo[] Monitors { get; set; }
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice,
+            uint dwFlags);
+
+        [DllImport("user32.dll")]
+        private static extern bool EnumDisplaySettings(string lpszDeviceName, int iModeNum, ref DEVMODE lpDevMode);
+
         private async Task InitializeAsync()
         {
             await FillMonitorComboBoxAsync();
             await GetMonitorInfosAsync();
         }
+
         private async Task FillMonitorComboBoxAsync()
         {
-            _form1.isUpdatingComboBox = true;
+            _form1.IsUpdatingComboBox = true;
             _form1.materialComboBoxMonitors.Items.Clear();
 
             modelToMonitorInfoMap = new Dictionary<string, MonitorInfo>();
 
-            var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames();
-            monitors = await GetMonitorInfosAsync();
+            Monitors = await GetMonitorInfosAsync();
 
-            for (int i = 0; i < monitors.Length; i++)
+            foreach (var monitor in Monitors)
             {
-                var monitor = monitors[i];
-                var modelName = string.IsNullOrWhiteSpace(monitor.Model) ? "Integrated Monitor/ no name" : monitor.Model;
+                var modelName = string.IsNullOrWhiteSpace(monitor.Model)
+                    ? "Integrated Monitor/ no name"
+                    : monitor.Model;
                 modelToMonitorInfoMap[modelName] = monitor;
                 _form1.materialComboBoxMonitors.Items.Add(modelName);
             }
 
-            if (_form1.materialComboBoxMonitors.Items.Count > 0)
-            {
-                _form1.materialComboBoxMonitors.SelectedIndex = 0;
-            }
-            _form1.isUpdatingComboBox = false;
+            if (_form1.materialComboBoxMonitors.Items.Count > 0) _form1.materialComboBoxMonitors.SelectedIndex = 0;
+            _form1.IsUpdatingComboBox = false;
         }
 
         public async Task<MonitorInfo[]> GetMonitorInfosAsync()
         {
-            monitors = await GetMonitorInfos1Async();
-            monitors = await SetMonitorSizesAsync(monitors);
-            return monitors;
+            Monitors = await GetMonitorInfos1Async();
+            Monitors = await SetMonitorSizesAsync(Monitors);
+            return Monitors;
         }
 
 
@@ -255,18 +204,23 @@ namespace changeResolution1
 
                 Parallel.ForEach(queryObjects, queryObj =>
                 {
-                    string manufacturerNameFull = DecodeMonitorString((ushort[])queryObj["ManufacturerName"]);
-                    Console.WriteLine(manufacturerNameFull);
-                    string manufacturer = manufacturerDictionary.FirstOrDefault(entry => manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0).Value;
+                    var manufacturerNameFull = DecodeMonitorString((ushort[])queryObj["ManufacturerName"]);
+                    var manufacturer = manufacturerDictionary.FirstOrDefault(entry =>
+                        manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0).Value;
 
                     var monitorInfo = new MonitorInfo
                     {
                         YearOfProduction = queryObj["YearOfManufacture"].ToString(),
-                        MonthOfProduction = ConvertWeeksToMonths(Convert.ToInt16(queryObj["WeekOfManufacture"].ToString())),
-                        ProductCodeID = ((ushort[])queryObj["ProductCodeID"]).Aggregate("", (current, p) => current + p.ToString("X")),
+                        MonthOfProduction =
+                            ConvertWeeksToMonths(Convert.ToInt16(queryObj["WeekOfManufacture"].ToString())),
+                        ProductCodeId =
+                            ((ushort[])queryObj["ProductCodeID"]).Aggregate("",
+                                (current, p) => current + p.ToString("X")),
                         Manufacturer = manufacturer,
                         Model = DecodeMonitorString((ushort[])queryObj["UserFriendlyName"]),
-                        SerialNumber = queryObj["SerialNumberID"] != null ? DecodeMonitorString((ushort[])queryObj["SerialNumberID"]) : "N/A"
+                        SerialNumber = queryObj["SerialNumberID"] != null
+                            ? DecodeMonitorString((ushort[])queryObj["SerialNumberID"])
+                            : "N/A"
                     };
 
                     lock (monitorInfoList)
@@ -289,31 +243,36 @@ namespace changeResolution1
                 Parallel.For(0, queryObjects.Length, i =>
                 {
                     var queryObj = queryObjects[i];
-                    double maxHorizontalSizeCm = Convert.ToDouble(queryObj["MaxHorizontalImageSize"]);
-                    double maxVerticalSizeCm = Convert.ToDouble(queryObj["MaxVerticalImageSize"]);
+                    var maxHorizontalSizeCm = Convert.ToDouble(queryObj["MaxHorizontalImageSize"]);
+                    var maxVerticalSizeCm = Convert.ToDouble(queryObj["MaxVerticalImageSize"]);
                     monitors[i].UpdateSize(maxHorizontalSizeCm, maxVerticalSizeCm);
                 });
 
-                DISPLAY_DEVICE d = new DISPLAY_DEVICE();
+                var d = new DISPLAY_DEVICE();
                 d.cb = Marshal.SizeOf(d);
 
-                int deviceIndex = 0;
+                var deviceIndex = 0;
                 while (EnumDisplayDevices(null, (uint)deviceIndex, ref d, 0))
                 {
-                    DEVMODE devMode = new DEVMODE();
+                    var devMode = new DEVMODE();
                     devMode.dmSize = (ushort)Marshal.SizeOf(typeof(DEVMODE));
 
                     if (EnumDisplaySettings(d.DeviceName, -1, ref devMode))
                     {
-                        int resolutionWidth = (int)devMode.dmPelsWidth;
-                        int resolutionHeight = (int)devMode.dmPelsHeight;
-                        int displayFrequency = (int)devMode.dmDisplayFrequency;
+                        var resolutionWidth = (int)devMode.dmPelsWidth;
+                        var resolutionHeight = (int)devMode.dmPelsHeight;
+                        var displayFrequency = (int)devMode.dmDisplayFrequency;
 
                         if (monitors.Length > deviceIndex)
                         {
-                            monitors[deviceIndex].UpdateResolutionAndFrequency(resolutionWidth, resolutionHeight, displayFrequency);
-                            monitors[deviceIndex].PPI = CalculatePPI(monitors[deviceIndex].MaxVerticalSize, monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
-                            monitors[deviceIndex].Diagonal2 = GetDiagonalFromResoluton(monitors[deviceIndex].MaxVerticalSize, monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
+                            monitors[deviceIndex]
+                                .UpdateResolutionAndFrequency(resolutionWidth, resolutionHeight, displayFrequency);
+                            monitors[deviceIndex].PPI = CalculatePpi(monitors[deviceIndex].MaxVerticalSize,
+                                monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight).ToString();
+                            monitors[deviceIndex].Diagonal2 =
+                                GetDiagonalFromResoluton(monitors[deviceIndex].MaxVerticalSize,
+                                        monitors[deviceIndex].MaxHorizontalSize, resolutionWidth, resolutionHeight)
+                                    .ToString();
                         }
                     }
 
@@ -325,27 +284,26 @@ namespace changeResolution1
             return monitors;
         }
 
-        private double GetDiagonalFromSize(double mV, double mH)
+        private static double GetDiagonalFromSize(double mV, double mH)
         {
-            double diagonalSizeCm = Math.Sqrt(Math.Pow(mH, 2) + Math.Pow(mV, 2));
+            var diagonalSizeCm = Math.Sqrt(Math.Pow(mH, 2) + Math.Pow(mV, 2));
             return diagonalSizeCm / 2.54;
         }
 
 
-        private double GetDiagonalFromResoluton(double mV, double mH, double mRv, double mRh)
+        private static double GetDiagonalFromResoluton(double mV, double mH, double mRv, double mRh)
         {
-            double horizontalDpi = mRv / (mH / 2.54);
-            double verticalDpi = mRh / (mV / 2.54);
-            double averageDpi = (horizontalDpi + verticalDpi) / 2;
-            double diagonalPixels = Math.Sqrt(Math.Pow(mRv, 2) + Math.Pow(mRh, 2));
-            return Math.Floor((diagonalPixels / averageDpi) * 2) / 2;
-
+            var horizontalDpi = mRv / (mH / 2.54);
+            var verticalDpi = mRh / (mV / 2.54);
+            var averageDpi = (horizontalDpi + verticalDpi) / 2;
+            var diagonalPixels = Math.Sqrt(Math.Pow(mRv, 2) + Math.Pow(mRh, 2));
+            return Math.Floor(diagonalPixels / averageDpi * 2) / 2;
         }
 
-        public double CalculatePPI(double widthCm, double heightCm, int widthPx, int heightPx)
+        public double CalculatePpi(double widthCm, double heightCm, int widthPx, int heightPx)
         {
-            double diagonalInches = GetDiagonalFromSize(widthCm, heightCm);
-            double diagonalPx = Math.Sqrt(Math.Pow(widthPx, 2) + Math.Pow(heightPx, 2));
+            var diagonalInches = GetDiagonalFromSize(widthCm, heightCm);
+            var diagonalPx = Math.Sqrt(Math.Pow(widthPx, 2) + Math.Pow(heightPx, 2));
             return diagonalPx / diagonalInches;
         }
         /* public MonitorInfo[] SetMonitorSizes(MonitorInfo[] monitors)
@@ -402,31 +360,27 @@ namespace changeResolution1
              return monitors;
          }*/
 
-        static string DecodeMonitorString(ushort[] data)
+        private static string DecodeMonitorString(ushort[] data)
         {
-            if (data == null)
-            {
-                return string.Empty;
-            }
+            if (data == null) return string.Empty;
 
-            StringBuilder result = new StringBuilder();
-            foreach (ushort code in data)
+            var result = new StringBuilder();
+            foreach (var code in data)
             {
-                if (code == 0)
-                {
-                    break;
-                }
+                if (code == 0) break;
                 result.Append((char)code);
             }
 
             return result.ToString();
         }
-        static string ConvertWeeksToMonths(int weeks)
+
+        private static string ConvertWeeksToMonths(int weeks)
         {
             const double weeksInMonth = 4.345;
-            int result = (int)Math.Round(weeks / weeksInMonth);
+            var result = (int)Math.Round(weeks / weeksInMonth);
             return result.ToString();
         }
+
         private void DisplayMonitorInfo(MonitorInfo monitorInfo)
         {
             /* _form1.materialLabelManufacturer.Text = monitorInfo.Manufacturer;
@@ -443,17 +397,8 @@ namespace changeResolution1
              _form1.materialLabelSizeMonitor.Text = monitorInfo.SizeMonitor;*/
         }
 
-       
 
-        
-
-        private void MonitorInfoForm_Load(object sender, EventArgs e)
-        {
-            if (monitors[0] != null)
-            {
-                DisplayMonitorInfo(monitors[_form1.materialComboBoxMonitors.SelectedIndex]);
-            }
-        }
+     
         private async void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
             await RefreshMonitorInfoAsync();
@@ -463,12 +408,68 @@ namespace changeResolution1
         {
             await FillMonitorComboBoxAsync();
             await GetMonitorInfosAsync();
-            if (_form1.materialComboBoxMonitors.Items.Count > 0)
-            {
-                _form1.materialComboBoxMonitors.SelectedIndex = 0;
-            }
+            if (_form1.materialComboBoxMonitors.Items.Count > 0) _form1.materialComboBoxMonitors.SelectedIndex = 0;
         }
 
-       
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+        public struct DISPLAY_DEVICE
+        {
+            public int cb;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceString;
+
+            public int StateFlags;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceID;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceKey;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct DEVMODE
+        {
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string dmDeviceName;
+
+            public ushort dmSpecVersion;
+            public ushort dmDriverVersion;
+            public ushort dmSize;
+            public ushort dmDriverExtra;
+            public uint dmFields;
+            public int dmPositionX;
+            public int dmPositionY;
+            public uint dmDisplayOrientation;
+            public uint dmDisplayFixedOutput;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string dmFormName;
+
+            public ushort dmLogPixels;
+            public uint dmBitsPerPel;
+            public uint dmPelsWidth;
+            public uint dmPelsHeight;
+            public uint dmDisplayFlags;
+            public uint dmDisplayFrequency;
+            public uint dmICMMethod;
+            public uint dmICMIntent;
+            public uint dmMediaType;
+            public uint dmDitherType;
+            public uint dmReserved1;
+            public uint dmReserved2;
+            public uint dmPanningWidth;
+            public uint dmPanningHeight;
+        }
     }
 }

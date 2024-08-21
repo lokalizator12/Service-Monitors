@@ -1,6 +1,6 @@
-﻿namespace changeResolution1
+﻿namespace ServiceMonitorEVK.Testing_Monitor
 {
-    partial class TestOverlay
+    sealed partial class TestOverlay
     {
         /// <summary>
         /// Required designer variable.

@@ -1,4 +1,4 @@
-﻿namespace ServiceMonitorEVK
+﻿namespace ServiceMonitorEVK.Main
 {
     partial class InitialsForm
     {

@@ -4,13 +4,13 @@
     {
         public static string GetPreferredLanguage()
         {
-            return ServiceMonitorEVK.Properties.Settings.Default.Language;
+            return Settings.Default.Language;
         }
 
         public static void SetPreferredLanguage(string languageCode)
         {
-            ServiceMonitorEVK.Properties.Settings.Default.Language = languageCode;
-            ServiceMonitorEVK.Properties.Settings.Default.Save();
+            Settings.Default.Language = languageCode;
+            Settings.Default.Save();
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
-namespace changeResolution1
+namespace ServiceMonitorEVK
 {
     partial class Overlay
     {

@@ -5,7 +5,9 @@ using System.Runtime.InteropServices;
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
 [assembly: AssemblyTitle("EVK Monitor Service")]
-[assembly: AssemblyDescription("Appilication for testing monitor, fixing bad pixel and sending information for company structure")]
+[assembly:
+    AssemblyDescription(
+        "Appilication for testing monitor, fixing bad pixel and sending information for company structure")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("EVK")]
 [assembly: AssemblyProduct("EVK Monitor testing")]
@@ -31,5 +33,5 @@ using System.Runtime.InteropServices;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.3")]
-[assembly: AssemblyFileVersion("1.0.0.3")]
+[assembly: AssemblyVersion("1.0.0.4")]
+[assembly: AssemblyFileVersion("1.0.0.4")]

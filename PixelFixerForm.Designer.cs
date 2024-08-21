@@ -1,6 +1,6 @@
 ﻿
 
-namespace changeResolution1
+namespace ServiceMonitorEVK
 {
     partial class PixelFixerForm
     {
@@ -48,6 +48,7 @@ namespace changeResolution1
             this.multi_colorCheckBox1 = new MaterialSkin.Controls.MaterialSwitch();
             this.presetColorComboBox1 = new MaterialSkin.Controls.MaterialComboBox();
             this.materialCard1 = new MaterialSkin.Controls.MaterialCard();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel38 = new MaterialSkin.Controls.MaterialLabel();
             this.startStopButton1 = new MaterialSkin.Controls.MaterialButton();
@@ -55,14 +56,13 @@ namespace changeResolution1
             this.timeLeftLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.testModeComboBox1 = new MaterialSkin.Controls.MaterialComboBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.colorPickerButton1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.hoursUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minutesUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.secondsUpDown)).BeginInit();
             this.materialCard1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.colorPickerButton1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -259,6 +259,17 @@ namespace changeResolution1
             this.materialCard1.Size = new System.Drawing.Size(494, 159);
             this.materialCard1.TabIndex = 67;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
+            this.pictureBox1.Location = new System.Drawing.Point(9, 22);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(96, 94);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 25;
+            this.pictureBox1.TabStop = false;
+            // 
             // materialLabel4
             // 
             this.materialLabel4.AutoSize = true;
@@ -370,17 +381,6 @@ namespace changeResolution1
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.locateButton_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(9, 22);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(96, 94);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 25;
-            this.pictureBox1.TabStop = false;
-            // 
             // colorPickerButton1
             // 
             this.colorPickerButton1.Cursor = System.Windows.Forms.Cursors.Hand;
@@ -397,7 +397,7 @@ namespace changeResolution1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(560, 610);
+            this.ClientSize = new System.Drawing.Size(576, 583);
             this.Controls.Add(this.testModeComboBox1);
             this.Controls.Add(this.timeLeftLabel1);
             this.Controls.Add(this.progressBar1);
@@ -421,7 +421,6 @@ namespace changeResolution1
             this.FormStyle = MaterialSkin.Controls.MaterialForm.FormStyles.ActionBar_None;
             this.MaximizeBox = false;
             this.Name = "PixelFixerForm";
-            this.Opacity = 0.9D;
             this.Padding = new System.Windows.Forms.Padding(3, 24, 3, 3);
             this.Text = "PixelFixerForm";
             ((System.ComponentModel.ISupportInitialize)(this.hoursUpDown)).EndInit();
@@ -429,8 +428,8 @@ namespace changeResolution1
             ((System.ComponentModel.ISupportInitialize)(this.secondsUpDown)).EndInit();
             this.materialCard1.ResumeLayout(false);
             this.materialCard1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.colorPickerButton1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

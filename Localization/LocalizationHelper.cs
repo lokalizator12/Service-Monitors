@@ -19,10 +19,7 @@ namespace ServiceMonitorEVK.Localization
                     var key = control.Name;
                     var localizedText = localization.GetString(key);
 
-                    if (!string.IsNullOrEmpty(localizedText))
-                    {
-                        property.SetValue(control, localizedText);
-                    }
+                    if (!string.IsNullOrEmpty(localizedText)) property.SetValue(control, localizedText);
                 }
             }
 
@@ -33,7 +30,8 @@ namespace ServiceMonitorEVK.Localization
         private static IEnumerable<Control> GetAllControls(Control control)
         {
             var controls = control.Controls.Cast<Control>();
-            return controls.SelectMany(ctrl => GetAllControls(ctrl)).Concat(controls);
+            IEnumerable<Control> enumerable = controls as Control[] ?? controls.ToArray();
+            return enumerable.SelectMany(ctrl => GetAllControls(ctrl)).Concat(enumerable);
         }
     }
 }

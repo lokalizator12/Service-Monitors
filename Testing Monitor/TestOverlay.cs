@@ -2,76 +2,78 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using ServiceMonitorEVK.Properties;
+using static Mysqlx.Crud.Order.Types;
 
-namespace changeResolution1
+namespace ServiceMonitorEVK.Testing_Monitor
 {
-    public partial class TestOverlay : Form
+    public sealed partial class TestOverlay : Form
     {
+        private readonly Dictionary<Rectangle, Color> areaColors = new Dictionary<Rectangle, Color>();
 
-        public string testMode;
-        public string testPattern;
-        private Color customColor;
-        private int direction = 0;
-        private int currentColorIndex = 0;
-
-        /// <summary>
-        private List<Rectangle> markedAreas = new List<Rectangle>();
-        private Dictionary<Rectangle, Color> areaColors = new Dictionary<Rectangle, Color>();
-        private Rectangle currentRect;
-        private bool isDrawing = false;
-        private Color currentMarkColor = Color.Red; // Default color for marking
-        /// </summary>
-        /// 
-
-        List<Color> colors = new List<Color>
-                            {
-                                Color.Red,
-                                Color.Lime,
-                                Color.Yellow,
-                                Color.Aqua,
-                                Color.Magenta,
-                                Color.Blue,
-                                Color.Gray,
-                                Color.Black,
-                                Color.White
-                            };
-        public TestOverlay(Color customColor)
+        private readonly List<Color> colors = new List<Color>
         {
-            InitializeComponent();
-            this.customColor = customColor;
-            this.testMode = "Default";
-            this.testPattern = "Default";
+            Color.Red,
+            Color.Lime,
+            Color.Yellow,
+            Color.Aqua,
+            Color.Magenta,
+            Color.Blue,
+            Color.Gray,
+            Color.Black,
+            Color.White
+        };
 
-            ///////////////////
-            this.DoubleBuffered = true;
-        }
-        private Dictionary<string, int> patternParameters = new Dictionary<string, int>()
+        private int currentColorIndex;
+        private Color currentMarkColor = Color.Red; // Default color for marking
+        private Rectangle currentRect;
+        private Color customColor;
+        private int Direction = 0;
+        private bool isDrawing;
+
+        private readonly List<Rectangle> markedAreas = new List<Rectangle>();
+
+        private readonly Dictionary<string, int> patternParameters = new Dictionary<string, int>
         {
             { "spacing", 20 },
             { "radius", 50 },
             { "size", 50 },
-            {"number of lines", 10},
-            {"number cells", 8 }
+            { "number of lines", 10 },
+            { "number cells", 8 }
         };
+
+        public string TestMode;
+        public string TestPattern;
+
+        public TestOverlay(Color customColor)
+        {
+            InitializeComponent();
+            this.customColor = customColor;
+            TestMode = "Default";
+            TestPattern = "Default";
+
+            ///////////////////
+            DoubleBuffered = true;
+        }
 
         public TestOverlay(string testMode, string testPattern, Color customColor)
         {
             InitializeComponent();
-            this.testMode = testMode;
-            this.testPattern = testPattern;
+            this.TestMode = testMode;
+            this.TestPattern = testPattern;
             this.customColor = customColor;
             /////////////////////
-            this.DoubleBuffered = true;
+            DoubleBuffered = true;
         }
-
 
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            switch (testMode)
+            switch (TestMode)
             {
                 case "Default":
                     DrawOnlyBackground();
@@ -94,109 +96,101 @@ namespace changeResolution1
                 case "Custom Pattern":
                     DrawCustomPattern(e.Graphics);
                     break;
-
             }
+
             /////////////////
-            foreach (var area in markedAreas)
-            {
-                DrawCircle(e.Graphics, area, areaColors[area]);
-            }
+            foreach (var area in markedAreas) DrawCircle(e.Graphics, area, areaColors[area]);
 
-            if (isDrawing)
-            {
-                DrawCircle(e.Graphics, currentRect, currentMarkColor);
-            }
+            if (isDrawing) DrawCircle(e.Graphics, currentRect, currentMarkColor);
 
-            if (markedAreas.Count > 0)
-            {
-                DrawLegend(e.Graphics);
-            }
-
-
+            if (markedAreas.Count > 0) DrawLegend(e.Graphics);
         }
-        private void DrawCircle(Graphics g, Rectangle rect, Color color)
+
+        private static void DrawCircle(Graphics g, Rectangle rect, Color color)
         {
-            using (Pen pen = new Pen(color, 2))
+            using (var pen = new Pen(color, 2))
             {
                 g.DrawEllipse(pen, rect);
             }
         }
+
         private void DrawLegend(Graphics g)
         {
-            string legendText = "Red: Scratch, Blue: Dead Pixel, Yellow: Burn-in";
-            using (Font font = new Font("Arial", 10, FontStyle.Bold))
+            const string legendText = "Red: Scratch, Blue: Dead Pixel, Yellow: Burn-in";
+            using (var font = new Font("Arial", 10, FontStyle.Bold))
             {
-                SizeF textSize = g.MeasureString(legendText, font);
-                RectangleF legendRect = new RectangleF(new PointF(10, this.ClientSize.Height - textSize.Height - 10), textSize);
+                var textSize = g.MeasureString(legendText, font);
+                var legendRect = new RectangleF(new PointF(10, ClientSize.Height - textSize.Height - 10), textSize);
                 using (Brush brush = new SolidBrush(Color.White))
                 {
                     g.FillRectangle(brush, legendRect);
                 }
+
                 using (Brush brush = new SolidBrush(Color.Black))
                 {
-                    g.DrawString(legendText, font, brush, new PointF(10, this.ClientSize.Height - textSize.Height - 10));
+                    g.DrawString(legendText, font, brush, new PointF(10, ClientSize.Height - textSize.Height - 10));
                 }
             }
         }
+
         private void DrawOnlyBackground()
         {
-            this.BackColor = customColor;
-            this.Invalidate();
+            BackColor = customColor;
+            Invalidate();
         }
+
         private void DrawCircularGradient(Graphics g)
         {
-            Rectangle rect = this.ClientRectangle;
-            GraphicsPath path = new GraphicsPath();
+            var rect = ClientRectangle;
+            var path = new GraphicsPath();
             path.AddEllipse(rect);
-            PathGradientBrush brush = new PathGradientBrush(path)
+            var brush = new PathGradientBrush(path)
             {
                 CenterColor = Color.White,
-                SurroundColors = new Color[] { Color.Black }
+                SurroundColors = new[] { Color.Black }
             };
 
             g.FillEllipse(brush, rect);
         }
+
         private void DrawCheckerboard(Graphics g)
         {
-            Rectangle rect = this.ClientRectangle;
-            int numCells = patternParameters["number cells"];
-            int cellWidth = rect.Width / numCells;
-            int cellHeight = rect.Height / numCells;
+            var rect = ClientRectangle;
+            var numCells = patternParameters["number cells"];
+            var cellWidth = rect.Width / numCells;
+            var cellHeight = rect.Height / numCells;
 
-            for (int y = 0; y < numCells; y++)
-            {
-                for (int x = 0; x < numCells; x++)
+            for (var y = 0; y < numCells; y++)
+            for (var x = 0; x < numCells; x++)
+                using (Brush brush = new SolidBrush((x + y) % 2 == 0 ? Color.Black : Color.White))
                 {
-                    using (Brush brush = new SolidBrush((x + y) % 2 == 0 ? Color.Black : Color.White))
-                    {
-                        g.FillRectangle(brush, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-                    }
+                    g.FillRectangle(brush, x * cellWidth, y * cellHeight, cellWidth, cellHeight);
                 }
-            }
         }
+
         private void DrawColorLines(Graphics g)
         {
-            Rectangle rect = this.ClientRectangle;
-            int numberOfLines = patternParameters["number of lines"];
+            var rect = ClientRectangle;
+            var numberOfLines = patternParameters["number of lines"];
 
-            for (int i = 0; i < numberOfLines; i++)
-            {
-                using (Pen pen = new Pen(ColorFromHSV(i * (360 / numberOfLines), 1, 1), 5))
+            for (var i = 0; i < numberOfLines; i++)
+                using (var pen = new Pen(ColorFromHsv(i * (360 / numberOfLines), 1, 1), 5))
                 {
-                    g.DrawLine(pen, 0, (i + 1) * rect.Height / (numberOfLines + 1), rect.Width, (i + 1) * rect.Height / (numberOfLines + 1));
+                    g.DrawLine(pen, 0, (i + 1) * rect.Height / (numberOfLines + 1), rect.Width,
+                        (i + 1) * rect.Height / (numberOfLines + 1));
                 }
-            }
         }
+
         private void DrawColorSpectrum(Graphics g)
         {
-            Rectangle rect = this.ClientRectangle;
-            for (int i = 0; i < (direction % 2 == 0 ? rect.Width : rect.Height); i++)
+            var rect = ClientRectangle;
+            for (var i = 0; i < (Direction % 2 == 0 ? rect.Width : rect.Height); i++)
             {
-                float hue = (float)i / (direction % 2 == 0 ? rect.Width : rect.Height);
-                Color color = ColorFromHSV(hue * 360, 1, 1);
-                using (Pen pen = new Pen(color))
+                var hue = (float)i / (Direction % 2 == 0 ? rect.Width : rect.Height);
+                var color = ColorFromHsv(hue * 360, 1, 1);
+                using (var pen = new Pen(color))
                 {
-                    switch (direction)
+                    switch (Direction)
                     {
                         case 0: // Left to Right
                             g.DrawLine(pen, i, 0, i, rect.Height);
@@ -217,148 +211,156 @@ namespace changeResolution1
 
         private void DrawGrayscaleGradient(Graphics g)
         {
-            Rectangle rect = this.ClientRectangle;
-            int length = (direction % 2 == 0 ? rect.Width : rect.Height);
+            var rect = ClientRectangle;
+            var length = Direction % 2 == 0 ? rect.Width : rect.Height;
 
-            for (int i = 0; i <= length; i++)
+            for (var i = 0; i <= length; i++)
             {
-                int intensity = (int)(255 * ((float)i / length));
-                Color color = Color.FromArgb(intensity, intensity, intensity);
-                using (Pen pen = new Pen(color))
+                var intensity = (int)(255 * ((float)i / length));
+                var color = Color.FromArgb(intensity, intensity, intensity);
+                using (var pen = new Pen(color))
                 {
-                    switch (direction)
+                    switch (Direction)
                     {
                         case 0: // Left to Right
                             g.DrawLine(pen, i, 0, i, rect.Height);
                             break;
                         case 1: // Right to Left
-                            g.DrawLine(pen, rect.Width - i - 2, 0, rect.Width - i - 2, rect.Height);
+                            g.DrawLine(pen, rect.Width - i - 1, 0, rect.Width - i - 1, rect.Height);
                             break;
                         case 2: // Top to Bottom
                             g.DrawLine(pen, 0, i, rect.Width, i);
                             break;
                         case 3: // Bottom to Top
-                            g.DrawLine(pen, 0, rect.Height - i, rect.Width, rect.Height - i);
+                            g.DrawLine(pen, 0, rect.Height - i - 1, rect.Width, rect.Height - i - 1);
                             break;
                     }
                 }
             }
         }
 
+
         private void DrawCustomPattern(Graphics g)
         {
-            if (testPattern == "Chessboard")
+            switch (TestPattern)
             {
-                DrawChessboardPattern(g);
-            }
-            else if (testPattern == "Circles")
-            {
-                DrawCirclesPattern(g);
-            }
-            else if (testPattern == "Lines")
-            {
-                DrawLinesPattern(g);
+                case "Chessboard":
+                    DrawChessboardPattern(g);
+                    break;
+                case "Circles":
+                    DrawCirclesPattern(g);
+                    break;
+                case "Lines":
+                    DrawLinesPattern(g);
+                    break;
             }
         }
 
         private void DrawChessboardPattern(Graphics g)
         {
-            int size = patternParameters["size"];
-            bool isWhite = true;
-            for (int y = 0; y < this.ClientRectangle.Height; y += size)
+            var size = patternParameters["size"];
+            var isWhite = true;
+            for (var y = 0; y < ClientRectangle.Height; y += size)
             {
-                for (int x = 0; x < this.ClientRectangle.Width; x += size)
+                for (var x = 0; x < ClientRectangle.Width; x += size)
                 {
                     using (Brush brush = new SolidBrush(isWhite ? Color.White : customColor))
                     {
-                        if (direction == 0)
-                            g.FillRectangle(brush, x, y, size, size);
-                        else if (direction == 1)
-                            g.FillRectangle(brush, this.ClientRectangle.Width - x - size, y, size, size);
-                        else if (direction == 2)
-                            g.FillRectangle(brush, x, y, size, size); // Top to Bottom
-                        else if (direction == 3)
-                            g.FillRectangle(brush, x, this.ClientRectangle.Height - y - size, size, size);
+                        switch (Direction)
+                        {
+                            case 0:
+                                g.FillRectangle(brush, x, y, size, size);
+                                break;
+                            case 1:
+                                g.FillRectangle(brush, ClientRectangle.Width - x - size, y, size, size);
+                                break;
+                            case 2:
+                                g.FillRectangle(brush, x, y, size, size); // Top to Bottom
+                                break;
+                            case 3:
+                                g.FillRectangle(brush, x, ClientRectangle.Height - y - size, size, size);
+                                break;
+                        }
                     }
+
                     isWhite = !isWhite;
                 }
+
                 isWhite = !isWhite;
             }
         }
 
         private void DrawCirclesPattern(Graphics g)
         {
-            int radius = patternParameters["radius"];
-            for (int y = 0; y < this.ClientRectangle.Height; y += radius * 2)
-            {
-                for (int x = 0; x < this.ClientRectangle.Width; x += radius * 2)
+            var radius = patternParameters["radius"];
+            for (var y = 0; y < ClientRectangle.Height; y += radius * 2)
+            for (var x = 0; x < ClientRectangle.Width; x += radius * 2)
+                using (Brush brush = new SolidBrush(customColor))
                 {
-                    using (Brush brush = new SolidBrush(customColor))
+                    switch (Direction)
                     {
-                        if (direction == 0)
+                        case 0:
                             g.FillEllipse(brush, x, y, radius * 2, radius * 2);
-                        else if (direction == 1)
-                            g.FillEllipse(brush, this.ClientRectangle.Width - x - radius * 2, y, radius * 2, radius * 2);
-                        else if (direction == 2)
+                            break;
+                        case 1:
+                            g.FillEllipse(brush, ClientRectangle.Width - x - radius * 2, y, radius * 2, radius * 2);
+                            break;
+                        case 2:
                             g.FillEllipse(brush, x, y, radius * 2, radius * 2);
-                        else if (direction == 3)
-                            g.FillEllipse(brush, x, this.ClientRectangle.Height - y - radius * 2, radius * 2, radius * 2);
+                            break;
+                        case 3:
+                            g.FillEllipse(brush, x, ClientRectangle.Height - y - radius * 2, radius * 2, radius * 2);
+                            break;
                     }
                 }
-            }
         }
 
         private void DrawLinesPattern(Graphics g)
         {
-            int spacing = patternParameters["spacing"];
-            using (Pen pen = new Pen(customColor))
+            var spacing = patternParameters["spacing"];
+            using (var pen = new Pen(customColor))
             {
-                for (int y = 0; y < this.ClientRectangle.Height; y += spacing)
-                {
-                    if (direction == 0 || direction == 1)
-                        g.DrawLine(pen, 0, y, this.ClientRectangle.Width, y);
+                for (var y = 0; y < ClientRectangle.Height; y += spacing)
+                    if (Direction == 0 || Direction == 1)
+                        g.DrawLine(pen, 0, y, ClientRectangle.Width, y);
                     else
-                        g.DrawLine(pen, y, 0, y, this.ClientRectangle.Height);
-                }
-                for (int x = 0; x < this.ClientRectangle.Width; x += spacing)
-                {
-                    if (direction == 0 || direction == 1)
-                        g.DrawLine(pen, x, 0, x, this.ClientRectangle.Height);
+                        g.DrawLine(pen, y, 0, y, ClientRectangle.Height);
+                for (var x = 0; x < ClientRectangle.Width; x += spacing)
+                    if (Direction == 0 || Direction == 1)
+                        g.DrawLine(pen, x, 0, x, ClientRectangle.Height);
                     else
-                        g.DrawLine(pen, 0, x, this.ClientRectangle.Width, x);
-                }
+                        g.DrawLine(pen, 0, x, ClientRectangle.Width, x);
             }
         }
 
-        private Color ColorFromHSV(double hue, double saturation, double value)
+        private static Color ColorFromHsv(double hue, double saturation, double value)
         {
-            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
-            double f = hue / 60 - Math.Floor(hue / 60);
+            var hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+            var f = hue / 60 - Math.Floor(hue / 60);
 
             value = value * 255;
-            int v = Convert.ToInt32(value);
-            int p = Convert.ToInt32(value * (1 - saturation));
-            int q = Convert.ToInt32(value * (1 - f * saturation));
-            int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
+            var v = Convert.ToInt32(value);
+            var p = Convert.ToInt32(value * (1 - saturation));
+            var q = Convert.ToInt32(value * (1 - f * saturation));
+            var t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
-            if (hi == 0)
-                return Color.FromArgb(255, v, t, p);
-            else if (hi == 1)
-                return Color.FromArgb(255, q, v, p);
-            else if (hi == 2)
-                return Color.FromArgb(255, p, v, t);
-            else if (hi == 3)
-                return Color.FromArgb(255, p, q, v);
-            else if (hi == 4)
-                return Color.FromArgb(255, t, p, v);
-            else
-                return Color.FromArgb(255, v, p, q);
+            switch (hi)
+            {
+                case 0:
+                    return Color.FromArgb(255, v, t, p);
+                case 1:
+                    return Color.FromArgb(255, q, v, p);
+                case 2:
+                    return Color.FromArgb(255, p, v, t);
+                case 3:
+                    return Color.FromArgb(255, p, q, v);
+                default:
+                    return hi == 4 ? Color.FromArgb(255, t, p, v) : Color.FromArgb(255, v, p, q);
+            }
         }
 
         private void TestOverlay_KeyDown(object sender, KeyEventArgs e)
         {
-
-
             switch (e.KeyCode)
             {
                 case Keys.D1:
@@ -398,10 +400,7 @@ namespace changeResolution1
                     customColor = Color.White;
                     break;
                 case Keys.Tab:
-                    if (colorDialog1.ShowDialog() == DialogResult.OK)
-                    {
-                        customColor = colorDialog1.Color;
-                    }
+                    if (colorDialog1.ShowDialog() == DialogResult.OK) customColor = colorDialog1.Color;
                     break;
                 case Keys.Space:
                 case Keys.Right:
@@ -413,10 +412,10 @@ namespace changeResolution1
                     customColor = colors[currentColorIndex];
                     break;
                 case Keys.Q:
-                    this.BackgroundImage = ServiceMonitorEVK.Properties.Resources.win_back;
+                    BackgroundImage = Resources.win_back;
                     break;
                 case Keys.W:
-                    this.BackgroundImage = ServiceMonitorEVK.Properties.Resources.color_pallete;
+                    BackgroundImage = Resources.color_pallete;
                     break;
                 case Keys.Control | Keys.S:
                     CaptureScreenshot($"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png");
@@ -434,19 +433,25 @@ namespace changeResolution1
                     SetMarkColor(Color.Red);
                     break;
                 case Keys.Escape:
-                    this.Close();
+                    Close();
                     break;
-                default:
+                case Keys.Up: // Изменение направления
+                    Direction = (Direction + 1) % 4; // Переключение направления
+                    Invalidate(); // Перерисовка формы после смены направления
+                    break;
+                case Keys.Down: // Изменение направления в обратном порядке
+                    Direction = (Direction - 1 + 4) % 4;
+                    Invalidate(); // Перерисовка формы после смены направления
                     break;
             }
 
-            this.Invalidate();
+            Invalidate();
         }
 
 
         private void TestOverlay_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (testPattern == "Chessboard" || testPattern == "Circles" || testPattern == "Lines")
+            if (TestPattern == "Chessboard" || TestPattern == "Circles" || TestPattern == "Lines")
             {
                 if (e.Delta > 0)
                 {
@@ -463,12 +468,11 @@ namespace changeResolution1
                     patternParameters["spacing"] = Math.Max(2, patternParameters["spacing"] - 2);
                     patternParameters["number cells"] = Math.Max(2, patternParameters["number cells"] - 1);
                     patternParameters["number of lines"] = Math.Max(1, patternParameters["number of lines"] - 1);
-
                 }
-                this.Invalidate(); // Перерисовать форму
+
+                Invalidate(); // Перерисовать форму
             }
         }
-
 
 
         private void TestOverlay_MouseDown_1(object sender, MouseEventArgs e)
@@ -484,12 +488,12 @@ namespace changeResolution1
         {
             if (isDrawing)
             {
-                int radius = Math.Max(Math.Abs(e.X - currentRect.X), Math.Abs(e.Y - currentRect.Y));
+                var radius = Math.Max(Math.Abs(e.X - currentRect.X), Math.Abs(e.Y - currentRect.Y));
                 currentRect.Width = radius * 2;
                 currentRect.Height = radius * 2;
                 currentRect.X = e.X - radius;
                 currentRect.Y = e.Y - radius;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -500,7 +504,7 @@ namespace changeResolution1
                 isDrawing = false;
                 markedAreas.Add(currentRect);
                 areaColors[currentRect] = currentMarkColor;
-                this.Invalidate();
+                Invalidate();
             }
         }
 
@@ -508,7 +512,7 @@ namespace changeResolution1
         {
             markedAreas.Clear();
             areaColors.Clear();
-            this.Invalidate();
+            Invalidate();
         }
 
         public void SetMarkColor(Color color)
@@ -518,21 +522,19 @@ namespace changeResolution1
 
         public void CaptureScreenshot(string fileName)
         {
-            string directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Screenshots");
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-            string filePath = Path.Combine(directoryPath, fileName);
+            var directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Screenshots");
+            if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+            var filePath = Path.Combine(directoryPath, fileName);
 
-            using (Bitmap bitmap = new Bitmap(this.ClientSize.Width, this.ClientSize.Height))
+            using (var bitmap = new Bitmap(ClientSize.Width, ClientSize.Height))
             {
-                this.DrawToBitmap(bitmap, new Rectangle(Point.Empty, this.ClientSize));
-                using (Graphics g = Graphics.FromImage(bitmap))
+                DrawToBitmap(bitmap, new Rectangle(Point.Empty, ClientSize));
+                using (var g = Graphics.FromImage(bitmap))
                 {
                     DrawLegend(g);
                 }
-                bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+
+                bitmap.Save(filePath, ImageFormat.Png);
             }
         }
     }

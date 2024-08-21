@@ -1,4 +1,4 @@
-﻿namespace changeResolution1
+﻿namespace ServiceMonitorEVK
 {
     partial class SearchInformationForm
     {

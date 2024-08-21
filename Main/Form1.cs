@@ -4,39 +4,38 @@ using Microsoft.Win32;
 using ServiceMonitorEVK.Database;
 using ServiceMonitorEVK.Localization;
 using ServiceMonitorEVK.Properties;
+using ServiceMonitorEVK.Testing_Monitor;
+using ServiceMonitorEVK.Util_Managers;
 using ServiceMonitorEVK.Utils;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-namespace changeResolution1
+
+namespace ServiceMonitorEVK.Main
 {
     public partial class Form1 : MaterialForm
     {
-        private DatabaseManager databaseManager;
-        private DisplayManager displayManager;
-        private MonitorInfoManager monitorInfoManager;
-        private ResolutionDisplayManager resolutionManager;
-        private Dictionary<string, string> monitorNameToIdentifierMap;
+        private readonly UiUtil formAnimator;
         private readonly MaterialSkinManager materialSkinManager;
-        private readonly UIUtil _formAnimator;
-        MonitorInfo[] monitors;
+        private readonly int colorSchemeIndex;
+        private DatabaseManager databaseManager;
+        internal bool IsMonitorFormExist;
+        internal bool IsUpdatingComboBox = false;
 
-        MonitorInfoForm monitorInfo;
-        internal bool isMonitorFormExist = false;
-        private int colorSchemeIndex;
-        internal bool isUpdatingComboBox = false;
-        internal string tester = "Anon";
+        private MonitorInfoForm monitorInfo;
+        private readonly MonitorInfoManager monitorInfoManager;
+        private Dictionary<string, string> monitorNameToIdentifierMap;
+        private MonitorInfo[] monitors;
+        private readonly ResolutionDisplayManager resolutionManager;
+        internal string Tester;
 
         public Form1(string testerFromMain)
         {
-
             InitializeComponent();
-            _formAnimator = new UIUtil(this);
-            _formAnimator.StartOpening();
-            displayManager = new DisplayManager();
+            formAnimator = new UiUtil(this);
+            formAnimator.StartOpening();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
             databaseManager = new DatabaseManager("localhost", "root", "moodle", "admin_asset");
@@ -48,8 +47,7 @@ namespace changeResolution1
             FillMonitorComboBox();
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             SetMaxResolutionForAllMonitors();
-            tester = textBoxTester.Text = mainLabelTester.Text = testerFromMain;
-
+            Tester = textBoxTester.Text = mainLabelTester.Text = testerFromMain;
         }
 
 
@@ -59,66 +57,61 @@ namespace changeResolution1
             UpdateResolutionComboBox();
 
             SetMaxResolutionForAllMonitors();
-            if (materialMultiLineTextBox2.Text.Length > 0)
-            {
-                showFullInfo();
-            }
-
+            if (materialMultiLineTextBox2.Text.Length > 0) ShowFullInfo();
         }
 
         public void InitizializeCustomForm()
         {
-            this.comboBoxCountry.DropDownStyle = ComboBoxStyle.DropDown;
+            comboBoxCountry.DropDownStyle = ComboBoxStyle.DropDown;
             materialSkinManager.EnforceBackcolorOnAllComponents = true;
             materialSkinManager.AddFormToManage(this);
-            checkTheme();
+            CheckTheme();
             DrawerAutoShow = true;
         }
+
         private async void SendMonitorInfoToDatabase()
         {
-            if (materialComboBoxMonitors.SelectedIndex != null)
+            if (materialComboBoxMonitors.SelectedIndex == null) return;
+            try
             {
-                try
-                {
-
-                    var monitorInfo = monitors[materialComboBoxMonitors.SelectedIndex];
-                    var cables = new Dictionary<string, int>();
+                var info = monitors[materialComboBoxMonitors.SelectedIndex];
+                var cables = new Dictionary<string, int>();
 
 
-                    if (checkBoxHDMI.Checked)
-                        cables.Add("HDMI", (int)numericUpDownHdmi.Value);
-                    if (checkBoxVGA.Checked)
-                        cables.Add("VGA", (int)numericUpDownVga.Value);
-                    if (checkBoxDVI.Checked)
-                        cables.Add("DVI", (int)numericUpDownDvi.Value);
-                    if (checkBoxDisplayPort.Checked)
-                        cables.Add("DisplayPort", (int)numericUpDownDisplayPort.Value);
-                    monitorInfo.UpdateCableTypes(cables);
-                    monitorInfo.IdEVK = textBoxIdEVK.Text;
-                    monitorInfo.Country = comboBoxCountry.SelectedItem?.ToString();
-                    monitorInfo.TesterInitials = textBoxTester.Text;
+                if (checkBoxHDMI.Checked)
+                    cables.Add("HDMI", (int)numericUpDownHdmi.Value);
+                if (checkBoxVGA.Checked)
+                    cables.Add("VGA", (int)numericUpDownVga.Value);
+                if (checkBoxDVI.Checked)
+                    cables.Add("DVI", (int)numericUpDownDvi.Value);
+                if (checkBoxDisplayPort.Checked)
+                    cables.Add("DisplayPort", (int)numericUpDownDisplayPort.Value);
+                info.UpdateCableTypes(cables);
+                info.IdEVK = textBoxIdEVK.Text;
+                info.Country = comboBoxCountry.SelectedItem?.ToString();
+                info.TesterInitials = textBoxTester.Text;
 
-                    databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
-                    await databaseManager.InsertMonitorInfoPostgres(monitorInfo);
-                    ShowSnackbar($"Sended to database succesfully");
-
-                }
-                catch (Exception x)
-                {
-                    ShowSnackbar($"Error: {x.Message}");
-                }
+                databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
+                await databaseManager.InsertMonitorInfoPostgres(info);
+                ShowSnackbar("Sended to database succesfully");
+            }
+            catch (Exception x)
+            {
+                ShowSnackbar($"Error: {x.Message}");
             }
         }
+
         private void FillMonitorComboBox()
         {
             MonitorComboBox.Items.Clear();
             monitorNameToIdentifierMap = new Dictionary<string, string>();
 
             var monitorNames = resolutionManager.GetMonitorNames();
-            Console.WriteLine(monitorNames);
-            var friendlyNames = monitorInfoManager.GetFriendlyMonitorNames(); // This method should return a list of friendly names in the same order as `monitorNames`
+            var friendlyNames =
+                monitorInfoManager
+                    .GetFriendlyMonitorNames(); // This method should return a list of friendly names in the same order as `monitorNames`
 
-            for (int i = 0; i < monitorNames.Count; i++)
+            for (var i = 0; i < monitorNames.Count; i++)
             {
                 var identifier = monitorNames[i];
                 var friendlyName = friendlyNames[i];
@@ -126,12 +119,8 @@ namespace changeResolution1
                 MonitorComboBox.Items.Add(friendlyName);
             }
 
-            if (MonitorComboBox.Items.Count > 0)
-            {
-                MonitorComboBox.SelectedIndex = 0;
-            }
+            if (MonitorComboBox.Items.Count > 0) MonitorComboBox.SelectedIndex = 0;
         }
-
 
 
         private void UpdateResolutionComboBox()
@@ -144,20 +133,14 @@ namespace changeResolution1
             var resolutions = resolutionManager.GetAvailableResolutions(identifier).OrderBy(r =>
             {
                 var parts = r.Split('x');
-                int width = int.Parse(parts[0]);
-                int height = int.Parse(parts[1]);
+                var width = int.Parse(parts[0]);
+                var height = int.Parse(parts[1]);
                 return width * height;
             }).ToList();
 
-            foreach (var resolution in resolutions)
-            {
-                ResolutionComboBox.Items.Add(resolution);
-            }
+            foreach (var resolution in resolutions) ResolutionComboBox.Items.Add(resolution);
 
-            if (ResolutionComboBox.Items.Count > 0)
-            {
-                ResolutionComboBox.SelectedIndex = 0;
-            }
+            if (ResolutionComboBox.Items.Count > 0) ResolutionComboBox.SelectedIndex = 0;
         }
 
 
@@ -165,11 +148,11 @@ namespace changeResolution1
         {
             if (ResolutionComboBox.SelectedItem != null)
             {
-                string selectedResolution = ResolutionComboBox.SelectedItem.ToString();
-                string[] parts = selectedResolution.Split('x');
+                var selectedResolution = ResolutionComboBox.SelectedItem.ToString();
+                var parts = selectedResolution.Split('x');
 
-                int width = int.Parse(parts[0].Trim());
-                int height = int.Parse(parts[1].Trim());
+                var width = int.Parse(parts[0].Trim());
+                var height = int.Parse(parts[1].Trim());
 
                 var selectedFriendlyName = MonitorComboBox.SelectedItem.ToString();
                 var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
@@ -181,7 +164,6 @@ namespace changeResolution1
 
         private void SetMaxResolution_Click(object sender, EventArgs e)
         {
-
             var selectedFriendlyName = MonitorComboBox.SelectedItem.ToString();
             var identifier = monitorNameToIdentifierMap[selectedFriendlyName];
             var maxResolution = resolutionManager.GetMaxResolution(identifier);
@@ -195,8 +177,8 @@ namespace changeResolution1
             {
                 new MaterialSnackBar("Not valid resolution", "ok", true).Show(this);
             }
-
         }
+
         private void SetMaxResolutionForAllMonitors()
         {
             foreach (var friendlyName in monitorNameToIdentifierMap.Keys)
@@ -206,47 +188,35 @@ namespace changeResolution1
                 var maxResolution = resolutionManager.GetMaxResolution(identifier);
 
                 if (currentResolution.Width < maxResolution.Width || currentResolution.Height < maxResolution.Height)
-                {
                     resolutionManager.SetResolution(identifier, maxResolution.Width, maxResolution.Height);
-                }
             }
         }
 
-        private async void showFullInfo()
+        private async void ShowFullInfo()
         {
             var monitorNames = await monitorInfoManager.GetMonitorNamesAsync();
-            var monitorInfo = await monitorInfoManager.GetMonitorInfoAsync();
+            var monitorInfoAsync = await monitorInfoManager.GetMonitorInfoAsync();
             var monitorInfo1 = await monitorInfoManager.GetDisplayInfo1Async();
             var edidInfo = await monitorInfoManager.GetEdidInfoAsync();
             var serialNumber = await monitorInfoManager.GetMonitorSerialNumberAsync();
             materialMultiLineTextBox2.Text = monitorNames + "\n==============================\n"
-                + monitorInfoManager.GetDiagonal() + "\n==============================\n"
-                + monitorInfo + "\n==============================\n"
-                + monitorInfo1 + "\n==============================\n"
-                + edidInfo + "\n==============================\n"
-                + serialNumber + "\n==============================\n";
+                                                          + monitorInfoManager.GetDiagonal() +
+                                                          "\n==============================\n"
+                                                          + monitorInfoAsync + "\n==============================\n"
+                                                          + monitorInfo1 + "\n==============================\n"
+                                                          + edidInfo + "\n==============================\n"
+                                                          + serialNumber + "\n==============================\n";
         }
 
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Escape)
-            {
-
-                MaterialDialog materialDialog = new MaterialDialog(this, "Exit from app", "Are you sure you want to exit the app?", "Yes", true, "Cancel", true);
-                DialogResult result = materialDialog.ShowDialog(this);
-                if (result == DialogResult.OK)
-                {
-                    _formAnimator.StartClosing();
-                }
-                return true;
-            }
-            return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-        private void ResolutionComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+            if (keyData != Keys.Escape) return base.ProcessCmdKey(ref msg, keyData);
+            var materialDialog = new MaterialDialog(this, "Exit from app", "Are you sure you want to exit the app?",
+                "Yes", true, "Cancel", true);
+            var result = materialDialog.ShowDialog(this);
+            if (result == DialogResult.OK) formAnimator.StartClosing();
+            return true;
         }
 
         private void MonitorComboBox_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -255,81 +225,61 @@ namespace changeResolution1
         }
 
 
-        private void updateColor()
+        private void UpdateColor()
         {
-            switch (colorSchemeIndex)
-            {
-                case 0:
-                    materialSkinManager.ColorScheme = new ColorScheme(
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
-                        materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
-                        Accent.Red400,
-                        TextShade.WHITE);
-                    pictureBoxLogo.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+            materialSkinManager.ColorScheme = new ColorScheme(
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                    ? Primary.Grey900
+                    : Primary.BlueGrey800,
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                    ? Primary.Grey800
+                    : Primary.BlueGrey900,
+                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                    ? Primary.Grey700
+                    : Primary.BlueGrey500,
+                Accent.Red400,
+                TextShade.WHITE);
+            pictureBoxLogo.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
                 ? Color.FromArgb(0x21, 0x21, 0x21)
                 : Color.FromArgb(0x37, 0x47, 0x4F);
-                    break;
 
-                case 1:
-                    materialSkinManager.ColorScheme = new ColorScheme(
-                        Primary.Green600,
-                        Primary.Green700,
-                        Primary.Green200,
-                        Accent.Red100,
-                        TextShade.WHITE);
-                    pictureBoxLogo.BackColor = Color.Blue;
-                    break;
-
-                case 2:
-                    materialSkinManager.ColorScheme = new ColorScheme(
-                        Primary.BlueGrey800,
-                        Primary.BlueGrey900,
-                        Primary.BlueGrey500,
-                        Accent.LightBlue200,
-                        TextShade.WHITE);
-                    pictureBoxLogo.BackColor = Color.White;
-                    break;
-            }
             Invalidate();
         }
 
         private void materialSwitch1_CheckedChanged(object sender, EventArgs e)
         {
-            checkTheme();
+            CheckTheme();
         }
 
-        private void checkTheme()
+        private void CheckTheme()
         {
             if (materialSwitch1.Checked)
             {
                 materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
                 pictureBoxLogo.BackColor = Color.Black;
-
             }
             else
             {
                 materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
                 pictureBoxLogo.BackColor = Color.White;
             }
-            updateColor();
+
+            UpdateColor();
         }
 
 
         private void showInfoPage_Enter(object sender, EventArgs e)
         {
-
             monitorInfo = new MonitorInfoForm(this);
-            fillPostionsInfo();
+            FillPositionsInfo();
             if (checkBoxAutoShow.Checked)
-            {
-                if (materialLabelSerialNo.Text != null) SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
-            }
+                if (materialLabelSerialNo.Text != null)
+                    SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
 
             if (checkBoxCountry.Checked) databaseManager.FillCountryComboBox(comboBoxCountry);
         }
 
-        private void fillPostionsInfo()
+        private void FillPositionsInfo()
         {
             try
             {
@@ -341,16 +291,17 @@ namespace changeResolution1
                 ShowSnackbar($"Error: {ex.Message}");
             }
         }
+
         private void tabPage4_Enter(object sender, EventArgs e)
         {
             ShowSnackbar("Loading...");
-            showFullInfo();
+            ShowFullInfo();
         }
 
 
         private void SeedListView()
         {
-            monitors = monitorInfo.monitors;
+            monitors = monitorInfo.Monitors;
 
             if (monitors == null || monitors.Length == 0)
             {
@@ -358,7 +309,8 @@ namespace changeResolution1
                 return;
             }
 
-            if (materialComboBoxMonitors.SelectedIndex == -1 || materialComboBoxMonitors.SelectedIndex >= monitors.Length)
+            if (materialComboBoxMonitors.SelectedIndex == -1 ||
+                materialComboBoxMonitors.SelectedIndex >= monitors.Length)
             {
                 ShowSnackbar("Please select a valid monitor.");
                 return;
@@ -375,38 +327,36 @@ namespace changeResolution1
         private void materialButton1_Click(object sender, EventArgs e)
         {
             new SearchInformationForm(this).Show();
-
         }
 
 
         private void materialComboBoxMonitors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fillPostionsInfo();
+            FillPositionsInfo();
             if (checkBoxAutoShow.Checked)
-            {
-                if (materialLabelSerialNo.Text != null) SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
-            }
+                if (materialLabelSerialNo.Text != null)
+                    SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
         }
 
-        private void DisplayMonitorInfo(MonitorInfo monitorInfo)
+        private void DisplayMonitorInfo(MonitorInfo monitorInformation)
         {
-            materialLabelManufacturer.Text = monitorInfo.Manufacturer;
-            materialLabelModel.Text = monitorInfo.Model;
-            materialLabelSerialNo.Text = monitorInfo.SerialNumber;
-            materialLabelYearOfProduction.Text = monitorInfo.YearOfProduction;
-            materialLabelMonthOfProduction.Text = monitorInfo.MonthOfProduction;
-            materialLabelProductCodeID.Text = monitorInfo.ProductCodeID;
-            materialLabelDiagonal1.Text = monitorInfo.Diagonal1.ToString();
-            materialLabelDiagonal2.Text = monitorInfo.Diagonal2;
-            materialLabelResolution.Text = monitorInfo.Resolution;
-            materialLabelFrequency.Text = monitorInfo.Frequency.ToString();
-            materialLabelPPI.Text = monitorInfo.PPI;
-            materialLabelSizeMonitor.Text = monitorInfo.SizeMonitor;
-            textBoxIdEVK.Enabled = !string.IsNullOrEmpty(monitorInfo.Manufacturer) &
-                            !string.IsNullOrEmpty(monitorInfo.Model);
-            textBoxIdEVK.Text = monitorInfo.IdEVK;
+            materialLabelManufacturer.Text = monitorInformation.Manufacturer;
+            materialLabelModel.Text = monitorInformation.Model;
+            materialLabelSerialNo.Text = monitorInformation.SerialNumber;
+            materialLabelYearOfProduction.Text = monitorInformation.YearOfProduction;
+            materialLabelMonthOfProduction.Text = monitorInformation.MonthOfProduction;
+            materialLabelProductCodeID.Text = monitorInformation.ProductCodeId;
+            materialLabelDiagonal1.Text = monitorInformation.Diagonal1.ToString();
+            materialLabelDiagonal2.Text = monitorInformation.Diagonal2;
+            materialLabelResolution.Text = monitorInformation.Resolution;
+            materialLabelFrequency.Text = monitorInformation.Frequency.ToString();
+            materialLabelPPI.Text = monitorInformation.PPI;
+            materialLabelSizeMonitor.Text = monitorInformation.SizeMonitor;
+            textBoxIdEVK.Enabled = !string.IsNullOrEmpty(monitorInformation.Manufacturer) &
+                                   !string.IsNullOrEmpty(monitorInformation.Model);
+            textBoxIdEVK.Text = monitorInformation.IdEVK;
 
-            this.Refresh();
+            Refresh();
         }
 
         private void sendButton_Click(object sender, EventArgs e)
@@ -417,106 +367,89 @@ namespace changeResolution1
         private void textBoxIdEVK_TextChanged(object sender, EventArgs e)
         {
             if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
-            {
                 monitors[materialComboBoxMonitors.SelectedIndex].IdEVK = textBoxIdEVK.Text;
-            }
         }
 
         private void textBoxTester_TextChanged(object sender, EventArgs e)
         {
             if (textBoxTester.Text.Length == 2)
             {
-               /* if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
-                {
-                    monitors[materialComboBoxMonitors.SelectedIndex].TesterInitials = textBoxTester.Text;
-                }*/
-                mainLabelTester.Text = textBoxTester.Text;
+                mainLabelTester.Text = Tester = textBoxTester.Text;
                 ShowSnackbar("Initials inited succesfully");
-
             }
-
         }
 
         private void materialSliderOpasity_onValueChanged(object sender, int newValue)
         {
             if (newValue > 1)
             {
-                this.Opacity = newValue / 100.0;
-                this.Invalidate();
+                Opacity = newValue / 100.0;
+                Invalidate();
             }
         }
 
         private void buttonTestingMonitor_Click(object sender, EventArgs e)
         {
-            MonitorTestForm monitorTest;
-            if (!isMonitorFormExist)
+            if (!IsMonitorFormExist)
             {
-                monitorTest = new MonitorTestForm(this);
+                var monitorTest = new MonitorTestForm(this);
                 monitorTest.Show();
-                isMonitorFormExist = true;
+                IsMonitorFormExist = true;
             }
         }
 
         private void materialButton3_Click(object sender, EventArgs e)
         {
-            PixelFixerForm pixelFixerForm = new PixelFixerForm(this);
+            var pixelFixerForm = new PixelFixerForm(this);
             pixelFixerForm.Show();
         }
 
         private void searchAssetButton_Click(object sender, EventArgs e)
         {
             if (textBoxIdEVK.Text != null && textBoxIdEVK.Text.Length > 6) SearchInfoFromAsset(textBoxIdEVK.Text);
-
-
         }
 
         private void SearchInfoFromAsset(string searchValue, string searchBy = "IdEvk")
         {
-            string whereClause = searchBy == "NumerSeryjny" ? "NumerSeryjny" : "IdEvk";
+            var whereClause = searchBy == "NumerSeryjny" ? "NumerSeryjny" : "IdEvk";
 
-            string query =
-    "SELECT aa.Marka, " +
-    "aa.Model, " +
-    "aa.NumerSeryjny, " +
-    "aa.KlasaEvk, " +
-    "aa.MiejsceMagazynowe, " +
-    "CONCAT(p1.Imie, ' ', p1.Nazwisko) AS TestowaniePracownik, " +
-    "aa.TestowanieData, " +
-    "CONCAT(p2.Imie, ' ', p2.Nazwisko) AS CzyszczeniePracownik, " +
-    "aa.CzyszczenieData, " +
-    "m.TypWyswietlacz AS Type, " +
-    "m.WielkoscMonitor AS Diagonal, " +
-    "c.CountryName AS Country, " +
-    "CASE WHEN aa.CzyTestowany = 1 THEN 'Yes' ELSE 'No' END AS CzyTestowany, " +
-    "CASE WHEN aa.CzyCzyszczony = 1 THEN 'Yes' ELSE 'No' END AS CzyCzyszczony, " +
-    "aa.IdEvk, " +
-    "aa.Zdjecia " +
-    "FROM admin_asset.sprzet AS aa " +
-    "LEFT JOIN admin_asset.pracownik AS p1 ON aa.EtapTestowanie = p1.IdPracownik " +
-    "LEFT JOIN admin_asset.pracownik AS p2 ON aa.EtapCzyszczenie = p2.IdPracownik " +
-    "LEFT JOIN admin_asset.monitor AS m ON aa.IdSprzet = m.IdSprzet " +
-    "LEFT JOIN admin_asset.slownikcountry AS c ON aa.IdCountry = c.IdCountry " +
-    $"WHERE aa.{whereClause} = '{searchValue}'";
+            var query =
+                "SELECT aa.Marka, " +
+                "aa.Model, " +
+                "aa.NumerSeryjny, " +
+                "aa.KlasaEvk, " +
+                "aa.MiejsceMagazynowe, " +
+                "CONCAT(p1.Imie, ' ', p1.Nazwisko) AS TestowaniePracownik, " +
+                "aa.TestowanieData, " +
+                "CONCAT(p2.Imie, ' ', p2.Nazwisko) AS CzyszczeniePracownik, " +
+                "aa.CzyszczenieData, " +
+                "m.TypWyswietlacz AS Type, " +
+                "m.WielkoscMonitor AS Diagonal, " +
+                "c.CountryName AS Country, " +
+                "CASE WHEN aa.CzyTestowany = 1 THEN 'Yes' ELSE 'No' END AS CzyTestowany, " +
+                "CASE WHEN aa.CzyCzyszczony = 1 THEN 'Yes' ELSE 'No' END AS CzyCzyszczony, " +
+                "aa.IdEvk, " +
+                "aa.Zdjecia " +
+                "FROM admin_asset.sprzet AS aa " +
+                "LEFT JOIN admin_asset.pracownik AS p1 ON aa.EtapTestowanie = p1.IdPracownik " +
+                "LEFT JOIN admin_asset.pracownik AS p2 ON aa.EtapCzyszczenie = p2.IdPracownik " +
+                "LEFT JOIN admin_asset.monitor AS m ON aa.IdSprzet = m.IdSprzet " +
+                "LEFT JOIN admin_asset.slownikcountry AS c ON aa.IdCountry = c.IdCountry " +
+                $"WHERE aa.{whereClause} = '{searchValue}'";
 
 
-
-            Dictionary<string, string> parameters = databaseManager.ExecuteQueryFindProductAndGet(query);
+            var parameters = databaseManager.ExecuteQueryFindProductAndGet(query);
 
             if (parameters == null || parameters.Count == 0)
-            {
                 ShowSnackbar($"No data found in the database for the provided {searchBy}: {searchValue}");
-            }
             else
-            {
-                fillParametersToLabels(parameters);
-            }
+                FillParametersToLabels(parameters);
         }
 
 
-        private void fillParametersToLabels(Dictionary<string, string> parameters)
+        private void FillParametersToLabels(Dictionary<string, string> parameters)
         {
             foreach (var kvp in parameters)
-            {
                 switch (kvp.Key)
                 {
                     case "Manufacturer":
@@ -567,26 +500,15 @@ namespace changeResolution1
                     case "Country":
                         labelAssetCountry.Text = kvp.Value;
                         break;
-
                 }
-            }
         }
-
 
 
         private string CheckImageUrls(string imageUrls)
         {
-            string[] urls = imageUrls.Split(' ');
-            int y = 0;
-            for (int i = 0; i < urls.Length; i++)
-            {
-                string url = urls[i].Trim();
+            var urls = imageUrls.Split(' ');
+            var y = urls.Select(t => t.Trim()).Count(url => !string.IsNullOrEmpty(url));
 
-                if (!string.IsNullOrEmpty(url))
-                {
-                    y++;
-                }
-            }
             return $"Images available: {y}";
         }
 
@@ -600,7 +522,7 @@ namespace changeResolution1
         {
             if (e.KeyCode == Keys.Enter)
             {
-                string barcode = textBoxIdEVK.Text.Trim();
+                var barcode = textBoxIdEVK.Text.Trim();
 
                 SearchInfoFromAsset(barcode);
 
@@ -613,7 +535,7 @@ namespace changeResolution1
 
         private void labelAssetClass_Click(object sender, EventArgs e)
         {
-            Label clickedLabel = sender as Label;
+            var clickedLabel = sender as Label;
 
             if (clickedLabel != null)
             {
@@ -626,38 +548,34 @@ namespace changeResolution1
         private void pictureBox2_Click(object sender, EventArgs e)
         {
             if (materialLabelSerialNo.Text != null) SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
-
         }
 
         private void materialCheckbox17_CheckedChanged(object sender, EventArgs e)
         {
-            numericUpDownDisplayPort.Enabled = checkBoxDisplayPort.Checked ? true : false;
+            numericUpDownDisplayPort.Enabled = checkBoxDisplayPort.Checked;
         }
 
         private void CheckBoxDVI_CheckedChanged(object sender, EventArgs e)
         {
-            numericUpDownDvi.Enabled = checkBoxDVI.Checked ? true : false;
+            numericUpDownDvi.Enabled = checkBoxDVI.Checked;
         }
 
         private void CheckboxVGA_CheckedChanged(object sender, EventArgs e)
         {
-            numericUpDownVga.Enabled = checkBoxVGA.Checked ? true : false;
+            numericUpDownVga.Enabled = checkBoxVGA.Checked;
         }
 
         private void checkBoxHDMI_CheckedChanged(object sender, EventArgs e)
         {
-            numericUpDownHdmi.Enabled = checkBoxHDMI.Checked ? true : false;
+            numericUpDownHdmi.Enabled = checkBoxHDMI.Checked;
         }
 
-      
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (checkBoxSaveLanguage.Checked)
-            {
                 UserSettingsManager.SetPreferredLanguage(LocalizationManager.Instance.GetCurrentCulture().Name);
-            }
-            _formAnimator.StartClosing();
+            formAnimator.StartClosing();
         }
 
         private void SetLanguage(string cultureCode)
@@ -691,6 +609,7 @@ namespace changeResolution1
         private void pictureBox36_Click(object sender, EventArgs e)
         {
             SetLanguage("uk-UA");
+
         }
 
         private void rusLang_Click(object sender, EventArgs e)
@@ -718,30 +637,66 @@ namespace changeResolution1
 
         private void textBoxTester_Leave(object sender, EventArgs e)
         {
-            if (textBoxTester.Text.Length < 2)
-            {
-                textBoxTester.Text = tester;
-            }
+            if (textBoxTester.Text.Length < 2) textBoxTester.Text = Tester;
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             base.OnFormClosed(e);
-            Application.Exit(); 
+            Application.Exit();
         }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (this.Opacity > 0) 
+            if (Opacity > 0)
             {
                 e.Cancel = true;
-                _formAnimator.StartClosing();
+                formAnimator.StartClosing();
             }
             else
             {
-                base.OnFormClosing(e); 
+                base.OnFormClosing(e);
             }
         }
 
+        private void pictureBox36_DoubleClick(object sender, EventArgs e)
+        {
+            if (Tester.Equals("JS"))
+            {
+                materialSkinManager.ColorScheme = new ColorScheme(
+                   materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                       ? Primary.Green900
+                       : Primary.LightGreen800,
+                   materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                       ? Primary.Green800
+                       : Primary.LightGreen900,
+                   materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                       ? Primary.Green700
+                       : Primary.LightGreen500,
+                   Accent.Red400,
+                   TextShade.WHITE);
+                rusLang.Visible = false;
+                RusLabel.Visible = false;
+                Invalidate();
+            }
+            else if (Tester.Equals("AF"))
+            {
+                materialSkinManager.ColorScheme = new ColorScheme(
+                    materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                        ? Primary.Brown900
+                        : Primary.Brown200,
+                    materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                        ? Primary.Brown800
+                        : Primary.Brown100,
+                    materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
+                        ? Primary.Brown700
+                        : Primary.Brown50,
+                    Accent.Red400,
+                    TextShade.WHITE);
+
+                Invalidate();
+            }
+
+        }
     }
 }
-
