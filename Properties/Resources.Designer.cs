@@ -163,9 +163,29 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap duplicate {
+            get {
+                object obj = ResourceManager.GetObject("duplicate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap exit_test {
             get {
                 object obj = ResourceManager.GetObject("exit-test", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap extend {
+            get {
+                object obj = ResourceManager.GetObject("extend", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -266,6 +286,26 @@ namespace ServiceMonitorEVK.Properties {
         public static System.Drawing.Bitmap monitoring_test {
             get {
                 object obj = ResourceManager.GetObject("monitoring-test", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap onlyPC {
+            get {
+                object obj = ResourceManager.GetObject("onlyPC", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap onlySecond {
+            get {
+                object obj = ResourceManager.GetObject("onlySecond", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

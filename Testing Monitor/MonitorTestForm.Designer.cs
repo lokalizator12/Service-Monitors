@@ -106,9 +106,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox10.BackgroundImage = global::ServiceMonitorEVK.Properties.Resources.delete_symbol_option;
             this.pictureBox10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox10.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox10.Location = new System.Drawing.Point(3, 601);
+            this.pictureBox10.Location = new System.Drawing.Point(3, 536);
             this.pictureBox10.Name = "pictureBox10";
-            this.pictureBox10.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox10.Size = new System.Drawing.Size(35, 35);
             this.pictureBox10.TabIndex = 19;
             this.pictureBox10.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox10, "Key: X");
@@ -120,9 +120,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox9.BackgroundImage = global::ServiceMonitorEVK.Properties.Resources.save_prtscr;
             this.pictureBox9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox9.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox9.Location = new System.Drawing.Point(3, 555);
+            this.pictureBox9.Location = new System.Drawing.Point(3, 495);
             this.pictureBox9.Name = "pictureBox9";
-            this.pictureBox9.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox9.Size = new System.Drawing.Size(35, 35);
             this.pictureBox9.TabIndex = 18;
             this.pictureBox9.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox9, "Key: Ctrl+S");
@@ -134,9 +134,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox8.BackgroundImage = global::ServiceMonitorEVK.Properties.Resources.select_yello;
             this.pictureBox8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox8.Location = new System.Drawing.Point(3, 647);
+            this.pictureBox8.Location = new System.Drawing.Point(3, 577);
             this.pictureBox8.Name = "pictureBox8";
-            this.pictureBox8.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox8.Size = new System.Drawing.Size(35, 35);
             this.pictureBox8.TabIndex = 17;
             this.pictureBox8.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox8, "Key: A");
@@ -148,9 +148,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox7.BackgroundImage = global::ServiceMonitorEVK.Properties.Resources.select_blue;
             this.pictureBox7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox7.Location = new System.Drawing.Point(3, 693);
+            this.pictureBox7.Location = new System.Drawing.Point(3, 618);
             this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox7.Size = new System.Drawing.Size(35, 35);
             this.pictureBox7.TabIndex = 16;
             this.pictureBox7.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox7, "Key: S");
@@ -163,9 +163,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox6.Location = new System.Drawing.Point(3, 509);
+            this.pictureBox6.Location = new System.Drawing.Point(3, 454);
             this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox6.Size = new System.Drawing.Size(35, 35);
             this.pictureBox6.TabIndex = 15;
             this.pictureBox6.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox6, "Key: W");
@@ -178,9 +178,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox5.Location = new System.Drawing.Point(3, 463);
+            this.pictureBox5.Location = new System.Drawing.Point(3, 413);
             this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox5.Size = new System.Drawing.Size(35, 35);
             this.pictureBox5.TabIndex = 14;
             this.pictureBox5.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox5, "Key: Q ");
@@ -192,9 +192,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox1.BackgroundImage = global::ServiceMonitorEVK.Properties.Resources.select_red2;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 739);
+            this.pictureBox1.Location = new System.Drawing.Point(3, 659);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox1.Size = new System.Drawing.Size(35, 35);
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox1, "Key: D");
@@ -207,9 +207,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxChoose.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBoxChoose.Image = global::ServiceMonitorEVK.Properties.Resources.color_wheel;
             this.pictureBoxChoose.InitialImage = global::ServiceMonitorEVK.Properties.Resources.color_wheel;
-            this.pictureBoxChoose.Location = new System.Drawing.Point(3, 417);
+            this.pictureBoxChoose.Location = new System.Drawing.Point(3, 372);
             this.pictureBoxChoose.Name = "pictureBoxChoose";
-            this.pictureBoxChoose.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxChoose.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxChoose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBoxChoose.TabIndex = 9;
             this.pictureBoxChoose.TabStop = false;
@@ -223,9 +223,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxBlack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxBlack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxBlack.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxBlack.Location = new System.Drawing.Point(3, 371);
+            this.pictureBoxBlack.Location = new System.Drawing.Point(3, 331);
             this.pictureBoxBlack.Name = "pictureBoxBlack";
-            this.pictureBoxBlack.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxBlack.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxBlack.TabIndex = 8;
             this.pictureBoxBlack.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxBlack, "Key: 9 or Num9");
@@ -238,9 +238,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxWhite.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxWhite.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxWhite.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxWhite.Location = new System.Drawing.Point(3, 325);
+            this.pictureBoxWhite.Location = new System.Drawing.Point(3, 290);
             this.pictureBoxWhite.Name = "pictureBoxWhite";
-            this.pictureBoxWhite.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxWhite.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxWhite.TabIndex = 7;
             this.pictureBoxWhite.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxWhite, "Key: 8 or Num8");
@@ -253,9 +253,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxSilver.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxSilver.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxSilver.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxSilver.Location = new System.Drawing.Point(3, 279);
+            this.pictureBoxSilver.Location = new System.Drawing.Point(3, 249);
             this.pictureBoxSilver.Name = "pictureBoxSilver";
-            this.pictureBoxSilver.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxSilver.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxSilver.TabIndex = 6;
             this.pictureBoxSilver.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxSilver, "Key: 7 or Num7");
@@ -268,9 +268,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxBlue.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxBlue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxBlue.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxBlue.Location = new System.Drawing.Point(3, 233);
+            this.pictureBoxBlue.Location = new System.Drawing.Point(3, 208);
             this.pictureBoxBlue.Name = "pictureBoxBlue";
-            this.pictureBoxBlue.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxBlue.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxBlue.TabIndex = 5;
             this.pictureBoxBlue.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxBlue, "Key: 6 or Num6");
@@ -283,9 +283,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxMagneta.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxMagneta.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxMagneta.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxMagneta.Location = new System.Drawing.Point(3, 187);
+            this.pictureBoxMagneta.Location = new System.Drawing.Point(3, 167);
             this.pictureBoxMagneta.Name = "pictureBoxMagneta";
-            this.pictureBoxMagneta.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxMagneta.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxMagneta.TabIndex = 4;
             this.pictureBoxMagneta.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxMagneta, "Key: 5 or Num5");
@@ -298,9 +298,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxAqua.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxAqua.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxAqua.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxAqua.Location = new System.Drawing.Point(3, 141);
+            this.pictureBoxAqua.Location = new System.Drawing.Point(3, 126);
             this.pictureBoxAqua.Name = "pictureBoxAqua";
-            this.pictureBoxAqua.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxAqua.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxAqua.TabIndex = 3;
             this.pictureBoxAqua.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxAqua, "Key: 4 or Num4");
@@ -313,9 +313,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxYellow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxYellow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxYellow.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxYellow.Location = new System.Drawing.Point(3, 95);
+            this.pictureBoxYellow.Location = new System.Drawing.Point(3, 85);
             this.pictureBoxYellow.Name = "pictureBoxYellow";
-            this.pictureBoxYellow.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxYellow.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxYellow.TabIndex = 2;
             this.pictureBoxYellow.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxYellow, "Key: 3 or Num3");
@@ -328,9 +328,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxLime.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBoxLime.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBoxLime.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBoxLime.Location = new System.Drawing.Point(3, 49);
+            this.pictureBoxLime.Location = new System.Drawing.Point(3, 44);
             this.pictureBoxLime.Name = "pictureBoxLime";
-            this.pictureBoxLime.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxLime.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxLime.TabIndex = 1;
             this.pictureBoxLime.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxLime, "Key: 2 or Num2");
@@ -345,7 +345,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBoxRed.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBoxRed.Location = new System.Drawing.Point(3, 3);
             this.pictureBoxRed.Name = "pictureBoxRed";
-            this.pictureBoxRed.Size = new System.Drawing.Size(40, 40);
+            this.pictureBoxRed.Size = new System.Drawing.Size(35, 35);
             this.pictureBoxRed.TabIndex = 0;
             this.pictureBoxRed.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBoxRed, "Key: 1 or Num1");
@@ -361,7 +361,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox2.Image = global::ServiceMonitorEVK.Properties.Resources.push_pin;
-            this.pictureBox2.Location = new System.Drawing.Point(3, 803);
+            this.pictureBox2.Location = new System.Drawing.Point(3, 713);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(31, 28);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -374,12 +374,12 @@ namespace ServiceMonitorEVK.Testing_Monitor
             // 
             this.materialSliderOpasity.Depth = 0;
             this.materialSliderOpasity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialSliderOpasity.Location = new System.Drawing.Point(3, 226);
+            this.materialSliderOpasity.Location = new System.Drawing.Point(3, 168);
             this.materialSliderOpasity.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialSliderOpasity.Name = "materialSliderOpasity";
             this.materialSliderOpasity.ShowText = false;
             this.materialSliderOpasity.ShowValue = false;
-            this.materialSliderOpasity.Size = new System.Drawing.Size(133, 40);
+            this.materialSliderOpasity.Size = new System.Drawing.Size(80, 40);
             this.materialSliderOpasity.TabIndex = 37;
             this.materialSliderOpasity.Text = "Opacity";
             this.materialSliderOpasity.Value = 100;
@@ -393,9 +393,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox4.Location = new System.Drawing.Point(3, 785);
+            this.pictureBox4.Location = new System.Drawing.Point(3, 700);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox4.Size = new System.Drawing.Size(35, 35);
             this.pictureBox4.TabIndex = 13;
             this.pictureBox4.TabStop = false;
             this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
@@ -409,7 +409,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.monitorComboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.monitorComboBox1.Depth = 0;
             this.monitorComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.monitorComboBox1.DropDownHeight = 174;
+            this.monitorComboBox1.DropDownHeight = 118;
             this.monitorComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.monitorComboBox1.DropDownWidth = 121;
             this.monitorComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
@@ -417,14 +417,15 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.monitorComboBox1.FormattingEnabled = true;
             this.monitorComboBox1.Hint = "Monitor";
             this.monitorComboBox1.IntegralHeight = false;
-            this.monitorComboBox1.ItemHeight = 43;
+            this.monitorComboBox1.ItemHeight = 29;
             this.monitorComboBox1.Location = new System.Drawing.Point(3, 3);
             this.monitorComboBox1.MaxDropDownItems = 4;
             this.monitorComboBox1.MouseState = MaterialSkin.MouseState.OUT;
             this.monitorComboBox1.Name = "monitorComboBox1";
-            this.monitorComboBox1.Size = new System.Drawing.Size(133, 49);
+            this.monitorComboBox1.Size = new System.Drawing.Size(80, 35);
             this.monitorComboBox1.StartIndex = 0;
             this.monitorComboBox1.TabIndex = 34;
+            this.monitorComboBox1.UseTallSize = false;
             // 
             // testModeComboBox1
             // 
@@ -435,7 +436,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.testModeComboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.testModeComboBox1.Depth = 0;
             this.testModeComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.testModeComboBox1.DropDownHeight = 174;
+            this.testModeComboBox1.DropDownHeight = 118;
             this.testModeComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.testModeComboBox1.DropDownWidth = 121;
             this.testModeComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
@@ -443,7 +444,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.testModeComboBox1.FormattingEnabled = true;
             this.testModeComboBox1.Hint = "Test mode";
             this.testModeComboBox1.IntegralHeight = false;
-            this.testModeComboBox1.ItemHeight = 43;
+            this.testModeComboBox1.ItemHeight = 29;
             this.testModeComboBox1.Items.AddRange(new object[] {
             "Custom Pattern",
             "Color Spectrum",
@@ -451,13 +452,14 @@ namespace ServiceMonitorEVK.Testing_Monitor
             "Color Lines",
             "Checkerboard",
             "Circular Gradient"});
-            this.testModeComboBox1.Location = new System.Drawing.Point(3, 115);
+            this.testModeComboBox1.Location = new System.Drawing.Point(3, 85);
             this.testModeComboBox1.MaxDropDownItems = 4;
             this.testModeComboBox1.MouseState = MaterialSkin.MouseState.OUT;
             this.testModeComboBox1.Name = "testModeComboBox1";
-            this.testModeComboBox1.Size = new System.Drawing.Size(133, 49);
+            this.testModeComboBox1.Size = new System.Drawing.Size(80, 35);
             this.testModeComboBox1.StartIndex = 0;
             this.testModeComboBox1.TabIndex = 35;
+            this.testModeComboBox1.UseTallSize = false;
             this.testModeComboBox1.SelectedIndexChanged += new System.EventHandler(this.testModeComboBox1_SelectedIndexChanged);
             this.testModeComboBox1.SelectionChangeCommitted += new System.EventHandler(this.testModeComboBox_SelectedIndexChanged);
             // 
@@ -470,7 +472,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.testPatternComboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.testPatternComboBox1.Depth = 0;
             this.testPatternComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.testPatternComboBox1.DropDownHeight = 174;
+            this.testPatternComboBox1.DropDownHeight = 118;
             this.testPatternComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.testPatternComboBox1.DropDownWidth = 121;
             this.testPatternComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
@@ -478,18 +480,19 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.testPatternComboBox1.FormattingEnabled = true;
             this.testPatternComboBox1.Hint = "Test pattern";
             this.testPatternComboBox1.IntegralHeight = false;
-            this.testPatternComboBox1.ItemHeight = 43;
+            this.testPatternComboBox1.ItemHeight = 29;
             this.testPatternComboBox1.Items.AddRange(new object[] {
             "Chessboard",
             "Circles",
             "Lines"});
-            this.testPatternComboBox1.Location = new System.Drawing.Point(3, 59);
+            this.testPatternComboBox1.Location = new System.Drawing.Point(3, 44);
             this.testPatternComboBox1.MaxDropDownItems = 4;
             this.testPatternComboBox1.MouseState = MaterialSkin.MouseState.OUT;
             this.testPatternComboBox1.Name = "testPatternComboBox1";
-            this.testPatternComboBox1.Size = new System.Drawing.Size(133, 49);
+            this.testPatternComboBox1.Size = new System.Drawing.Size(80, 35);
             this.testPatternComboBox1.StartIndex = 0;
             this.testPatternComboBox1.TabIndex = 36;
+            this.testPatternComboBox1.UseTallSize = false;
             this.testPatternComboBox1.SelectedIndexChanged += new System.EventHandler(this.testPatternComboBox1_SelectedIndexChanged);
             // 
             // selectColorButton
@@ -498,9 +501,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.selectColorButton.BackColor = System.Drawing.Color.Transparent;
             this.selectColorButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.selectColorButton.Image = global::ServiceMonitorEVK.Properties.Resources.color_wheel1;
-            this.selectColorButton.Location = new System.Drawing.Point(35, 171);
+            this.selectColorButton.Location = new System.Drawing.Point(11, 126);
             this.selectColorButton.Name = "selectColorButton";
-            this.selectColorButton.Size = new System.Drawing.Size(68, 49);
+            this.selectColorButton.Size = new System.Drawing.Size(63, 36);
             this.selectColorButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.selectColorButton.TabIndex = 32;
             this.selectColorButton.TabStop = false;
@@ -528,10 +531,10 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.flowLayoutPanel1.Controls.Add(this.pictureBox1);
             this.flowLayoutPanel1.Controls.Add(this.pictureBox4);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(142, 3);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(89, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.tableLayoutPanel1.SetRowSpan(this.flowLayoutPanel1, 6);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(46, 828);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(41, 738);
             this.flowLayoutPanel1.TabIndex = 37;
             // 
             // tableLayoutPanel1
@@ -549,7 +552,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.tableLayoutPanel1.Controls.Add(this.materialSliderOpasity, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.pictureBox2, 0, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 24);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 24);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 6;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -558,7 +561,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(191, 832);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(133, 742);
             this.tableLayoutPanel1.TabIndex = 38;
             // 
             // MonitorTestForm
@@ -566,7 +569,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(197, 859);
+            this.ClientSize = new System.Drawing.Size(140, 769);
             this.Controls.Add(this.tableLayoutPanel1);
             this.DrawerIsOpen = true;
             this.DrawerUseColors = true;

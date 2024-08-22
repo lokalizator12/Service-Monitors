@@ -3,6 +3,7 @@ using MaterialSkin.Controls;
 using Microsoft.Win32;
 using ServiceMonitorEVK.Main;
 using ServiceMonitorEVK.Properties;
+using ServiceMonitorEVK.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -36,7 +37,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
         private readonly Form1 form1;
         private bool isPinned;
         private MaterialSkinManager materialSkinManager;
-
+        private readonly UiUtil uiUtil;
         private Point originalPosition;
         private readonly Dictionary<PictureBox, Color> pictureBoxColors = new Dictionary<PictureBox, Color>();
         private Point pinnedPosition;
@@ -50,8 +51,9 @@ namespace ServiceMonitorEVK.Testing_Monitor
         {
             form1 = form;
             InitializeComponent();
+            uiUtil = new UiUtil(this);
             FillMonitorComboBox();
-            InitizializeCustomForm();
+            InitializeCustomForm();
 
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
         }
@@ -59,41 +61,27 @@ namespace ServiceMonitorEVK.Testing_Monitor
 
         private void OnDisplaySettingsChanged(object sender, EventArgs e)
         {
-            InitizializeCustomForm();
+            InitializeCustomForm();
             FillMonitorComboBox();
         }
 
 
 
-        public void InitizializeCustomForm()
+        public void InitializeCustomForm()
         {
 
             foreach (Control control in flowLayoutPanel1.Controls)
                 if (control is PictureBox pictureBox)
                     pictureBoxColors[pictureBox] = pictureBox.BackColor;
+            foreach (var entry in pictureBoxColors) entry.Key.BackColor = entry.Value;
             materialSkinManager = MaterialSkinManager.Instance;
-            materialSkinManager.EnforceBackcolorOnAllComponents = true;
-            materialSkinManager.AddFormToManage(this);
-            CheckTheme();
+
+            uiUtil.InitializeTheme();
+            UiUtil.RegisterLogoForThemeChange(form1.pictureBoxLogo);
             DrawerAutoShow = true;
         }
 
-        private void CheckTheme()
-        {
-            materialSkinManager.EnforceBackcolorOnAllComponents = false;
 
-            if (form1.materialSwitch1.Checked)
-                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-            else
-                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            materialSkinManager.ColorScheme = new ColorScheme(
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
-                Accent.Red400,
-                TextShade.WHITE);
-            foreach (var entry in pictureBoxColors) entry.Key.BackColor = entry.Value;
-        }
 
 
         private void testModeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -538,7 +526,11 @@ namespace ServiceMonitorEVK.Testing_Monitor
 
         private void MonitorTestForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            currentTestOverlay?.Close();
+            if (currentTestOverlay != null)
+            {
+                currentTestOverlay.Close();
+                currentTestOverlay = null;
+            }
             form1.IsMonitorFormExist = false;
         }
 
@@ -578,6 +570,21 @@ namespace ServiceMonitorEVK.Testing_Monitor
         private void pictureBox4_Click(object sender, EventArgs e)
         {
             if (currentTestOverlay != null) currentTestOverlay.Close();
+        }
+
+        private void StartOrUpdateTestOverlay(Color selectedColor)
+        {
+            if (currentTestOverlay == null || currentTestOverlay.IsDisposed)
+            {
+                // Если TestOverlay ещё не создан или был закрыт, создаём новый
+                currentTestOverlay = new TestOverlay(selectedColor);
+                currentTestOverlay.Show();
+            }
+            else
+            {
+                // Если TestOverlay уже существует, обновляем его цвет через новый метод
+                currentTestOverlay.UpdateColor(selectedColor);
+            }
         }
     }
 }

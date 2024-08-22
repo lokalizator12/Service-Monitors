@@ -9,7 +9,9 @@ using ServiceMonitorEVK.Util_Managers;
 using ServiceMonitorEVK.Utils;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -17,13 +19,15 @@ namespace ServiceMonitorEVK.Main
 {
     public partial class Form1 : MaterialForm
     {
-        private readonly UiUtil formAnimator;
+        private TestOverlay currentTestOverlay;
+        private readonly UiUtil uiUtil;
         private readonly MaterialSkinManager materialSkinManager;
-        private readonly int colorSchemeIndex;
+        private bool autoEnableColorTest;
+        private Color selectedAutoTestColor;
         private DatabaseManager databaseManager;
         internal bool IsMonitorFormExist;
         internal bool IsUpdatingComboBox = false;
-
+        private readonly DisplayManager displayManager;
         private MonitorInfoForm monitorInfo;
         private readonly MonitorInfoManager monitorInfoManager;
         private Dictionary<string, string> monitorNameToIdentifierMap;
@@ -33,9 +37,10 @@ namespace ServiceMonitorEVK.Main
 
         public Form1(string testerFromMain)
         {
+            uiUtil = new UiUtil(this);
+            uiUtil.StartOpening();
             InitializeComponent();
-            formAnimator = new UiUtil(this);
-            formAnimator.StartOpening();
+            displayManager = new DisplayManager();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
             databaseManager = new DatabaseManager("localhost", "root", "moodle", "admin_asset");
@@ -48,6 +53,7 @@ namespace ServiceMonitorEVK.Main
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             SetMaxResolutionForAllMonitors();
             Tester = textBoxTester.Text = mainLabelTester.Text = testerFromMain;
+
         }
 
 
@@ -58,16 +64,49 @@ namespace ServiceMonitorEVK.Main
 
             SetMaxResolutionForAllMonitors();
             if (materialMultiLineTextBox2.Text.Length > 0) ShowFullInfo();
-        }
+            foreach (var VARIABLE in MonitorComboBox.Items)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+            var connectedMonitors = Screen.AllScreens.Length;
 
+            if (connectedMonitors > 1 && autoEnableColorTest)
+            {
+                // Если был подключен новый монитор
+                ShowColorDialogForNewMonitor();
+            }
+            else if (connectedMonitors <= 1 && currentTestOverlay != null)
+            {
+                // Если был отключен монитор и текущий оверлей активен
+                currentTestOverlay.Close();
+                currentTestOverlay = null;
+            }
+        }
+        private void ShowColorDialogForNewMonitor()
+        {
+            // Выбираем последний монитор (новый подключенный)
+            MonitorComboBox.SelectedIndex = MonitorComboBox.Items.Count - 1;
+
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                selectedAutoTestColor = colorDialog1.Color;
+                StartOrUpdateTestOverlay(selectedAutoTestColor);
+            }
+        }
         public void InitizializeCustomForm()
         {
             comboBoxCountry.DropDownStyle = ComboBoxStyle.DropDown;
-            materialSkinManager.EnforceBackcolorOnAllComponents = true;
-            materialSkinManager.AddFormToManage(this);
-            CheckTheme();
+            uiUtil.InitializeTheme();
+            UiUtil.RegisterLogoForThemeChange(pictureBoxLogo);
+            ThemeManager.IsDarkTheme = materialSwitch1.Checked;
+
             DrawerAutoShow = true;
         }
+        private void materialSwitch1_CheckedChanged(object sender, EventArgs e)
+        {
+            ThemeManager.IsDarkTheme = materialSwitch1.Checked;
+        }
+
 
         private async void SendMonitorInfoToDatabase()
         {
@@ -103,6 +142,9 @@ namespace ServiceMonitorEVK.Main
 
         private void FillMonitorComboBox()
         {
+
+            MonitorComboBox.Items.Clear();
+
             MonitorComboBox.Items.Clear();
             monitorNameToIdentifierMap = new Dictionary<string, string>();
 
@@ -215,7 +257,7 @@ namespace ServiceMonitorEVK.Main
             var materialDialog = new MaterialDialog(this, "Exit from app", "Are you sure you want to exit the app?",
                 "Yes", true, "Cancel", true);
             var result = materialDialog.ShowDialog(this);
-            if (result == DialogResult.OK) formAnimator.StartClosing();
+            if (result == DialogResult.OK) uiUtil.StartClosing();
             return true;
         }
 
@@ -225,56 +267,14 @@ namespace ServiceMonitorEVK.Main
         }
 
 
-        private void UpdateColor()
-        {
-            materialSkinManager.ColorScheme = new ColorScheme(
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
-                    ? Primary.Grey900
-                    : Primary.BlueGrey800,
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
-                    ? Primary.Grey800
-                    : Primary.BlueGrey900,
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
-                    ? Primary.Grey700
-                    : Primary.BlueGrey500,
-                Accent.Red400,
-                TextShade.WHITE);
-            pictureBoxLogo.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
-                ? Color.FromArgb(0x21, 0x21, 0x21)
-                : Color.FromArgb(0x37, 0x47, 0x4F);
-
-            Invalidate();
-        }
-
-        private void materialSwitch1_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckTheme();
-        }
-
-        private void CheckTheme()
-        {
-            if (materialSwitch1.Checked)
-            {
-                materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
-                pictureBoxLogo.BackColor = Color.Black;
-            }
-            else
-            {
-                materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-                pictureBoxLogo.BackColor = Color.White;
-            }
-
-            UpdateColor();
-        }
-
 
         private void showInfoPage_Enter(object sender, EventArgs e)
         {
             monitorInfo = new MonitorInfoForm(this);
             FillPositionsInfo();
             if (checkBoxAutoShow.Checked)
-                if (materialLabelSerialNo.Text != null)
-                    SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
+                if (textBoxSerial.Text != null)
+                    SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
 
             if (checkBoxCountry.Checked) databaseManager.FillCountryComboBox(comboBoxCountry);
         }
@@ -334,15 +334,15 @@ namespace ServiceMonitorEVK.Main
         {
             FillPositionsInfo();
             if (checkBoxAutoShow.Checked)
-                if (materialLabelSerialNo.Text != null)
-                    SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
+                if (textBoxSerial.Text != null)
+                    SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
         }
 
         private void DisplayMonitorInfo(MonitorInfo monitorInformation)
         {
             materialLabelManufacturer.Text = monitorInformation.Manufacturer;
             materialLabelModel.Text = monitorInformation.Model;
-            materialLabelSerialNo.Text = monitorInformation.SerialNumber;
+            textBoxSerial.Text = monitorInformation.SerialNumber;
             materialLabelYearOfProduction.Text = monitorInformation.YearOfProduction;
             materialLabelMonthOfProduction.Text = monitorInformation.MonthOfProduction;
             materialLabelProductCodeID.Text = monitorInformation.ProductCodeId;
@@ -520,16 +520,19 @@ namespace ServiceMonitorEVK.Main
 
         private void textBoxIdEVK_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (checkBoxSearchEVK_ID.Checked)
             {
-                var barcode = textBoxIdEVK.Text.Trim();
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var barcode = textBoxIdEVK.Text.Trim();
 
-                SearchInfoFromAsset(barcode);
+                    SearchInfoFromAsset(barcode);
 
-                textBoxIdEVK.Clear();
+                    textBoxIdEVK.Clear();
 
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                }
             }
         }
 
@@ -547,7 +550,7 @@ namespace ServiceMonitorEVK.Main
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            if (materialLabelSerialNo.Text != null) SearchInfoFromAsset(materialLabelSerialNo.Text, "NumerSeryjny");
+            if (textBoxSerial.Text != null) SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
         }
 
         private void materialCheckbox17_CheckedChanged(object sender, EventArgs e)
@@ -575,7 +578,7 @@ namespace ServiceMonitorEVK.Main
         {
             if (checkBoxSaveLanguage.Checked)
                 UserSettingsManager.SetPreferredLanguage(LocalizationManager.Instance.GetCurrentCulture().Name);
-            formAnimator.StartClosing();
+            uiUtil.StartClosing();
         }
 
         private void SetLanguage(string cultureCode)
@@ -651,7 +654,7 @@ namespace ServiceMonitorEVK.Main
             if (Opacity > 0)
             {
                 e.Cancel = true;
-                formAnimator.StartClosing();
+                uiUtil.StartClosing();
             }
             else
             {
@@ -697,6 +700,102 @@ namespace ServiceMonitorEVK.Main
                 Invalidate();
             }
 
+        }
+
+        private void materialCheckbox2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxSerial_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (checkBoxSearchSerial.Checked)
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var barcode = textBoxSerial.Text.Trim();
+
+                    SearchInfoFromAsset(barcode);
+
+                    // textBoxIdEVK.Clear();
+
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+                }
+            }
+        }
+
+        private void checkBoxConnectMonitor_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxConnectMonitor.Checked)
+            {
+                using (var colorDialog = new ColorDialog())
+                {
+                    if (colorDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        autoEnableColorTest = true;
+                        selectedAutoTestColor = selectedColorAutoShow.BackColor = colorDialog.Color;
+
+                    }
+                    else
+                    {
+                        checkBoxConnectMonitor.Checked = false;
+                    }
+                }
+            }
+            else
+            {
+                autoEnableColorTest = false;
+            }
+        }
+
+        private void StartOrUpdateTestOverlay(Color selectedColor)
+        {
+            if (currentTestOverlay == null || currentTestOverlay.IsDisposed)
+            {
+                currentTestOverlay = new TestOverlay(selectedColor);
+                currentTestOverlay.Show();
+            }
+            else
+            {
+                currentTestOverlay.BackColor = selectedColor;
+            }
+        }
+      
+        private void btnExtend_Click(object sender, EventArgs e)
+        {
+            displayManager.SetDisplayMode(DisplayManager.DisplayMode.EXTEND);
+        }
+
+        private void btnDuplicate_Click(object sender, EventArgs e)
+        {
+            displayManager.SetDisplayMode(DisplayManager.DisplayMode.DUPLICATE);
+        }
+
+        private void btnOnlyPC_Click(object sender, EventArgs e)
+        {
+            displayManager.SetDisplayMode(DisplayManager.DisplayMode.PC_SCREEN_ONLY);
+        }
+
+        private void btnOnlySecond_Click(object sender, EventArgs e)
+        {
+            displayManager.SetDisplayMode(DisplayManager.DisplayMode.SECOND_SCREEN_ONLY);
+        }
+
+        private void btnDisplaySettings_Click(object sender, EventArgs e)
+        {
+            Process.Start("ms-settings:display");
+        }
+
+        private void materialButton2_Click(object sender, EventArgs e)
+        {
+            Process.Start("ms-settings:about");
+        }
+
+        private void materialButton3_Click_1(object sender, EventArgs e)
+        {
+            Process.Start("ms-settings:personalization");
         }
     }
 }

@@ -29,7 +29,11 @@ namespace ServiceMonitorEVK.Main
             this.materialTabControl1 = new MaterialSkin.Controls.MaterialTabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.materialCard4 = new MaterialSkin.Controls.MaterialCard();
-            this.materialSliderOpasity = new MaterialSkin.Controls.MaterialSlider();
+            this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBoxConnectMonitor = new MaterialSkin.Controls.MaterialCheckbox();
+            this.selectedColorAutoShow = new System.Windows.Forms.PictureBox();
+            this.checkBoxSearchSerial = new MaterialSkin.Controls.MaterialCheckbox();
+            this.checkBoxSearchEVK_ID = new MaterialSkin.Controls.MaterialCheckbox();
             this.materialCard5 = new MaterialSkin.Controls.MaterialCard();
             this.materialLabel25 = new MaterialSkin.Controls.MaterialLabel();
             this.pictureBox37 = new System.Windows.Forms.PictureBox();
@@ -41,6 +45,7 @@ namespace ServiceMonitorEVK.Main
             this.rusLang = new System.Windows.Forms.PictureBox();
             this.UsEng = new System.Windows.Forms.PictureBox();
             this.PlLang = new System.Windows.Forms.PictureBox();
+            this.materialSliderOpasity = new MaterialSkin.Controls.MaterialSlider();
             this.materialCheckbox1 = new MaterialSkin.Controls.MaterialCheckbox();
             this.materialSwitch1 = new MaterialSkin.Controls.MaterialSwitch();
             this.textBoxTester = new MaterialSkin.Controls.MaterialTextBox2();
@@ -112,6 +117,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCard2 = new MaterialSkin.Controls.MaterialCard();
             this.flowLayoutPanel8 = new System.Windows.Forms.FlowLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.textBoxSerial = new MaterialSkin.Controls.MaterialTextBox2();
             this.comboBoxCountry = new MaterialSkin.Controls.MaterialComboBox();
             this.materialCheckbox6 = new MaterialSkin.Controls.MaterialCheckbox();
             this.pictureBox21 = new System.Windows.Forms.PictureBox();
@@ -145,7 +151,6 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox32 = new System.Windows.Forms.PictureBox();
             this.labelSize = new MaterialSkin.Controls.MaterialLabel();
             this.materialCheckbox14 = new MaterialSkin.Controls.MaterialCheckbox();
-            this.materialLabelSerialNo = new MaterialSkin.Controls.MaterialLabel();
             this.pictureBox24 = new System.Windows.Forms.PictureBox();
             this.materialLabelDiagonal1 = new MaterialSkin.Controls.MaterialLabel();
             this.pictureBox33 = new System.Windows.Forms.PictureBox();
@@ -185,14 +190,17 @@ namespace ServiceMonitorEVK.Main
             this.materialButton1 = new MaterialSkin.Controls.MaterialButton();
             this.searchInfoPage = new System.Windows.Forms.TabPage();
             this.testMonitorPage = new System.Windows.Forms.TabPage();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnDisplaySettings = new MaterialSkin.Controls.MaterialButton();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.materialButton2 = new MaterialSkin.Controls.MaterialButton();
+            this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnExtend = new MaterialSkin.Controls.MaterialButton();
+            this.btnDuplicate = new MaterialSkin.Controls.MaterialButton();
+            this.btnOnlyPC = new MaterialSkin.Controls.MaterialButton();
+            this.btnOnlySecond = new MaterialSkin.Controls.MaterialButton();
             this.buttonServiceFixPixel = new MaterialSkin.Controls.MaterialButton();
             this.buttonTestingMonitor = new MaterialSkin.Controls.MaterialButton();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.resolutionPage = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.materialTabControl2 = new MaterialSkin.Controls.MaterialTabControl();
@@ -215,9 +223,16 @@ namespace ServiceMonitorEVK.Main
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.materialButton3 = new MaterialSkin.Controls.MaterialButton();
+            this.materialCheckbox2 = new MaterialSkin.Controls.MaterialCheckbox();
+            this.flowLayoutPanel12 = new System.Windows.Forms.FlowLayoutPanel();
+            this.comboBoxTypeScreen = new MaterialSkin.Controls.MaterialComboBox();
             this.materialTabControl1.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.materialCard4.SuspendLayout();
+            this.flowLayoutPanel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedColorAutoShow)).BeginInit();
             this.materialCard5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox37)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox36)).BeginInit();
@@ -275,6 +290,8 @@ namespace ServiceMonitorEVK.Main
             this.flowLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDvi)).BeginInit();
             this.testMonitorPage.SuspendLayout();
+            this.flowLayoutPanel11.SuspendLayout();
+            this.flowLayoutPanel10.SuspendLayout();
             this.resolutionPage.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.materialTabControl2.SuspendLayout();
@@ -284,6 +301,7 @@ namespace ServiceMonitorEVK.Main
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel12.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelMonitor
@@ -416,7 +434,7 @@ namespace ServiceMonitorEVK.Main
             this.materialTabControl1.Multiline = true;
             this.materialTabControl1.Name = "materialTabControl1";
             this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(1451, 813);
+            this.materialTabControl1.Size = new System.Drawing.Size(1515, 969);
             this.materialTabControl1.TabIndex = 35;
             // 
             // tabPageMain
@@ -426,7 +444,7 @@ namespace ServiceMonitorEVK.Main
             this.tabPageMain.Location = new System.Drawing.Point(4, 39);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMain.Size = new System.Drawing.Size(1443, 770);
+            this.tabPageMain.Size = new System.Drawing.Size(1507, 926);
             this.tabPageMain.TabIndex = 7;
             this.tabPageMain.Text = "Main";
             this.tabPageMain.UseVisualStyleBackColor = true;
@@ -434,6 +452,10 @@ namespace ServiceMonitorEVK.Main
             // materialCard4
             // 
             this.materialCard4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.materialCard4.Controls.Add(this.flowLayoutPanel12);
+            this.materialCard4.Controls.Add(this.flowLayoutPanel9);
+            this.materialCard4.Controls.Add(this.checkBoxSearchSerial);
+            this.materialCard4.Controls.Add(this.checkBoxSearchEVK_ID);
             this.materialCard4.Controls.Add(this.materialCard5);
             this.materialCard4.Controls.Add(this.materialSliderOpasity);
             this.materialCard4.Controls.Add(this.materialCheckbox1);
@@ -451,20 +473,76 @@ namespace ServiceMonitorEVK.Main
             this.materialCard4.Size = new System.Drawing.Size(677, 426);
             this.materialCard4.TabIndex = 47;
             // 
-            // materialSliderOpasity
+            // flowLayoutPanel9
             // 
-            this.materialSliderOpasity.Depth = 0;
-            this.materialSliderOpasity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialSliderOpasity.Location = new System.Drawing.Point(199, 386);
-            this.materialSliderOpasity.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialSliderOpasity.Name = "materialSliderOpasity";
-            this.materialSliderOpasity.Size = new System.Drawing.Size(231, 40);
-            this.materialSliderOpasity.TabIndex = 41;
-            this.materialSliderOpasity.Text = "Opasity";
-            this.materialSliderOpasity.UseAccentColor = true;
-            this.materialSliderOpasity.Value = 100;
-            this.materialSliderOpasity.ValueMax = 100;
-            this.materialSliderOpasity.onValueChanged += new MaterialSkin.Controls.MaterialSlider.ValueChanged(this.materialSliderOpasity_onValueChanged);
+            this.flowLayoutPanel9.AutoSize = true;
+            this.flowLayoutPanel9.Controls.Add(this.checkBoxConnectMonitor);
+            this.flowLayoutPanel9.Controls.Add(this.selectedColorAutoShow);
+            this.flowLayoutPanel9.Location = new System.Drawing.Point(14, 201);
+            this.flowLayoutPanel9.Name = "flowLayoutPanel9";
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(550, 37);
+            this.flowLayoutPanel9.TabIndex = 51;
+            // 
+            // checkBoxConnectMonitor
+            // 
+            this.checkBoxConnectMonitor.AutoSize = true;
+            this.checkBoxConnectMonitor.Depth = 0;
+            this.checkBoxConnectMonitor.Location = new System.Drawing.Point(0, 0);
+            this.checkBoxConnectMonitor.Margin = new System.Windows.Forms.Padding(0);
+            this.checkBoxConnectMonitor.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.checkBoxConnectMonitor.MouseState = MaterialSkin.MouseState.HOVER;
+            this.checkBoxConnectMonitor.Name = "checkBoxConnectMonitor";
+            this.checkBoxConnectMonitor.ReadOnly = false;
+            this.checkBoxConnectMonitor.Ripple = true;
+            this.checkBoxConnectMonitor.Size = new System.Drawing.Size(504, 37);
+            this.checkBoxConnectMonitor.TabIndex = 50;
+            this.checkBoxConnectMonitor.Text = "Automatically enable color testing when connecting a new monitor";
+            this.checkBoxConnectMonitor.UseVisualStyleBackColor = true;
+            this.checkBoxConnectMonitor.CheckedChanged += new System.EventHandler(this.checkBoxConnectMonitor_CheckedChanged);
+            // 
+            // selectedColorAutoShow
+            // 
+            this.selectedColorAutoShow.Location = new System.Drawing.Point(514, 6);
+            this.selectedColorAutoShow.Margin = new System.Windows.Forms.Padding(10, 6, 3, 3);
+            this.selectedColorAutoShow.Name = "selectedColorAutoShow";
+            this.selectedColorAutoShow.Size = new System.Drawing.Size(23, 20);
+            this.selectedColorAutoShow.TabIndex = 51;
+            this.selectedColorAutoShow.TabStop = false;
+            // 
+            // checkBoxSearchSerial
+            // 
+            this.checkBoxSearchSerial.AutoSize = true;
+            this.checkBoxSearchSerial.Depth = 0;
+            this.checkBoxSearchSerial.Location = new System.Drawing.Point(14, 165);
+            this.checkBoxSearchSerial.Margin = new System.Windows.Forms.Padding(0);
+            this.checkBoxSearchSerial.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.checkBoxSearchSerial.MouseState = MaterialSkin.MouseState.HOVER;
+            this.checkBoxSearchSerial.Name = "checkBoxSearchSerial";
+            this.checkBoxSearchSerial.ReadOnly = false;
+            this.checkBoxSearchSerial.Ripple = true;
+            this.checkBoxSearchSerial.Size = new System.Drawing.Size(626, 37);
+            this.checkBoxSearchSerial.TabIndex = 49;
+            this.checkBoxSearchSerial.Text = "Automatic search for a monitor in an asset by reading the Serial No.(Reader\\Enter" +
+    ")\r\n";
+            this.checkBoxSearchSerial.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSearchEVK_ID
+            // 
+            this.checkBoxSearchEVK_ID.AutoSize = true;
+            this.checkBoxSearchEVK_ID.Depth = 0;
+            this.checkBoxSearchEVK_ID.Location = new System.Drawing.Point(14, 128);
+            this.checkBoxSearchEVK_ID.Margin = new System.Windows.Forms.Padding(0);
+            this.checkBoxSearchEVK_ID.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.checkBoxSearchEVK_ID.MouseState = MaterialSkin.MouseState.HOVER;
+            this.checkBoxSearchEVK_ID.Name = "checkBoxSearchEVK_ID";
+            this.checkBoxSearchEVK_ID.ReadOnly = false;
+            this.checkBoxSearchEVK_ID.Ripple = true;
+            this.checkBoxSearchEVK_ID.Size = new System.Drawing.Size(610, 37);
+            this.checkBoxSearchEVK_ID.TabIndex = 48;
+            this.checkBoxSearchEVK_ID.Text = "Automatic search for a monitor in an asset by reading the EVK ID (Reader\\Enter)\r\n" +
+    "";
+            this.checkBoxSearchEVK_ID.UseVisualStyleBackColor = true;
+            this.checkBoxSearchEVK_ID.CheckedChanged += new System.EventHandler(this.materialCheckbox2_CheckedChanged);
             // 
             // materialCard5
             // 
@@ -616,11 +694,26 @@ namespace ServiceMonitorEVK.Main
             this.PlLang.TabStop = false;
             this.PlLang.Click += new System.EventHandler(this.picturePlLang_Click);
             // 
+            // materialSliderOpasity
+            // 
+            this.materialSliderOpasity.Depth = 0;
+            this.materialSliderOpasity.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialSliderOpasity.Location = new System.Drawing.Point(199, 386);
+            this.materialSliderOpasity.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialSliderOpasity.Name = "materialSliderOpasity";
+            this.materialSliderOpasity.Size = new System.Drawing.Size(231, 40);
+            this.materialSliderOpasity.TabIndex = 41;
+            this.materialSliderOpasity.Text = "Opasity";
+            this.materialSliderOpasity.UseAccentColor = true;
+            this.materialSliderOpasity.Value = 100;
+            this.materialSliderOpasity.ValueMax = 100;
+            this.materialSliderOpasity.onValueChanged += new MaterialSkin.Controls.MaterialSlider.ValueChanged(this.materialSliderOpasity_onValueChanged);
+            // 
             // materialCheckbox1
             // 
             this.materialCheckbox1.AutoSize = true;
             this.materialCheckbox1.Depth = 0;
-            this.materialCheckbox1.Location = new System.Drawing.Point(14, 165);
+            this.materialCheckbox1.Location = new System.Drawing.Point(14, 241);
             this.materialCheckbox1.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox1.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox1.MouseState = MaterialSkin.MouseState.HOVER;
@@ -661,7 +754,7 @@ namespace ServiceMonitorEVK.Main
             this.textBoxTester.HideSelection = true;
             this.textBoxTester.Hint = "Initials (AF)";
             this.textBoxTester.LeadingIcon = null;
-            this.textBoxTester.Location = new System.Drawing.Point(146, 42);
+            this.textBoxTester.Location = new System.Drawing.Point(147, 17);
             this.textBoxTester.MaxLength = 2;
             this.textBoxTester.MouseState = MaterialSkin.MouseState.OUT;
             this.textBoxTester.Name = "textBoxTester";
@@ -686,7 +779,7 @@ namespace ServiceMonitorEVK.Main
             // 
             this.checkBoxAutoShow.AutoSize = true;
             this.checkBoxAutoShow.Depth = 0;
-            this.checkBoxAutoShow.Location = new System.Drawing.Point(14, 202);
+            this.checkBoxAutoShow.Location = new System.Drawing.Point(14, 278);
             this.checkBoxAutoShow.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxAutoShow.MouseLocation = new System.Drawing.Point(-1, -1);
             this.checkBoxAutoShow.MouseState = MaterialSkin.MouseState.HOVER;
@@ -721,7 +814,7 @@ namespace ServiceMonitorEVK.Main
             this.fullInfoPage.Location = new System.Drawing.Point(4, 39);
             this.fullInfoPage.Name = "fullInfoPage";
             this.fullInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.fullInfoPage.Size = new System.Drawing.Size(1427, 731);
+            this.fullInfoPage.Size = new System.Drawing.Size(1491, 887);
             this.fullInfoPage.TabIndex = 3;
             this.fullInfoPage.Text = "Show full info";
             this.fullInfoPage.Enter += new System.EventHandler(this.tabPage4_Enter);
@@ -767,7 +860,7 @@ namespace ServiceMonitorEVK.Main
             this.showInfoPage.Location = new System.Drawing.Point(4, 39);
             this.showInfoPage.Name = "showInfoPage";
             this.showInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.showInfoPage.Size = new System.Drawing.Size(1427, 731);
+            this.showInfoPage.Size = new System.Drawing.Size(1491, 887);
             this.showInfoPage.TabIndex = 1;
             this.showInfoPage.Text = "Show info";
             this.showInfoPage.Enter += new System.EventHandler(this.showInfoPage_Enter);
@@ -1715,6 +1808,7 @@ namespace ServiceMonitorEVK.Main
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.textBoxSerial, 3, 3);
             this.tableLayoutPanel2.Controls.Add(this.comboBoxCountry, 3, 11);
             this.tableLayoutPanel2.Controls.Add(this.materialCheckbox6, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.pictureBox21, 1, 0);
@@ -1748,7 +1842,6 @@ namespace ServiceMonitorEVK.Main
             this.tableLayoutPanel2.Controls.Add(this.pictureBox32, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.labelSize, 2, 10);
             this.tableLayoutPanel2.Controls.Add(this.materialCheckbox14, 0, 7);
-            this.tableLayoutPanel2.Controls.Add(this.materialLabelSerialNo, 3, 3);
             this.tableLayoutPanel2.Controls.Add(this.pictureBox24, 1, 7);
             this.tableLayoutPanel2.Controls.Add(this.materialLabelDiagonal1, 3, 9);
             this.tableLayoutPanel2.Controls.Add(this.pictureBox33, 1, 3);
@@ -1788,8 +1881,40 @@ namespace ServiceMonitorEVK.Main
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(462, 585);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(462, 600);
             this.tableLayoutPanel2.TabIndex = 80;
+            // 
+            // textBoxSerial
+            // 
+            this.textBoxSerial.AnimateReadOnly = false;
+            this.textBoxSerial.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.textBoxSerial.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.textBoxSerial.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.textBoxSerial.Depth = 0;
+            this.textBoxSerial.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.textBoxSerial.HelperText = "Insert serial number from monitor";
+            this.textBoxSerial.HideSelection = true;
+            this.textBoxSerial.LeadingIcon = null;
+            this.textBoxSerial.Location = new System.Drawing.Point(239, 131);
+            this.textBoxSerial.MaxLength = 32767;
+            this.textBoxSerial.MouseState = MaterialSkin.MouseState.OUT;
+            this.textBoxSerial.Name = "textBoxSerial";
+            this.textBoxSerial.PasswordChar = '\0';
+            this.textBoxSerial.PrefixSuffixText = null;
+            this.textBoxSerial.ReadOnly = false;
+            this.textBoxSerial.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.textBoxSerial.SelectedText = "";
+            this.textBoxSerial.SelectionLength = 0;
+            this.textBoxSerial.SelectionStart = 0;
+            this.textBoxSerial.ShortcutsEnabled = true;
+            this.textBoxSerial.Size = new System.Drawing.Size(174, 48);
+            this.textBoxSerial.TabIndex = 73;
+            this.textBoxSerial.TabStop = false;
+            this.textBoxSerial.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxSerial.TrailingIcon = null;
+            this.textBoxSerial.UseSystemPasswordChar = false;
+            this.textBoxSerial.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxSerial_KeyDown);
             // 
             // comboBoxCountry
             // 
@@ -1807,7 +1932,7 @@ namespace ServiceMonitorEVK.Main
             this.comboBoxCountry.Hint = "Choose country";
             this.comboBoxCountry.IntegralHeight = false;
             this.comboBoxCountry.ItemHeight = 43;
-            this.comboBoxCountry.Location = new System.Drawing.Point(239, 429);
+            this.comboBoxCountry.Location = new System.Drawing.Point(239, 444);
             this.comboBoxCountry.MaxDropDownItems = 4;
             this.comboBoxCountry.MouseState = MaterialSkin.MouseState.OUT;
             this.comboBoxCountry.Name = "comboBoxCountry";
@@ -1867,7 +1992,7 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox29.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox29.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox29.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox29.Location = new System.Drawing.Point(38, 484);
+            this.pictureBox29.Location = new System.Drawing.Point(38, 499);
             this.pictureBox29.Name = "pictureBox29";
             this.pictureBox29.Size = new System.Drawing.Size(24, 21);
             this.pictureBox29.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1914,7 +2039,7 @@ namespace ServiceMonitorEVK.Main
             this.checkBoxCountry.Checked = true;
             this.checkBoxCountry.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxCountry.Depth = 0;
-            this.checkBoxCountry.Location = new System.Drawing.Point(0, 426);
+            this.checkBoxCountry.Location = new System.Drawing.Point(0, 441);
             this.checkBoxCountry.Margin = new System.Windows.Forms.Padding(0);
             this.checkBoxCountry.MouseLocation = new System.Drawing.Point(-1, -1);
             this.checkBoxCountry.MouseState = MaterialSkin.MouseState.HOVER;
@@ -1932,7 +2057,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox7.Checked = true;
             this.materialCheckbox7.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialCheckbox7.Depth = 0;
-            this.materialCheckbox7.Location = new System.Drawing.Point(0, 481);
+            this.materialCheckbox7.Location = new System.Drawing.Point(0, 496);
             this.materialCheckbox7.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox7.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox7.MouseState = MaterialSkin.MouseState.HOVER;
@@ -1949,7 +2074,7 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox28.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox28.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox28.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox28.Location = new System.Drawing.Point(38, 429);
+            this.pictureBox28.Location = new System.Drawing.Point(38, 444);
             this.pictureBox28.Name = "pictureBox28";
             this.pictureBox28.Size = new System.Drawing.Size(20, 21);
             this.pictureBox28.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -2018,7 +2143,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelPPI.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelPPI.Depth = 0;
             this.materialLabelPPI.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelPPI.Location = new System.Drawing.Point(239, 481);
+            this.materialLabelPPI.Location = new System.Drawing.Point(239, 496);
             this.materialLabelPPI.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelPPI.Name = "materialLabelPPI";
             this.materialLabelPPI.Size = new System.Drawing.Size(19, 19);
@@ -2032,7 +2157,7 @@ namespace ServiceMonitorEVK.Main
             this.labelCountry.Depth = 0;
             this.labelCountry.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.labelCountry.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.labelCountry.Location = new System.Drawing.Point(68, 426);
+            this.labelCountry.Location = new System.Drawing.Point(68, 441);
             this.labelCountry.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelCountry.Name = "labelCountry";
             this.labelCountry.Size = new System.Drawing.Size(71, 24);
@@ -2045,7 +2170,7 @@ namespace ServiceMonitorEVK.Main
             this.labelPPI.Depth = 0;
             this.labelPPI.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.labelPPI.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.labelPPI.Location = new System.Drawing.Point(68, 481);
+            this.labelPPI.Location = new System.Drawing.Point(68, 496);
             this.labelPPI.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelPPI.Name = "labelPPI";
             this.labelPPI.Size = new System.Drawing.Size(33, 24);
@@ -2102,7 +2227,7 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox31.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox31.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox31.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox31.Location = new System.Drawing.Point(38, 392);
+            this.pictureBox31.Location = new System.Drawing.Point(38, 407);
             this.pictureBox31.Name = "pictureBox31";
             this.pictureBox31.Size = new System.Drawing.Size(24, 21);
             this.pictureBox31.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -2116,7 +2241,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox9.Checked = true;
             this.materialCheckbox9.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialCheckbox9.Depth = 0;
-            this.materialCheckbox9.Location = new System.Drawing.Point(0, 389);
+            this.materialCheckbox9.Location = new System.Drawing.Point(0, 404);
             this.materialCheckbox9.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox9.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox9.MouseState = MaterialSkin.MouseState.HOVER;
@@ -2133,7 +2258,7 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox30.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox30.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox30.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox30.Location = new System.Drawing.Point(38, 207);
+            this.pictureBox30.Location = new System.Drawing.Point(38, 222);
             this.pictureBox30.Name = "pictureBox30";
             this.pictureBox30.Size = new System.Drawing.Size(24, 21);
             this.pictureBox30.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -2146,7 +2271,7 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox22.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox22.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox22.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox22.Location = new System.Drawing.Point(38, 355);
+            this.pictureBox22.Location = new System.Drawing.Point(38, 370);
             this.pictureBox22.Name = "pictureBox22";
             this.pictureBox22.Size = new System.Drawing.Size(24, 21);
             this.pictureBox22.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -2159,7 +2284,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelDiagonal2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelDiagonal2.Depth = 0;
             this.materialLabelDiagonal2.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelDiagonal2.Location = new System.Drawing.Point(419, 352);
+            this.materialLabelDiagonal2.Location = new System.Drawing.Point(419, 367);
             this.materialLabelDiagonal2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelDiagonal2.Name = "materialLabelDiagonal2";
             this.materialLabelDiagonal2.Size = new System.Drawing.Size(19, 19);
@@ -2174,7 +2299,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox12.Checked = true;
             this.materialCheckbox12.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialCheckbox12.Depth = 0;
-            this.materialCheckbox12.Location = new System.Drawing.Point(0, 352);
+            this.materialCheckbox12.Location = new System.Drawing.Point(0, 367);
             this.materialCheckbox12.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox12.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox12.MouseState = MaterialSkin.MouseState.HOVER;
@@ -2191,7 +2316,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelSizeMonitor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelSizeMonitor.Depth = 0;
             this.materialLabelSizeMonitor.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelSizeMonitor.Location = new System.Drawing.Point(239, 389);
+            this.materialLabelSizeMonitor.Location = new System.Drawing.Point(239, 404);
             this.materialLabelSizeMonitor.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelSizeMonitor.Name = "materialLabelSizeMonitor";
             this.materialLabelSizeMonitor.Size = new System.Drawing.Size(19, 19);
@@ -2233,7 +2358,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox13.Checked = true;
             this.materialCheckbox13.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialCheckbox13.Depth = 0;
-            this.materialCheckbox13.Location = new System.Drawing.Point(0, 315);
+            this.materialCheckbox13.Location = new System.Drawing.Point(0, 330);
             this.materialCheckbox13.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox13.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox13.MouseState = MaterialSkin.MouseState.HOVER;
@@ -2250,7 +2375,7 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox23.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox23.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox23.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox23.Location = new System.Drawing.Point(38, 318);
+            this.pictureBox23.Location = new System.Drawing.Point(38, 333);
             this.pictureBox23.Name = "pictureBox23";
             this.pictureBox23.Size = new System.Drawing.Size(24, 21);
             this.pictureBox23.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -2263,7 +2388,7 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox32.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox32.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox32.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox32.Location = new System.Drawing.Point(38, 170);
+            this.pictureBox32.Location = new System.Drawing.Point(38, 185);
             this.pictureBox32.Name = "pictureBox32";
             this.pictureBox32.Size = new System.Drawing.Size(24, 21);
             this.pictureBox32.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -2276,7 +2401,7 @@ namespace ServiceMonitorEVK.Main
             this.labelSize.Depth = 0;
             this.labelSize.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.labelSize.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.labelSize.Location = new System.Drawing.Point(68, 389);
+            this.labelSize.Location = new System.Drawing.Point(68, 404);
             this.labelSize.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelSize.Name = "labelSize";
             this.labelSize.Size = new System.Drawing.Size(165, 24);
@@ -2290,7 +2415,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox14.Checked = true;
             this.materialCheckbox14.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialCheckbox14.Depth = 0;
-            this.materialCheckbox14.Location = new System.Drawing.Point(0, 278);
+            this.materialCheckbox14.Location = new System.Drawing.Point(0, 293);
             this.materialCheckbox14.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox14.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox14.MouseState = MaterialSkin.MouseState.HOVER;
@@ -2301,27 +2426,13 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox14.TabIndex = 65;
             this.materialCheckbox14.UseVisualStyleBackColor = false;
             // 
-            // materialLabelSerialNo
-            // 
-            this.materialLabelSerialNo.AutoSize = true;
-            this.materialLabelSerialNo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.materialLabelSerialNo.Depth = 0;
-            this.materialLabelSerialNo.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelSerialNo.Location = new System.Drawing.Point(239, 128);
-            this.materialLabelSerialNo.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabelSerialNo.Name = "materialLabelSerialNo";
-            this.materialLabelSerialNo.Size = new System.Drawing.Size(19, 19);
-            this.materialLabelSerialNo.TabIndex = 46;
-            this.materialLabelSerialNo.Text = "44";
-            this.materialLabelSerialNo.Click += new System.EventHandler(this.labelAssetClass_Click);
-            // 
             // pictureBox24
             // 
             this.pictureBox24.BackgroundImage = global::ServiceMonitorEVK.Properties.Resources.monitoring_test;
             this.pictureBox24.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox24.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox24.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox24.Location = new System.Drawing.Point(38, 281);
+            this.pictureBox24.Location = new System.Drawing.Point(38, 296);
             this.pictureBox24.Name = "pictureBox24";
             this.pictureBox24.Size = new System.Drawing.Size(24, 21);
             this.pictureBox24.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -2334,7 +2445,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelDiagonal1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelDiagonal1.Depth = 0;
             this.materialLabelDiagonal1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelDiagonal1.Location = new System.Drawing.Point(239, 352);
+            this.materialLabelDiagonal1.Location = new System.Drawing.Point(239, 367);
             this.materialLabelDiagonal1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelDiagonal1.Name = "materialLabelDiagonal1";
             this.materialLabelDiagonal1.Size = new System.Drawing.Size(19, 19);
@@ -2379,7 +2490,7 @@ namespace ServiceMonitorEVK.Main
             this.pictureBox25.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox25.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox25.Image = global::ServiceMonitorEVK.Properties.Resources.monitor;
-            this.pictureBox25.Location = new System.Drawing.Point(38, 244);
+            this.pictureBox25.Location = new System.Drawing.Point(38, 259);
             this.pictureBox25.Name = "pictureBox25";
             this.pictureBox25.Size = new System.Drawing.Size(24, 21);
             this.pictureBox25.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -2392,7 +2503,7 @@ namespace ServiceMonitorEVK.Main
             this.labelFrequency.Depth = 0;
             this.labelFrequency.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.labelFrequency.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.labelFrequency.Location = new System.Drawing.Point(68, 167);
+            this.labelFrequency.Location = new System.Drawing.Point(68, 182);
             this.labelFrequency.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelFrequency.Name = "labelFrequency";
             this.labelFrequency.Size = new System.Drawing.Size(94, 24);
@@ -2405,7 +2516,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelProductCodeID.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelProductCodeID.Depth = 0;
             this.materialLabelProductCodeID.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelProductCodeID.Location = new System.Drawing.Point(239, 315);
+            this.materialLabelProductCodeID.Location = new System.Drawing.Point(239, 330);
             this.materialLabelProductCodeID.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelProductCodeID.Name = "materialLabelProductCodeID";
             this.materialLabelProductCodeID.Size = new System.Drawing.Size(19, 19);
@@ -2419,7 +2530,7 @@ namespace ServiceMonitorEVK.Main
             this.labelDiagonal.Depth = 0;
             this.labelDiagonal.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.labelDiagonal.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.labelDiagonal.Location = new System.Drawing.Point(68, 352);
+            this.labelDiagonal.Location = new System.Drawing.Point(68, 367);
             this.labelDiagonal.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelDiagonal.Name = "labelDiagonal";
             this.labelDiagonal.Size = new System.Drawing.Size(138, 24);
@@ -2433,7 +2544,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox10.Checked = true;
             this.materialCheckbox10.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialCheckbox10.Depth = 0;
-            this.materialCheckbox10.Location = new System.Drawing.Point(0, 167);
+            this.materialCheckbox10.Location = new System.Drawing.Point(0, 182);
             this.materialCheckbox10.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox10.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox10.MouseState = MaterialSkin.MouseState.HOVER;
@@ -2450,7 +2561,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelFrequency.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelFrequency.Depth = 0;
             this.materialLabelFrequency.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelFrequency.Location = new System.Drawing.Point(239, 167);
+            this.materialLabelFrequency.Location = new System.Drawing.Point(239, 182);
             this.materialLabelFrequency.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelFrequency.Name = "materialLabelFrequency";
             this.materialLabelFrequency.Size = new System.Drawing.Size(19, 19);
@@ -2464,7 +2575,7 @@ namespace ServiceMonitorEVK.Main
             this.labelProductCode.Depth = 0;
             this.labelProductCode.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.labelProductCode.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.labelProductCode.Location = new System.Drawing.Point(68, 315);
+            this.labelProductCode.Location = new System.Drawing.Point(68, 330);
             this.labelProductCode.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelProductCode.Name = "labelProductCode";
             this.labelProductCode.Size = new System.Drawing.Size(143, 24);
@@ -2477,7 +2588,7 @@ namespace ServiceMonitorEVK.Main
             this.ResolutionLabel.Depth = 0;
             this.ResolutionLabel.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.ResolutionLabel.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.ResolutionLabel.Location = new System.Drawing.Point(68, 204);
+            this.ResolutionLabel.Location = new System.Drawing.Point(68, 219);
             this.ResolutionLabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.ResolutionLabel.Name = "ResolutionLabel";
             this.ResolutionLabel.Size = new System.Drawing.Size(95, 24);
@@ -2491,7 +2602,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox5.Checked = true;
             this.materialCheckbox5.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialCheckbox5.Depth = 0;
-            this.materialCheckbox5.Location = new System.Drawing.Point(0, 241);
+            this.materialCheckbox5.Location = new System.Drawing.Point(0, 256);
             this.materialCheckbox5.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox5.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox5.MouseState = MaterialSkin.MouseState.HOVER;
@@ -2508,7 +2619,7 @@ namespace ServiceMonitorEVK.Main
             this.labelMonth.Depth = 0;
             this.labelMonth.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.labelMonth.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.labelMonth.Location = new System.Drawing.Point(68, 278);
+            this.labelMonth.Location = new System.Drawing.Point(68, 293);
             this.labelMonth.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelMonth.Name = "labelMonth";
             this.labelMonth.Size = new System.Drawing.Size(59, 24);
@@ -2522,7 +2633,7 @@ namespace ServiceMonitorEVK.Main
             this.materialCheckbox8.Checked = true;
             this.materialCheckbox8.CheckState = System.Windows.Forms.CheckState.Checked;
             this.materialCheckbox8.Depth = 0;
-            this.materialCheckbox8.Location = new System.Drawing.Point(0, 204);
+            this.materialCheckbox8.Location = new System.Drawing.Point(0, 219);
             this.materialCheckbox8.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckbox8.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckbox8.MouseState = MaterialSkin.MouseState.HOVER;
@@ -2539,7 +2650,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelMonthOfProduction.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelMonthOfProduction.Depth = 0;
             this.materialLabelMonthOfProduction.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelMonthOfProduction.Location = new System.Drawing.Point(239, 278);
+            this.materialLabelMonthOfProduction.Location = new System.Drawing.Point(239, 293);
             this.materialLabelMonthOfProduction.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelMonthOfProduction.Name = "materialLabelMonthOfProduction";
             this.materialLabelMonthOfProduction.Size = new System.Drawing.Size(19, 19);
@@ -2553,7 +2664,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelResolution.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelResolution.Depth = 0;
             this.materialLabelResolution.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelResolution.Location = new System.Drawing.Point(239, 204);
+            this.materialLabelResolution.Location = new System.Drawing.Point(239, 219);
             this.materialLabelResolution.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelResolution.Name = "materialLabelResolution";
             this.materialLabelResolution.Size = new System.Drawing.Size(19, 19);
@@ -2567,7 +2678,7 @@ namespace ServiceMonitorEVK.Main
             this.labelYear.Depth = 0;
             this.labelYear.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.labelYear.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
-            this.labelYear.Location = new System.Drawing.Point(68, 241);
+            this.labelYear.Location = new System.Drawing.Point(68, 256);
             this.labelYear.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelYear.Name = "labelYear";
             this.labelYear.Size = new System.Drawing.Size(47, 24);
@@ -2580,7 +2691,7 @@ namespace ServiceMonitorEVK.Main
             this.materialLabelYearOfProduction.Cursor = System.Windows.Forms.Cursors.Hand;
             this.materialLabelYearOfProduction.Depth = 0;
             this.materialLabelYearOfProduction.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.materialLabelYearOfProduction.Location = new System.Drawing.Point(239, 241);
+            this.materialLabelYearOfProduction.Location = new System.Drawing.Point(239, 256);
             this.materialLabelYearOfProduction.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelYearOfProduction.Name = "materialLabelYearOfProduction";
             this.materialLabelYearOfProduction.Size = new System.Drawing.Size(19, 19);
@@ -2626,7 +2737,7 @@ namespace ServiceMonitorEVK.Main
             this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel4);
             this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel6);
             this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel5);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 521);
+            this.flowLayoutPanel7.Location = new System.Drawing.Point(3, 536);
             this.flowLayoutPanel7.Name = "flowLayoutPanel7";
             this.flowLayoutPanel7.Size = new System.Drawing.Size(456, 61);
             this.flowLayoutPanel7.TabIndex = 82;
@@ -2915,7 +3026,7 @@ namespace ServiceMonitorEVK.Main
             this.searchInfoPage.Location = new System.Drawing.Point(4, 39);
             this.searchInfoPage.Name = "searchInfoPage";
             this.searchInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.searchInfoPage.Size = new System.Drawing.Size(1427, 731);
+            this.searchInfoPage.Size = new System.Drawing.Size(1491, 887);
             this.searchInfoPage.TabIndex = 4;
             this.searchInfoPage.Text = "Search info";
             this.searchInfoPage.UseVisualStyleBackColor = true;
@@ -2923,66 +3034,197 @@ namespace ServiceMonitorEVK.Main
             // 
             // testMonitorPage
             // 
-            this.testMonitorPage.Controls.Add(this.button7);
-            this.testMonitorPage.Controls.Add(this.button5);
-            this.testMonitorPage.Controls.Add(this.button4);
-            this.testMonitorPage.Controls.Add(this.button3);
-            this.testMonitorPage.Controls.Add(this.button2);
+            this.testMonitorPage.Controls.Add(this.flowLayoutPanel11);
+            this.testMonitorPage.Controls.Add(this.flowLayoutPanel10);
             this.testMonitorPage.Controls.Add(this.buttonServiceFixPixel);
             this.testMonitorPage.Controls.Add(this.buttonTestingMonitor);
             this.testMonitorPage.ImageKey = "monitoring-test.png";
             this.testMonitorPage.Location = new System.Drawing.Point(4, 39);
             this.testMonitorPage.Name = "testMonitorPage";
             this.testMonitorPage.Padding = new System.Windows.Forms.Padding(3);
-            this.testMonitorPage.Size = new System.Drawing.Size(1427, 731);
+            this.testMonitorPage.Size = new System.Drawing.Size(1491, 887);
             this.testMonitorPage.TabIndex = 6;
             this.testMonitorPage.Text = "Service";
             this.testMonitorPage.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // flowLayoutPanel11
             // 
-            this.button7.Location = new System.Drawing.Point(45, 210);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 61;
-            this.button7.Text = "search info";
-            this.button7.UseVisualStyleBackColor = true;
+            this.flowLayoutPanel11.Controls.Add(this.btnDisplaySettings);
+            this.flowLayoutPanel11.Controls.Add(this.materialButton2);
+            this.flowLayoutPanel11.Controls.Add(this.materialButton3);
+            this.flowLayoutPanel11.Location = new System.Drawing.Point(389, 143);
+            this.flowLayoutPanel11.Name = "flowLayoutPanel11";
+            this.flowLayoutPanel11.Size = new System.Drawing.Size(332, 151);
+            this.flowLayoutPanel11.TabIndex = 64;
             // 
-            // button5
+            // btnDisplaySettings
             // 
-            this.button5.Location = new System.Drawing.Point(247, 211);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(112, 23);
-            this.button5.TabIndex = 60;
-            this.button5.Text = "secondary only";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnDisplaySettings.AutoSize = false;
+            this.btnDisplaySettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnDisplaySettings.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnDisplaySettings.Depth = 0;
+            this.btnDisplaySettings.HighEmphasis = true;
+            this.btnDisplaySettings.Icon = global::ServiceMonitorEVK.Properties.Resources.monitoring_test;
+            this.btnDisplaySettings.ImageKey = "monitoring-test.png";
+            this.btnDisplaySettings.ImageList = this.imageList1;
+            this.btnDisplaySettings.Location = new System.Drawing.Point(4, 6);
+            this.btnDisplaySettings.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnDisplaySettings.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnDisplaySettings.Name = "btnDisplaySettings";
+            this.btnDisplaySettings.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnDisplaySettings.Size = new System.Drawing.Size(321, 36);
+            this.btnDisplaySettings.TabIndex = 63;
+            this.btnDisplaySettings.Text = "Display settings";
+            this.btnDisplaySettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDisplaySettings.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnDisplaySettings.UseAccentColor = false;
+            this.btnDisplaySettings.UseVisualStyleBackColor = true;
+            this.btnDisplaySettings.Click += new System.EventHandler(this.btnDisplaySettings_Click);
             // 
-            // button4
+            // imageList1
             // 
-            this.button4.Location = new System.Drawing.Point(126, 211);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(112, 23);
-            this.button4.TabIndex = 59;
-            this.button4.Text = "primary only";
-            this.button4.UseVisualStyleBackColor = true;
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "search.png");
+            this.imageList1.Images.SetKeyName(1, "fix (1).png");
+            this.imageList1.Images.SetKeyName(2, "resolution.png");
+            this.imageList1.Images.SetKeyName(3, "computer.png");
+            this.imageList1.Images.SetKeyName(4, "info (2).png");
+            this.imageList1.Images.SetKeyName(5, "monitoring-test.png");
+            this.imageList1.Images.SetKeyName(6, "homepage.png");
+            this.imageList1.Images.SetKeyName(7, "knowledge-base.png");
             // 
-            // button3
+            // materialButton2
             // 
-            this.button3.Location = new System.Drawing.Point(245, 182);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(112, 23);
-            this.button3.TabIndex = 58;
-            this.button3.Text = "extend";
-            this.button3.UseVisualStyleBackColor = true;
+            this.materialButton2.AutoSize = false;
+            this.materialButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.materialButton2.Depth = 0;
+            this.materialButton2.HighEmphasis = true;
+            this.materialButton2.Icon = global::ServiceMonitorEVK.Properties.Resources.monitoring_test;
+            this.materialButton2.ImageKey = "monitoring-test.png";
+            this.materialButton2.ImageList = this.imageList1;
+            this.materialButton2.Location = new System.Drawing.Point(4, 54);
+            this.materialButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialButton2.Name = "materialButton2";
+            this.materialButton2.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.materialButton2.Size = new System.Drawing.Size(321, 36);
+            this.materialButton2.TabIndex = 64;
+            this.materialButton2.Text = "System information";
+            this.materialButton2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.materialButton2.UseAccentColor = false;
+            this.materialButton2.UseVisualStyleBackColor = true;
+            this.materialButton2.Click += new System.EventHandler(this.materialButton2_Click);
             // 
-            // button2
+            // flowLayoutPanel10
             // 
-            this.button2.Location = new System.Drawing.Point(127, 182);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(112, 23);
-            this.button2.TabIndex = 57;
-            this.button2.Text = "duplicate";
-            this.button2.UseVisualStyleBackColor = true;
+            this.flowLayoutPanel10.Controls.Add(this.btnExtend);
+            this.flowLayoutPanel10.Controls.Add(this.btnDuplicate);
+            this.flowLayoutPanel10.Controls.Add(this.btnOnlyPC);
+            this.flowLayoutPanel10.Controls.Add(this.btnOnlySecond);
+            this.flowLayoutPanel10.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel10.Location = new System.Drawing.Point(24, 143);
+            this.flowLayoutPanel10.Name = "flowLayoutPanel10";
+            this.flowLayoutPanel10.Size = new System.Drawing.Size(209, 135);
+            this.flowLayoutPanel10.TabIndex = 62;
+            // 
+            // btnExtend
+            // 
+            this.btnExtend.AutoSize = false;
+            this.btnExtend.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnExtend.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Dense;
+            this.btnExtend.Depth = 0;
+            this.btnExtend.HighEmphasis = true;
+            this.btnExtend.Icon = global::ServiceMonitorEVK.Properties.Resources.extend;
+            this.btnExtend.ImageKey = "monitoring-test.png";
+            this.btnExtend.ImageList = this.imageList1;
+            this.btnExtend.Location = new System.Drawing.Point(4, 6);
+            this.btnExtend.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnExtend.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnExtend.Name = "btnExtend";
+            this.btnExtend.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnExtend.Size = new System.Drawing.Size(196, 21);
+            this.btnExtend.TabIndex = 63;
+            this.btnExtend.Text = "Extend";
+            this.btnExtend.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnExtend.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnExtend.UseAccentColor = false;
+            this.btnExtend.UseVisualStyleBackColor = true;
+            this.btnExtend.Click += new System.EventHandler(this.btnExtend_Click);
+            // 
+            // btnDuplicate
+            // 
+            this.btnDuplicate.AutoSize = false;
+            this.btnDuplicate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnDuplicate.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnDuplicate.Depth = 0;
+            this.btnDuplicate.HighEmphasis = true;
+            this.btnDuplicate.Icon = global::ServiceMonitorEVK.Properties.Resources.duplicate;
+            this.btnDuplicate.ImageKey = "monitoring-test.png";
+            this.btnDuplicate.ImageList = this.imageList1;
+            this.btnDuplicate.Location = new System.Drawing.Point(4, 39);
+            this.btnDuplicate.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnDuplicate.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnDuplicate.Name = "btnDuplicate";
+            this.btnDuplicate.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnDuplicate.Size = new System.Drawing.Size(196, 19);
+            this.btnDuplicate.TabIndex = 64;
+            this.btnDuplicate.Text = "Duplicate";
+            this.btnDuplicate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDuplicate.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnDuplicate.UseAccentColor = false;
+            this.btnDuplicate.UseVisualStyleBackColor = true;
+            this.btnDuplicate.Click += new System.EventHandler(this.btnDuplicate_Click);
+            // 
+            // btnOnlyPC
+            // 
+            this.btnOnlyPC.AutoSize = false;
+            this.btnOnlyPC.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnOnlyPC.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnOnlyPC.Depth = 0;
+            this.btnOnlyPC.HighEmphasis = true;
+            this.btnOnlyPC.Icon = global::ServiceMonitorEVK.Properties.Resources.onlyPC;
+            this.btnOnlyPC.ImageKey = "monitoring-test.png";
+            this.btnOnlyPC.ImageList = this.imageList1;
+            this.btnOnlyPC.Location = new System.Drawing.Point(4, 70);
+            this.btnOnlyPC.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnOnlyPC.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnOnlyPC.Name = "btnOnlyPC";
+            this.btnOnlyPC.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnOnlyPC.Size = new System.Drawing.Size(196, 20);
+            this.btnOnlyPC.TabIndex = 65;
+            this.btnOnlyPC.Text = "Only PC";
+            this.btnOnlyPC.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnOnlyPC.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnOnlyPC.UseAccentColor = false;
+            this.btnOnlyPC.UseVisualStyleBackColor = true;
+            this.btnOnlyPC.Click += new System.EventHandler(this.btnOnlyPC_Click);
+            // 
+            // btnOnlySecond
+            // 
+            this.btnOnlySecond.AutoSize = false;
+            this.btnOnlySecond.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnOnlySecond.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnOnlySecond.Depth = 0;
+            this.btnOnlySecond.HighEmphasis = true;
+            this.btnOnlySecond.Icon = global::ServiceMonitorEVK.Properties.Resources.onlySecond;
+            this.btnOnlySecond.ImageKey = "monitoring-test.png";
+            this.btnOnlySecond.ImageList = this.imageList1;
+            this.btnOnlySecond.Location = new System.Drawing.Point(4, 102);
+            this.btnOnlySecond.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnOnlySecond.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnOnlySecond.Name = "btnOnlySecond";
+            this.btnOnlySecond.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.btnOnlySecond.Size = new System.Drawing.Size(196, 21);
+            this.btnOnlySecond.TabIndex = 66;
+            this.btnOnlySecond.Text = "Only Second";
+            this.btnOnlySecond.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnOnlySecond.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnOnlySecond.UseAccentColor = false;
+            this.btnOnlySecond.UseVisualStyleBackColor = true;
+            this.btnOnlySecond.Click += new System.EventHandler(this.btnOnlySecond_Click);
             // 
             // buttonServiceFixPixel
             // 
@@ -3029,19 +3271,6 @@ namespace ServiceMonitorEVK.Main
             this.buttonTestingMonitor.UseVisualStyleBackColor = true;
             this.buttonTestingMonitor.Click += new System.EventHandler(this.buttonTestingMonitor_Click);
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "search.png");
-            this.imageList1.Images.SetKeyName(1, "fix (1).png");
-            this.imageList1.Images.SetKeyName(2, "resolution.png");
-            this.imageList1.Images.SetKeyName(3, "computer.png");
-            this.imageList1.Images.SetKeyName(4, "info (2).png");
-            this.imageList1.Images.SetKeyName(5, "monitoring-test.png");
-            this.imageList1.Images.SetKeyName(6, "homepage.png");
-            this.imageList1.Images.SetKeyName(7, "knowledge-base.png");
-            // 
             // resolutionPage
             // 
             this.resolutionPage.BackColor = System.Drawing.Color.Transparent;
@@ -3055,7 +3284,7 @@ namespace ServiceMonitorEVK.Main
             this.resolutionPage.Location = new System.Drawing.Point(4, 39);
             this.resolutionPage.Name = "resolutionPage";
             this.resolutionPage.Padding = new System.Windows.Forms.Padding(3);
-            this.resolutionPage.Size = new System.Drawing.Size(1427, 731);
+            this.resolutionPage.Size = new System.Drawing.Size(1491, 887);
             this.resolutionPage.TabIndex = 0;
             this.resolutionPage.Text = "Resolution";
             // 
@@ -3066,7 +3295,7 @@ namespace ServiceMonitorEVK.Main
             this.tabPage6.Location = new System.Drawing.Point(4, 39);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1427, 731);
+            this.tabPage6.Size = new System.Drawing.Size(1491, 887);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Knowlenge base";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -3247,7 +3476,7 @@ namespace ServiceMonitorEVK.Main
             this.mainLabelTester.Font = new System.Drawing.Font("Roboto Medium", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.mainLabelTester.FontType = MaterialSkin.MaterialSkinManager.fontType.H6;
             this.mainLabelTester.ForeColor = System.Drawing.Color.Transparent;
-            this.mainLabelTester.Location = new System.Drawing.Point(1418, 0);
+            this.mainLabelTester.Location = new System.Drawing.Point(1482, 0);
             this.mainLabelTester.MouseState = MaterialSkin.MouseState.HOVER;
             this.mainLabelTester.Name = "mainLabelTester";
             this.mainLabelTester.Size = new System.Drawing.Size(30, 24);
@@ -3258,7 +3487,7 @@ namespace ServiceMonitorEVK.Main
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(1343, 0);
+            this.label1.Location = new System.Drawing.Point(1407, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 23);
             this.label1.TabIndex = 43;
@@ -3272,10 +3501,10 @@ namespace ServiceMonitorEVK.Main
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 853);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 1009);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1451, 24);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1515, 24);
             this.flowLayoutPanel1.TabIndex = 47;
             // 
             // flowLayoutPanel2
@@ -3287,10 +3516,83 @@ namespace ServiceMonitorEVK.Main
             this.flowLayoutPanel2.Size = new System.Drawing.Size(96, 31);
             this.flowLayoutPanel2.TabIndex = 47;
             // 
+            // materialButton3
+            // 
+            this.materialButton3.AutoSize = false;
+            this.materialButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.materialButton3.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.materialButton3.Depth = 0;
+            this.materialButton3.HighEmphasis = true;
+            this.materialButton3.Icon = global::ServiceMonitorEVK.Properties.Resources.monitoring_test;
+            this.materialButton3.ImageKey = "monitoring-test.png";
+            this.materialButton3.ImageList = this.imageList1;
+            this.materialButton3.Location = new System.Drawing.Point(4, 102);
+            this.materialButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.materialButton3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialButton3.Name = "materialButton3";
+            this.materialButton3.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.materialButton3.Size = new System.Drawing.Size(321, 36);
+            this.materialButton3.TabIndex = 65;
+            this.materialButton3.Text = "Personalization Settings";
+            this.materialButton3.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.materialButton3.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.materialButton3.UseAccentColor = false;
+            this.materialButton3.UseVisualStyleBackColor = true;
+            this.materialButton3.Click += new System.EventHandler(this.materialButton3_Click_1);
+            // 
+            // materialCheckbox2
+            // 
+            this.materialCheckbox2.AutoSize = true;
+            this.materialCheckbox2.Depth = 0;
+            this.materialCheckbox2.Location = new System.Drawing.Point(0, 0);
+            this.materialCheckbox2.Margin = new System.Windows.Forms.Padding(0);
+            this.materialCheckbox2.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.materialCheckbox2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialCheckbox2.Name = "materialCheckbox2";
+            this.materialCheckbox2.ReadOnly = false;
+            this.materialCheckbox2.Ripple = true;
+            this.materialCheckbox2.Size = new System.Drawing.Size(454, 37);
+            this.materialCheckbox2.TabIndex = 52;
+            this.materialCheckbox2.Text = "When connecting a new monitor, change the display type to";
+            this.materialCheckbox2.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel12
+            // 
+            this.flowLayoutPanel12.AutoSize = true;
+            this.flowLayoutPanel12.Controls.Add(this.materialCheckbox2);
+            this.flowLayoutPanel12.Controls.Add(this.comboBoxTypeScreen);
+            this.flowLayoutPanel12.Location = new System.Drawing.Point(14, 92);
+            this.flowLayoutPanel12.Name = "flowLayoutPanel12";
+            this.flowLayoutPanel12.Size = new System.Drawing.Size(636, 42);
+            this.flowLayoutPanel12.TabIndex = 53;
+            // 
+            // comboBoxTypeScreen
+            // 
+            this.comboBoxTypeScreen.AutoResize = false;
+            this.comboBoxTypeScreen.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.comboBoxTypeScreen.Depth = 0;
+            this.comboBoxTypeScreen.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.comboBoxTypeScreen.DropDownHeight = 118;
+            this.comboBoxTypeScreen.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTypeScreen.DropDownWidth = 121;
+            this.comboBoxTypeScreen.Font = new System.Drawing.Font("Roboto Medium", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.comboBoxTypeScreen.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.comboBoxTypeScreen.FormattingEnabled = true;
+            this.comboBoxTypeScreen.IntegralHeight = false;
+            this.comboBoxTypeScreen.ItemHeight = 29;
+            this.comboBoxTypeScreen.Location = new System.Drawing.Point(457, 3);
+            this.comboBoxTypeScreen.MaxDropDownItems = 4;
+            this.comboBoxTypeScreen.MouseState = MaterialSkin.MouseState.OUT;
+            this.comboBoxTypeScreen.Name = "comboBoxTypeScreen";
+            this.comboBoxTypeScreen.Size = new System.Drawing.Size(176, 35);
+            this.comboBoxTypeScreen.StartIndex = 0;
+            this.comboBoxTypeScreen.TabIndex = 53;
+            this.comboBoxTypeScreen.UseTallSize = false;
+            // 
             // Form1
             // 
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1457, 880);
+            this.ClientSize = new System.Drawing.Size(1521, 1036);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.materialTabControl1);
@@ -3312,6 +3614,9 @@ namespace ServiceMonitorEVK.Main
             this.tabPageMain.ResumeLayout(false);
             this.materialCard4.ResumeLayout(false);
             this.materialCard4.PerformLayout();
+            this.flowLayoutPanel9.ResumeLayout(false);
+            this.flowLayoutPanel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.selectedColorAutoShow)).EndInit();
             this.materialCard5.ResumeLayout(false);
             this.materialCard5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox37)).EndInit();
@@ -3380,6 +3685,8 @@ namespace ServiceMonitorEVK.Main
             this.flowLayoutPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDvi)).EndInit();
             this.testMonitorPage.ResumeLayout(false);
+            this.flowLayoutPanel11.ResumeLayout(false);
+            this.flowLayoutPanel10.ResumeLayout(false);
             this.resolutionPage.ResumeLayout(false);
             this.resolutionPage.PerformLayout();
             this.tabPage6.ResumeLayout(false);
@@ -3392,6 +3699,8 @@ namespace ServiceMonitorEVK.Main
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel12.ResumeLayout(false);
+            this.flowLayoutPanel12.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3442,7 +3751,6 @@ namespace ServiceMonitorEVK.Main
         public MaterialLabel materialLabelResolution;
         public MaterialLabel materialLabelSizeMonitor;
         public MaterialLabel materialLabelFrequency;
-        public MaterialLabel materialLabelSerialNo;
         public MaterialLabel materialLabelDiagonal2;
         public MaterialLabel materialLabelDiagonal1;
         public MaterialLabel materialLabelProductCodeID;
@@ -3566,11 +3874,6 @@ namespace ServiceMonitorEVK.Main
         private PictureBox pictureBox37;
         private MaterialLabel materialLabel25;
         private MaterialCheckbox checkBoxSaveLanguage;
-        private Button button7;
-        private Button button5;
-        private Button button4;
-        private Button button3;
-        private Button button2;
         private MaterialTabControl materialTabControl2;
         private TabPage testMonitorKnPage;
         private TabPage instructionKnPage;
@@ -3593,6 +3896,25 @@ namespace ServiceMonitorEVK.Main
         private TableLayoutPanel tableLayoutPanel2;
         private FlowLayoutPanel flowLayoutPanel8;
         private MaterialCard materialCard4;
+        private MaterialCheckbox checkBoxSearchSerial;
+        private MaterialCheckbox checkBoxSearchEVK_ID;
+        private MaterialTextBox2 textBoxSerial;
+        private MaterialCheckbox checkBoxConnectMonitor;
+        private FlowLayoutPanel flowLayoutPanel9;
+        private PictureBox selectedColorAutoShow;
+        private ColorDialog colorDialog1;
+        private FlowLayoutPanel flowLayoutPanel10;
+        private MaterialButton btnExtend;
+        private MaterialButton btnDuplicate;
+        private MaterialButton btnOnlyPC;
+        private MaterialButton btnOnlySecond;
+        private FlowLayoutPanel flowLayoutPanel11;
+        private MaterialButton btnDisplaySettings;
+        private MaterialButton materialButton2;
+        private MaterialButton materialButton3;
+        private MaterialCheckbox materialCheckbox2;
+        private FlowLayoutPanel flowLayoutPanel12;
+        private MaterialComboBox comboBoxTypeScreen;
     }
 }
 

@@ -54,7 +54,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             this.customColor = customColor;
             TestMode = "Default";
             TestPattern = "Default";
-
+            this.BackColor = customColor;
             ///////////////////
             DoubleBuffered = true;
         }
@@ -536,6 +536,13 @@ namespace ServiceMonitorEVK.Testing_Monitor
 
                 bitmap.Save(filePath, ImageFormat.Png);
             }
+        }
+
+        public void UpdateColor(Color newColor)
+        {
+            this.customColor = newColor;
+            this.BackColor = newColor;
+            Invalidate(); // Перерисовываем экран с новым цветом
         }
     }
 }

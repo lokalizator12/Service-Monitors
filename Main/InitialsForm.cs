@@ -9,15 +9,15 @@ namespace ServiceMonitorEVK.Main
 {
     public partial class InitialsForm : MaterialForm
     {
-        private readonly UiUtil formAnimator;
+        private readonly UiUtil uiUtil;
         private readonly MaterialSkinManager materialSkinManager = MaterialSkinManager.Instance;
 
         public InitialsForm()
         {
             InitializeComponent();
+            uiUtil = new UiUtil(this);
+            uiUtil.StartOpening();
             CustomSetTheme();
-            formAnimator = new UiUtil(this);
-            formAnimator.StartOpening();
         }
 
         public string Initials { get; private set; }
@@ -28,14 +28,12 @@ namespace ServiceMonitorEVK.Main
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.DARK;
             materialSkinManager.ColorScheme = new ColorScheme(
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey900 : Primary.BlueGrey800,
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey800 : Primary.BlueGrey900,
-                materialSkinManager.Theme == MaterialSkinManager.Themes.DARK ? Primary.Grey700 : Primary.BlueGrey500,
+                Primary.Grey900,
+                Primary.Grey800,
+                Primary.Grey700,
                 Accent.Red400,
                 TextShade.WHITE);
-            pictureBoxLogo.BackColor = materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
-                ? Color.FromArgb(0x21, 0x21, 0x21)
-                : Color.FromArgb(0x37, 0x47, 0x4F);
+            pictureBoxLogo.BackColor = Color.FromArgb(0x21, 0x21, 0x21);
         }
 
         private void textBoxTester_TextChanged(object sender, EventArgs e)
@@ -44,7 +42,7 @@ namespace ServiceMonitorEVK.Main
             {
                 Initials = textBoxTester.Text;
                 DialogResult = DialogResult.OK;
-                formAnimator.StartClosing();
+                uiUtil.StartClosing();
             }
 
         }
