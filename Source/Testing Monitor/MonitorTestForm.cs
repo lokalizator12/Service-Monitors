@@ -11,6 +11,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
+using ServiceMonitorEVK.Source.Main;
 
 namespace ServiceMonitorEVK.Testing_Monitor
 {

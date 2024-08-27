@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ServiceMonitorEVK.Source.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -68,19 +68,12 @@ namespace ServiceMonitorEVK.Util_Managers
                     foreach (var o in searcher.Get())
                     {
                         var queryObj = (ManagementObject)o;
-                        var deviceId = queryObj["DeviceID"].ToString();
-                        var description = queryObj["Description"].ToString();
-                        var manufacturer = queryObj["Manufacturer"].ToString();
-                        var name = queryObj["Name"].ToString();
-                        var pnpDeviceId = queryObj["PNPDeviceID"].ToString();
-                        var status = queryObj["Status"].ToString();
 
-                        stringBuilder.AppendLine("DeviceID: " + deviceId + Environment.NewLine);
-                        stringBuilder.AppendLine("Description: " + description + Environment.NewLine);
-                        stringBuilder.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
-                        stringBuilder.AppendLine("Name: " + name + Environment.NewLine);
-                        stringBuilder.AppendLine("PNPDeviceID: " + pnpDeviceId + Environment.NewLine);
-                        stringBuilder.AppendLine("Status: " + status + Environment.NewLine);
+                        foreach (var property in queryObj.Properties)
+                        {
+                            stringBuilder.AppendLine($"{property.Name}: {property.Value}");
+                        }
+
                         stringBuilder.AppendLine("--------------------------------------------");
                     }
                 });
@@ -115,9 +108,10 @@ namespace ServiceMonitorEVK.Util_Managers
                 {
                     sb.AppendLine($"Monitor {deviceIndex + 1}:");
                     sb.AppendLine($"Device Name: {d.DeviceName}");
-                    sb.AppendLine($"Device id: {d.DeviceID}");
-
                     sb.AppendLine($"Device String: {d.DeviceString}");
+                    sb.AppendLine($"State Flags: {d.StateFlags}");
+                    sb.AppendLine($"Device ID: {d.DeviceID}");
+                    sb.AppendLine($"Device Key: {d.DeviceKey}");
 
                     var devMode = new DEVMODE
                     {
@@ -128,10 +122,18 @@ namespace ServiceMonitorEVK.Util_Managers
                     {
                         sb.AppendLine("Active Signal Mode:");
                         sb.AppendLine($"Resolution: {devMode.dmPelsWidth} x {devMode.dmPelsHeight}");
-                        resolutionWidth = (int)devMode.dmPelsWidth;
-                        resolutionHeight = (int)devMode.dmPelsHeight;
                         sb.AppendLine($"Frequency: {devMode.dmDisplayFrequency} Hz");
                         sb.AppendLine($"Color Depth: {devMode.dmBitsPerPel} bits");
+                        sb.AppendLine($"Display Flags: {devMode.dmDisplayFlags}");
+                        sb.AppendLine($"Display Orientation: {devMode.dmDisplayOrientation}");
+                        sb.AppendLine($"Form Name: {devMode.dmFormName}");
+                        sb.AppendLine($"Log Pixels: {devMode.dmLogPixels}");
+                        sb.AppendLine($"Bits per Pixel: {devMode.dmBitsPerPel}");
+                        sb.AppendLine($"Panning Width: {devMode.dmPanningWidth}");
+                        sb.AppendLine($"Panning Height: {devMode.dmPanningHeight}");
+                        sb.AppendLine($"Display Fixed Output: {devMode.dmDisplayFixedOutput}");
+                        resolutionWidth = (int)devMode.dmPelsWidth;
+                        resolutionHeight = (int)devMode.dmPelsHeight;
                     }
 
                     if (EnumDisplaySettings(d.DeviceName, 0, ref devMode))
@@ -140,6 +142,14 @@ namespace ServiceMonitorEVK.Util_Managers
                         sb.AppendLine($"Resolution: {devMode.dmPelsWidth} x {devMode.dmPelsHeight}");
                         sb.AppendLine($"Frequency: {devMode.dmDisplayFrequency} Hz");
                         sb.AppendLine($"Color Depth: {devMode.dmBitsPerPel} bits");
+                        sb.AppendLine($"Display Flags: {devMode.dmDisplayFlags}");
+                        sb.AppendLine($"Display Orientation: {devMode.dmDisplayOrientation}");
+                        sb.AppendLine($"Form Name: {devMode.dmFormName}");
+                        sb.AppendLine($"Log Pixels: {devMode.dmLogPixels}");
+                        sb.AppendLine($"Bits per Pixel: {devMode.dmBitsPerPel}");
+                        sb.AppendLine($"Panning Width: {devMode.dmPanningWidth}");
+                        sb.AppendLine($"Panning Height: {devMode.dmPanningHeight}");
+                        sb.AppendLine($"Display Fixed Output: {devMode.dmDisplayFixedOutput}");
                     }
 
                     sb.AppendLine("--------------------------------------------");
@@ -151,12 +161,6 @@ namespace ServiceMonitorEVK.Util_Managers
             return sb.ToString();
         }
 
-        private static string ExtractModelFromName(string name)
-        {
-            var pattern = @"\((.*?)\)";
-            var match = Regex.Match(name, pattern);
-            return match.Success ? match.Groups[1].Value.Trim() : "";
-        }
 
         public static double CalculatePpi(double widthCm, double heightCm, int widthPx, int heightPx)
         {
@@ -203,6 +207,10 @@ namespace ServiceMonitorEVK.Util_Managers
 
                     foreach (var o in searcher.Get())
                     {
+                        foreach (PropertyData property in o.Properties)
+                        {
+                            edidInfo.AppendLine($"{property.Name}: {property.Value}");
+                        }
                         var queryObj = (ManagementObject)o;
                         var instanceName = queryObj["InstanceName"].ToString();
                         var yearOfManufacture = queryObj["YearOfManufacture"].ToString();
@@ -210,15 +218,27 @@ namespace ServiceMonitorEVK.Util_Managers
                         var serialNumberId = queryObj["SerialNumberID"];
                         var productCodeId = queryObj["ProductCodeID"];
 
-                        edidInfo.AppendLine("Instance Name: " + instanceName + "\n");
-                        edidInfo.AppendLine("Month and Year Of Manufacture: " + yearOfManufacture + "\n");
+                       
                         edidInfo.AppendLine("Month Of Manufacture: " +
                                             ConvertWeeksToMonths(Convert.ToInt16(weekOfManufacture)) + "\n");
 
                         if (serialNumberId is string[] serialNumber)
+                        {
                             edidInfo.AppendLine("Serial Number: " +
                                                 string.Join("",
-                                                    serialNumber.Select(s => ((char)int.Parse(s)).ToString())) + "\n");
+                                                    serialNumber.Select(s => ((char)int.Parse(s)).ToString())) +
+                                                "dfdsf\n");
+                        }
+
+                        if (serialNumberId != null)
+                        {
+                            var decodeEdidString = DecodeEdidString((ushort[])serialNumberId);
+                            edidInfo.AppendLine("Serial Numberff: " + decodeEdidString + "\n");
+                        }
+                        else
+                        {
+                            edidInfo.AppendLine("Serial Number: Not Available\n");
+                        }
 
                         var manufacturerNameUshorts = (ushort[])queryObj["ManufacturerName"];
                         var manufacturerNameFull = DecodeMonitorString(manufacturerNameUshorts);
@@ -227,125 +247,10 @@ namespace ServiceMonitorEVK.Util_Managers
                         var userfrendlyNameUshorts = (ushort[])queryObj["UserFriendlyName"];
                         var userfrendlyNameFull = DecodeMonitorString(userfrendlyNameUshorts);
 
-                        var manufacturerDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-                        {
-                            { "ACER", "Acer" },
-                            { "ACI", "Asus (ASUSTeK Computer Inc.)" },
-                            { "ACT", "Targa" },
-                            { "ADI", "ADI Corporation" },
-                            { "AMW", "AMW" },
-                            { "AOC", "AOC International (USA) Ltd." },
-                            { "API", "Acer America Corp." },
-                            { "APP", "Apple" },
-                            { "ART", "ArtMedia" },
-                            { "AST", "AST Research" },
-                            { "ASUS", "ASUS" },
-                            { "AUO", "AU Optronics" },
-                            { "BENQ", "BenQ" },
-                            { "BNQ", "BenQ Corporation" },
-                            { "BOE", "BOE Display Technology" },
-                            { "CASIO", "Casio" },
-                            { "CMN", "Chi Mei" },
-                            { "CPQ", "COMPAQ Computer Corp." },
-                            { "CPL", "Compal Electronics, Inc. / ALFA" },
-                            { "CTX", "CTX / Chuntex Electronic Co." },
-                            { "DEC", "Digital Equipment Corporation" },
-                            { "DELL", "Dell" },
-                            { "DPC", "Delta Electronics, Inc." },
-                            { "DWE", "Daewoo Telecom Ltd" },
-                            { "ECS", "ELITEGROUP Computer Systems" },
-                            { "EIZ", "EIZO Corporation" },
-                            { "EPI", "Envision Peripherals, Inc." },
-                            { "FCM", "Funai Electric Company of Taiwan" },
-                            { "FUS", "Fujitsu Siemens" },
-                            { "GIGABYTE", "Gigabyte" },
-                            { "GSM", "LG Electronics Inc. (GoldStar Technology, Inc.)" },
-                            { "GWY", "Gateway 2000" },
-                            { "HAIER", "Haier" },
-                            { "HANNSTAR", "HannStar" },
-                            { "HISENSE", "Hisense" },
-                            { "HEI", "Hyundai Electronics Industries Co., Ltd." },
-                            { "HIQ", "Hyundai ImageQuest" },
-                            { "HIT", "Hitachi" },
-                            { "HP", "Hewlett-Packard" },
-                            { "HSD", "Hannspree Inc." },
-                            { "HSL", "Hansol Electronics" },
-                            { "HTC", "Hitachi Ltd. / Nissei Sangyo America Ltd." },
-                            { "HUA", "Huawei" },
-                            { "HWP", "Hewlett Packard (HP)" },
-                            { "IBM", "IBM PC Company" },
-                            { "ICL", "Fujitsu ICL" },
-                            { "IFS", "InFocus" },
-                            { "INSIGNIA", "Insignia" },
-                            { "IQT", "Hyundai" },
-                            { "IVM", "Iiyama" },
-                            { "JVC", "JVC" },
-                            { "KDS", "KDS USA" },
-                            { "KFC", "KFC Computek" },
-                            { "KOIZUMI", "Koizumi" },
-                            { "KONKA", "Konka" },
-                            { "LEN", "Lenovo" },
-                            { "LG", "LG" },
-                            { "LGD", "LG Display" },
-                            { "LKM", "ADLAS / AZALEA" },
-                            { "LNK", "LINK Technologies, Inc." },
-                            { "LPL", "LG Philips" },
-                            { "LTN", "Lite-On" },
-                            { "MAG", "MAG InnoVision" },
-                            { "MAX", "Maxdata Computer GmbH" },
-                            { "MEI", "Panasonic Comm. & Systems Co." },
-                            { "MEL", "Mitsubishi Electronics" },
-                            { "MIC", "Microsoft" },
-                            { "MIR", "Miro Computer Products AG" },
-                            { "MITSUBISHI", "Mitsubishi Electric" },
-                            { "MSI", "MSI" },
-                            { "NAN", "NANAO" },
-                            { "NEC", "NEC Display Solutions" },
-                            { "NOK", "Nokia" },
-                            { "NVD", "Nvidia" },
-                            { "OQI", "OPTIQUEST" },
-                            { "PACKARD BELL", "Packard Bell" },
-                            { "PBN", "Packard Bell" },
-                            { "PCK", "Daewoo" },
-                            { "PDC", "Polaroid" },
-                            { "PHILIPS", "Philips" },
-                            { "PHL", "Philips Consumer Electronics Co." },
-                            { "PLANAR", "Planar Systems" },
-                            { "PGS", "Princeton Graphic Systems" },
-                            { "PROVIEW", "Proview" },
-                            { "PRT", "Princeton" },
-                            { "RAZER", "Razer" },
-                            { "REL", "Relisys" },
-                            { "SAMSUNG", "Samsung" },
-                            { "SANYO", "Sanyo" },
-                            { "SEC", "Seiko Epson Corporation" },
-                            { "SHARP", "Sharp" },
-                            { "SKYWORTH", "Skyworth" },
-                            { "SMC", "Samtron" },
-                            { "SMI", "Smile" },
-                            { "SNI", "Siemens Nixdorf" },
-                            { "SONY", "Sony" },
-                            { "SPT", "Sceptre" },
-                            { "SRC", "Shamrock Technology" },
-                            { "STN", "Samtron" },
-                            { "STP", "Sceptre" },
-                            { "TAT", "Tatung Co. of America, Inc." },
-                            { "TATUNG", "Tatung" },
-                            { "TCL", "TCL Technology" },
-                            { "THOMSON", "Thomson" },
-                            { "TSB", "Toshiba" },
-                            { "UNM", "Unisys Corporation" },
-                            { "VESTEL", "Vestel" },
-                            { "VIEW", "ViewSonic" },
-                            { "VIZIO", "Vizio" },
-                            { "VSC", "ViewSonic Corporation" },
-                            { "WTC", "Wen Technology" },
-                            { "ZCM", "Zenith Data Systems" },
-                            { "WESTINGHOUSE", "Westinghouse" }
-                        };
-                        // string model = ExtractModelFromName(userfrendlyNameFull);
+
                         var manufacturer = "";
-                        foreach (var entry in manufacturerDictionary.Where(entry => manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0))
+                        foreach (var entry in MonitorConstants.ManufacturerDictionary.
+                                     Where(entry => manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0))
                             manufacturer = entry.Value;
                         edidInfo.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
                         edidInfo.AppendLine("Model: " + userfrendlyNameFull + Environment.NewLine);
@@ -385,45 +290,7 @@ namespace ServiceMonitorEVK.Util_Managers
             return (int)Math.Round(weeks / weeksInMonth);
         }
 
-        public async Task<string> GetMonitorSerialNumberAsync()
-        {
-            var serialNumberInfo = new StringBuilder();
-
-            try
-            {
-                await Task.Run(() =>
-                {
-                    var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
-
-                    foreach (var o in searcher.Get())
-                    {
-                        var queryObj = (ManagementObject)o;
-                        var instanceName = queryObj["InstanceName"].ToString();
-                        var serialNumberId = (ushort[])queryObj["SerialNumberID"];
-
-                        serialNumberInfo.AppendLine("Instance Name: " + instanceName + "\n");
-
-                        if (serialNumberId != null && serialNumberId.Length > 0)
-                        {
-                            var serialNumber = DecodeEdidString(serialNumberId);
-                            serialNumberInfo.AppendLine("Serial Number: " + serialNumber + "\n");
-                        }
-                        else
-                        {
-                            serialNumberInfo.AppendLine("Serial Number: Not Available\n");
-                        }
-
-                        serialNumberInfo.AppendLine("\n");
-                    }
-                });
-            }
-            catch (ManagementException ex)
-            {
-                MessageBox.Show(@"An error occurred while querying for WMI data: " + ex.Message);
-            }
-
-            return serialNumberInfo.ToString();
-        }
+       
 
         private static string DecodeEdidString(ushort[] rawData)
         {
@@ -433,28 +300,7 @@ namespace ServiceMonitorEVK.Util_Managers
                     decodedString.Append((char)data);
             return decodedString.ToString();
         }
-/*
-        public Screen SetScreenToComboBoxAndGetNonIntegred(ComboBox comboBox)
-        {
-            comboBox.Items.Clear();
-            monitorNameToIdentifierMap.Clear();
-
-            var monitorNames = Screen.AllScreens.Select(screen => screen.DeviceName).ToList();
-            var friendlyNames = GetFriendlyMonitorNames();
-
-            for (var i = 0; i < monitorNames.Count; i++)
-            {
-                var identifier = monitorNames[i];
-                var friendlyName = friendlyNames[i];
-                monitorNameToIdentifierMap[friendlyName] = identifier;
-                comboBox.Items.Add(friendlyName);
-            }
-
-            // Select the first non-integrated monitor
-            var nonIntegratedIndex = comboBox.Items.Count > 1 ? 1 : 0;
-            comboBox.SelectedIndex = nonIntegratedIndex;
-            return Screen.AllScreens[nonIntegratedIndex];
-        }*/
+      
 
         public List<string> GetFriendlyMonitorNames()
         {
@@ -476,16 +322,11 @@ namespace ServiceMonitorEVK.Util_Managers
                 MessageBox.Show(@"An error occurred while querying for WMI data: " + ex.Message);
             }
 
-           
+
             return friendlyNames;
         }
 
-        public string GetIdentifierFromFriendlyName(string friendlyName)
-        {
-            if (monitorNameToIdentifierMap.ContainsKey(friendlyName)) return monitorNameToIdentifierMap[friendlyName];
-            return null;
-        }
-
+      
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct DISPLAY_DEVICE

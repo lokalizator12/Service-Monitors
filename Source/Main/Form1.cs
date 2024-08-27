@@ -4,6 +4,8 @@ using Microsoft.Win32;
 using ServiceMonitorEVK.Database;
 using ServiceMonitorEVK.Localization;
 using ServiceMonitorEVK.Properties;
+using ServiceMonitorEVK.Source.Constants;
+using ServiceMonitorEVK.Source.Util_Managers;
 using ServiceMonitorEVK.Testing_Monitor;
 using ServiceMonitorEVK.Util_Managers;
 using ServiceMonitorEVK.Utils;
@@ -11,11 +13,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Microsoft.Extensions.Configuration;
+using ServiceMonitorEVK.Source.Services;
 
-namespace ServiceMonitorEVK.Main
+namespace ServiceMonitorEVK.Source.Main
 {
     public partial class Form1 : MaterialForm
     {
@@ -26,6 +29,10 @@ namespace ServiceMonitorEVK.Main
         private Color selectedAutoTestColor;
         private DatabaseManager databaseManager;
         internal bool IsMonitorFormExist;
+
+        private int previousMonitorCount;
+        private string selectedDisplayMode;
+
         internal bool IsUpdatingComboBox = false;
         private readonly DisplayManager displayManager;
         private MonitorInfoForm monitorInfo;
@@ -53,7 +60,7 @@ namespace ServiceMonitorEVK.Main
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
             SetMaxResolutionForAllMonitors();
             Tester = textBoxTester.Text = mainLabelTester.Text = testerFromMain;
-
+            previousMonitorCount = Screen.AllScreens.Length;
         }
 
 
@@ -64,27 +71,46 @@ namespace ServiceMonitorEVK.Main
 
             SetMaxResolutionForAllMonitors();
             if (materialMultiLineTextBox2.Text.Length > 0) ShowFullInfo();
-            foreach (var VARIABLE in MonitorComboBox.Items)
-            {
-                Console.WriteLine(VARIABLE);
-            }
             var connectedMonitors = Screen.AllScreens.Length;
 
             if (connectedMonitors > 1 && autoEnableColorTest)
             {
-                // Если был подключен новый монитор
                 ShowColorDialogForNewMonitor();
             }
             else if (connectedMonitors <= 1 && currentTestOverlay != null)
             {
-                // Если был отключен монитор и текущий оверлей активен
                 currentTestOverlay.Close();
                 currentTestOverlay = null;
             }
+            if (checkBoxAutoChangeMode.Checked)
+            {
+                int currentMonitorCount = Screen.AllScreens.Length;
+
+                if (currentMonitorCount > previousMonitorCount)
+                {
+                    ApplySelectedDisplayMode();
+                }
+
+                previousMonitorCount = currentMonitorCount;
+            }
         }
+
+        private void ApplySelectedDisplayMode()
+        {
+            selectedDisplayMode = comboBoxTypeScreen.SelectedItem.ToString();
+            DisplayManager.DisplayMode mode = selectedDisplayMode switch
+            {
+                DisplayModeConstants.PC_SCREEN_ONLY => DisplayManager.DisplayMode.PC_SCREEN_ONLY,
+                DisplayModeConstants.DUPLICATE => DisplayManager.DisplayMode.DUPLICATE,
+                DisplayModeConstants.EXTEND => DisplayManager.DisplayMode.EXTEND,
+                DisplayModeConstants.SECOND_SCREEN_ONLY => DisplayManager.DisplayMode.SECOND_SCREEN_ONLY,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            displayManager.SetDisplayMode(mode);
+        }
+
         private void ShowColorDialogForNewMonitor()
         {
-            // Выбираем последний монитор (новый подключенный)
             MonitorComboBox.SelectedIndex = MonitorComboBox.Items.Count - 1;
 
             if (colorDialog1.ShowDialog() == DialogResult.OK)
@@ -132,7 +158,7 @@ namespace ServiceMonitorEVK.Main
 
                 databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
                 await databaseManager.InsertMonitorInfoPostgres(info);
-                ShowSnackbar("Sended to database succesfully");
+                ShowSnackbar("Send to database successfully");
             }
             catch (Exception x)
             {
@@ -240,14 +266,12 @@ namespace ServiceMonitorEVK.Main
             var monitorInfoAsync = await monitorInfoManager.GetMonitorInfoAsync();
             var monitorInfo1 = await monitorInfoManager.GetDisplayInfo1Async();
             var edidInfo = await monitorInfoManager.GetEdidInfoAsync();
-            var serialNumber = await monitorInfoManager.GetMonitorSerialNumberAsync();
             materialMultiLineTextBox2.Text = monitorNames + "\n==============================\n"
                                                           + monitorInfoManager.GetDiagonal() +
                                                           "\n==============================\n"
                                                           + monitorInfoAsync + "\n==============================\n"
                                                           + monitorInfo1 + "\n==============================\n"
-                                                          + edidInfo + "\n==============================\n"
-                                                          + serialNumber + "\n==============================\n";
+                                                          + edidInfo + "\n==============================\n";
         }
 
 
@@ -321,6 +345,7 @@ namespace ServiceMonitorEVK.Main
 
         private void searchInfoPage_Enter(object sender, EventArgs e)
         {
+
             new MaterialSnackBar("coming soon or will be deleted this page...", "OK", true).Show(this);
         }
 
@@ -504,7 +529,7 @@ namespace ServiceMonitorEVK.Main
         }
 
 
-        private string CheckImageUrls(string imageUrls)
+        private static string CheckImageUrls(string imageUrls)
         {
             var urls = imageUrls.Split(' ');
             var y = urls.Select(t => t.Trim()).Count(url => !string.IsNullOrEmpty(url));
@@ -579,6 +604,7 @@ namespace ServiceMonitorEVK.Main
             if (checkBoxSaveLanguage.Checked)
                 UserSettingsManager.SetPreferredLanguage(LocalizationManager.Instance.GetCurrentCulture().Name);
             uiUtil.StartClosing();
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
         }
 
         private void SetLanguage(string cultureCode)
@@ -762,7 +788,7 @@ namespace ServiceMonitorEVK.Main
                 currentTestOverlay.BackColor = selectedColor;
             }
         }
-      
+
         private void btnExtend_Click(object sender, EventArgs e)
         {
             displayManager.SetDisplayMode(DisplayManager.DisplayMode.EXTEND);
@@ -796,6 +822,16 @@ namespace ServiceMonitorEVK.Main
         private void materialButton3_Click_1(object sender, EventArgs e)
         {
             Process.Start("ms-settings:personalization");
+        }
+
+        private void checkBoxAutoChangeMode_CheckedChanged(object sender, EventArgs e)
+        {
+            comboBoxTypeScreen.Enabled = checkBoxAutoChangeMode.Checked;
+        }
+
+        private  void aiButton_Click(object sender, EventArgs e)
+        {
+            new AiForm().Show();
         }
     }
 }

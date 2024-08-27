@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 
-namespace ServiceMonitorEVK.Util_Managers
+namespace ServiceMonitorEVK.Source.Util_Managers
 {
     public class DisplayManager
     {
@@ -16,7 +16,7 @@ namespace ServiceMonitorEVK.Util_Managers
 
         public void SetDisplayMode(DisplayMode mode)
         {
-            string argument = mode switch
+            var argument = mode switch
             {
                 DisplayMode.PC_SCREEN_ONLY => "/internal",
                 DisplayMode.DUPLICATE => "/clone",
@@ -24,13 +24,12 @@ namespace ServiceMonitorEVK.Util_Managers
                 DisplayMode.SECOND_SCREEN_ONLY => "/external",
                 _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
             };
-            string displaySwitchPath = Path.Combine(
+            var displaySwitchPath = Path.Combine(
                 Environment.Is64BitOperatingSystem && !Environment.Is64BitProcess
                     ? Environment.GetFolderPath(Environment.SpecialFolder.SystemX86)
                     : Environment.GetFolderPath(Environment.SpecialFolder.System),
                 "DisplaySwitch.exe");
 
-            Console.WriteLine(displaySwitchPath);
             Process.Start(displaySwitchPath, argument);
         }
 

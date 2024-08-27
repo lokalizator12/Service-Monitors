@@ -8,6 +8,7 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using Microsoft.Win32;
 using ServiceMonitorEVK.Main;
+using ServiceMonitorEVK.Source.Main;
 using ServiceMonitorEVK.Testing_Monitor;
 using ServiceMonitorEVK.Util_Managers;
 
@@ -274,7 +275,7 @@ namespace ServiceMonitorEVK
             isFlashing = false;
             progressBar1.Value = 0;
             timeLeftLabel1.Text = string.Empty;
-            MessageBox.Show("Naprawa skończona", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(@"Naprawa skończona", "Informacja", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
