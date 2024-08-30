@@ -75,11 +75,34 @@ namespace ServiceMonitorEVK.Source.Services
                     Model = "gpt-4o-mini",
                     Messages = new[]
                     {
-                        new ChatMessage(ChatMessageRole.System, "You are an assistant that provides monitor specifications in a concise format. For each query, return only the panel type, screen size in inches, and video input ports, separated by commas. No additional text. Format: 'PanelType, ScreenSize, InputPorts'. Example: 'IPS, 23, VGA x1, HDMI x2'."),
-                        new ChatMessage(ChatMessageRole.User, prompt)
+                        new ChatMessage(ChatMessageRole.System, """
+
+                                                                You are an assistant that provides detailed monitor specifications in a structured format.
+                                                                For each query, return the following information in the specified format:
+                                                                1. Panel type
+                                                                2. Screen size in inches
+                                                                3. Video input ports and if have USB
+                                                                4. Screen resolution
+                                                                5. Screen format (aspect ratio)
+                                                                6. Brightness (in nits)
+                                                                7. Static contrast ratio
+                                                                8. Response time (in ms)
+                                                                9. Viewing angles (in degrees)
+                                                                10. Refresh rate (in Hz)
+                                                                12. Weight (in kg)
+                                                                13. Dimensions (in cm)
+
+                                                                The response should be formatted as follows:
+                                                                'PanelType, ScreenSize, InputPorts, Resolution, AspectRatio, Brightness, Contrast, ResponseTime, ViewingAngles, RefreshRate, Adjustability, Weight, Dimensions'.
+
+                                                                Example:
+                                                                'IPS, 23, VGA x1, HDMI x2, 1920x1080, 16:9, 250 nits, 1000:1, 5ms, 178/178, 60Hz, tilt/height, 3.5kg, 52x31x18 cm'.
+
+                                                                No additional text.
+                                                                """),                        new ChatMessage(ChatMessageRole.User, prompt)
                     },
-                    MaxTokens = 20, // Limit the response length
-                    Temperature = 0.3, // Make responses deterministic
+                    MaxTokens = 60, // Limit the response length
+                    Temperature = 0.2, // Make responses deterministic
                     NumChoicesPerMessage = 1
                 };
             }

@@ -299,8 +299,8 @@ namespace ServiceMonitorEVK.Source.Main
             if (checkBoxAutoShow.Checked)
                 if (textBoxSerial.Text != null)
                     SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
+            databaseManager.FillCountryComboBox(comboBoxCountry);
 
-            if (checkBoxCountry.Checked) databaseManager.FillCountryComboBox(comboBoxCountry);
         }
 
         private void FillPositionsInfo()
@@ -833,5 +833,7 @@ namespace ServiceMonitorEVK.Source.Main
         {
             new AiForm().Show();
         }
+
+      
     }
 }
