@@ -1,8 +1,8 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
 using Microsoft.Win32;
-using ServiceMonitorEVK.Main;
 using ServiceMonitorEVK.Properties;
+using ServiceMonitorEVK.Source.Main;
 using ServiceMonitorEVK.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,9 +11,8 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
-using ServiceMonitorEVK.Source.Main;
 
-namespace ServiceMonitorEVK.Testing_Monitor
+namespace ServiceMonitorEVK.Source.Testing_Monitor
 {
     public partial class MonitorTestForm : MaterialForm
     {
@@ -46,6 +45,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
         private Screen selectedScreen;
         private string testMode = "Default";
         private string testPattern = "Default";
+        private int previousMonitorCount = Screen.AllScreens.Length;
 
 
         public MonitorTestForm(Form1 form)
@@ -62,11 +62,59 @@ namespace ServiceMonitorEVK.Testing_Monitor
 
         private void OnDisplaySettingsChanged(object sender, EventArgs e)
         {
+
+            //currentTestOverlay?.Close();
             InitializeCustomForm();
             FillMonitorComboBox();
+            // Закрываем текущее окно, если монитор был отключен
+            if (currentTestOverlay != null)
+            {
+                currentTestOverlay.Hide();
+                currentTestOverlay = null;
+            }
+
+            var screens = Screen.AllScreens;
+
+            // Проверяем, если новый монитор был подключен
+            if (screens.Length > 1)
+            {
+                // Автоматически выбираем последний монитор
+                selectedScreen = screens.Last();
+                Console.WriteLine("ddd" + screens.Last());
+
+                StartOrUpdateTestOverlay(customColor);  // Появится на новом экране
+            }
+            else
+            {
+                // Если остался только один монитор, показываем на основном
+                selectedScreen = screens.First(); // Основной монитор
+                StartOrUpdateTestOverlay(customColor);  // Появится на основном экране
+            }
         }
 
+        private void StartOrUpdateTestOverlay(Color selectedColor)
+        {
+            if (currentTestOverlay == null || currentTestOverlay.IsDisposed)
+            {
+                // Если TestOverlay ещё не создан или был закрыт, создаём новый
+                currentTestOverlay = new TestOverlay(selectedColor)
+                {
+                    StartPosition = FormStartPosition.Manual,
+                    Location = selectedScreen.Bounds.Location,  // Устанавливаем на выбранный экран
+                    Size = selectedScreen.Bounds.Size,          // Полный размер экрана
+                    FormBorderStyle = FormBorderStyle.None,
+                    WindowState = FormWindowState.Maximized,
+                    BackColor = selectedColor
+                };
 
+                currentTestOverlay.Show();
+            }
+            else
+            {
+                // Если TestOverlay уже существует, просто обновляем его цвет
+                currentTestOverlay.UpdateColor(selectedColor);
+            }
+        }
 
         public void InitializeCustomForm()
         {
@@ -130,7 +178,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
 
         private TestOverlay TestMonitor(string testMode, string testPattern, Color customColor)
         {
-            var selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
+            var selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex + 1];
             currentTestOverlay = new TestOverlay(testMode, testPattern, customColor)
             {
                 StartPosition = FormStartPosition.Manual,
@@ -152,15 +200,42 @@ namespace ServiceMonitorEVK.Testing_Monitor
             var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
             var queryObjects = searcher.Get().Cast<ManagementObject>();
 
+            bool foundNonIntegratedMonitor = false;
+
             foreach (var queryObj in queryObjects)
             {
                 var model = DecodeMonitorString((ushort[])queryObj["UserFriendlyName"]);
-                if (string.IsNullOrWhiteSpace(model)) model = "Integrated Monitor";
+                if (string.IsNullOrWhiteSpace(model))
+                {
+                    continue;
+                }
+                else
+                {
+                    foundNonIntegratedMonitor = true;
+                }
+
                 monitorComboBox1.Items.Add(model);
             }
 
-            if (monitorComboBox1.Items.Count > 0) monitorComboBox1.SelectedIndex = 0;
+            // Если мы нашли неинтегрированный монитор, выбираем его
+            if (foundNonIntegratedMonitor)
+            {
+                for (int i = 0; i < monitorComboBox1.Items.Count; i++)
+                {
+                    if (monitorComboBox1.Items[i].ToString() != "Integrated Monitor")
+                    {
+                        monitorComboBox1.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            else if (monitorComboBox1.Items.Count > 0)
+            {
+                // Если не найден неинтегрированный монитор, выбираем первый
+                monitorComboBox1.SelectedIndex = 0;
+            }
         }
+
 
         private static string DecodeMonitorString(ushort[] data)
         {
@@ -533,6 +608,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
                 currentTestOverlay = null;
             }
             form1.IsMonitorFormExist = false;
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
         }
 
         private void MonitorTestForm_Load(object sender, EventArgs e)
@@ -573,19 +649,6 @@ namespace ServiceMonitorEVK.Testing_Monitor
             if (currentTestOverlay != null) currentTestOverlay.Close();
         }
 
-        private void StartOrUpdateTestOverlay(Color selectedColor)
-        {
-            if (currentTestOverlay == null || currentTestOverlay.IsDisposed)
-            {
-                // Если TestOverlay ещё не создан или был закрыт, создаём новый
-                currentTestOverlay = new TestOverlay(selectedColor);
-                currentTestOverlay.Show();
-            }
-            else
-            {
-                // Если TestOverlay уже существует, обновляем его цвет через новый метод
-                currentTestOverlay.UpdateColor(selectedColor);
-            }
-        }
+
     }
 }

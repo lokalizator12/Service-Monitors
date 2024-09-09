@@ -81,28 +81,30 @@ namespace ServiceMonitorEVK.Source.Services
                                                                 For each query, return the following information in the specified format:
                                                                 1. Panel type
                                                                 2. Screen size in inches
-                                                                3. Video input ports and if have USB
+                                                                3. Video input ports (separate each port with a semicolon `;`)
                                                                 4. Screen resolution
                                                                 5. Screen format (aspect ratio)
                                                                 6. Brightness (in nits)
-                                                                7. Static contrast ratio
-                                                                8. Response time (in ms)
-                                                                9. Viewing angles (in degrees)
-                                                                10. Refresh rate (in Hz)
-                                                                12. Weight (in kg)
-                                                                13. Dimensions (in cm)
+                                                                7. Response time (in ms)
+                                                                8. Viewing angles (in degrees)
+                                                                9. Refresh rate (in Hz)
+                                                                10. Weight (in kg)
+                                                                11. Dimensions (in cm)
 
                                                                 The response should be formatted as follows:
-                                                                'PanelType, ScreenSize, InputPorts, Resolution, AspectRatio, Brightness, Contrast, ResponseTime, ViewingAngles, RefreshRate, Adjustability, Weight, Dimensions'.
+                                                                'PanelType, ScreenSize, InputPorts, Resolution, AspectRatio, Brightness, ResponseTime, ViewingAngles, RefreshRate, Weight, Dimensions'.
+
+                                                                Use `;` to separate multiple video input ports in the 'InputPorts' field. 
 
                                                                 Example:
-                                                                'IPS, 23, VGA x1, HDMI x2, 1920x1080, 16:9, 250 nits, 1000:1, 5ms, 178/178, 60Hz, tilt/height, 3.5kg, 52x31x18 cm'.
+                                                                'IPS, 23, VGA x1; HDMI x2, 1920x1080, 16:9, 250 nits, 5ms, 178/178, 60Hz, 3.5kg, 52x31x18 cm'.
 
                                                                 No additional text.
-                                                                """),                        new ChatMessage(ChatMessageRole.User, prompt)
+                                                                """)
+                        ,                        new ChatMessage(ChatMessageRole.User, prompt)
                     },
-                    MaxTokens = 60, // Limit the response length
-                    Temperature = 0.2, // Make responses deterministic
+                    MaxTokens = 80, // Limit the response length
+                    Temperature = 0.1, // Make responses deterministic
                     NumChoicesPerMessage = 1
                 };
             }

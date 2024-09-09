@@ -587,6 +587,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\162556-1-orig_3_orig.jpg" />
     <Content Include="Resources\application_logo_transparent.ico" />
     <None Include="Resources\aqua.png" />
     <None Include="Resources\blue.png" />
@@ -638,6 +639,7 @@
     <None Include="Resources\onlyPC.png" />
     <None Include="Resources\onlySecond.png" />
     <None Include="Resources\send.png" />
+    <None Include="Resources\pallete.jpg" />
     <Content Include="selenium-manager.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

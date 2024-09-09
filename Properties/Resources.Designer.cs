@@ -113,16 +113,6 @@ namespace ServiceMonitorEVK.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap color_pallete {
-            get {
-                object obj = ResourceManager.GetObject("color_pallete", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap color_wheel {
             get {
                 object obj = ResourceManager.GetObject("color-wheel", resourceCulture);
@@ -306,6 +296,16 @@ namespace ServiceMonitorEVK.Properties {
         public static System.Drawing.Bitmap onlySecond {
             get {
                 object obj = ResourceManager.GetObject("onlySecond", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap pallete {
+            get {
+                object obj = ResourceManager.GetObject("pallete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

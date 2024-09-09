@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ServiceMonitorEVK
+namespace ServiceMonitorEVK.Source
 {
     public class MonitorInfo
     {
@@ -24,7 +24,14 @@ namespace ServiceMonitorEVK
                 nameof(IdEVK),
                 nameof(TesterInitials),
                 nameof(Country),
-                nameof(CableTypes)
+                nameof(CableTypes),
+                nameof(Brightness),
+                nameof(ResponseTime),
+                nameof(ViewingAngles),
+                nameof(Weight),
+                nameof(AspectRatio),
+                nameof(PanelType),
+                nameof(Dimensions)
             };
             Manufacturer = "Manufacturer";
             Model = "Model";
@@ -68,8 +75,15 @@ namespace ServiceMonitorEVK
         public string TesterInitials { get; set; }
         public string Country { get; set; }
         public string CableTypes { get; set; }
+        public string Brightness { get; set; }
+        public string ResponseTime { get; set; }
+        public string ViewingAngles { get; set; }
+        public string Weight { get; set; }
+        public string Dimensions { get; set; }
 
+        public string AspectRatio { get; set; }
 
+        public string PanelType { get; set; }
         public List<string> ParametersMonitorList { get; private set; }
 
 
@@ -97,6 +111,27 @@ namespace ServiceMonitorEVK
             Frequency = frequency;
         }
 
+        /*public void UpdateFromApiResponse(string apiResponse)
+        {
+            var fields = apiResponse.Split(',').Select(f => f.Trim()).ToArray();
+
+            if (fields.Length >= 13)
+            {
+                PanelType = fields[0];
+                Diagonal1 = double.Parse(fields[1]);
+                UpdateCableTypes(fields[2].Split(';').ToDictionary(c => c.Trim(), c => 1)); 
+                Resolution = fields[3];
+                AspectRatio = fields[4];
+                Brightness = fields[5];
+                ResponseTime = fields[6];
+                ViewingAngles = fields[7];
+                Frequency = int.Parse(fields[8].Replace("Hz", "").Trim());
+                Weight = fields[9];
+                Dimensions = fields[10];
+            }
+        }*/
+
+
         public override string ToString()
         {
             return $"Manufacturer: {Manufacturer}, Model: {Model}, SerialNumber: {SerialNumber}, " +
@@ -106,8 +141,8 @@ namespace ServiceMonitorEVK
                    $"SizeMonitor: {SizeMonitor}, MaxVerticalSize: {MaxVerticalSize}, " +
                    $"MaxHorizontalSize: {MaxHorizontalSize}, Identifier: {Identifier}, " +
                    $"FriendlyName: {FriendlyName}, Country: {Country}, " +
-                   $"CableTypes: {CableTypes}, " +
-                   $"ID EVK: {IdEVK}, Tester Initials: {TesterInitials}";
+                   $"CableTypes: {CableTypes}, Brightness: {Brightness}, ResponseTime: {ResponseTime}, " +
+                   $"ViewingAngles: {ViewingAngles}, Weight: {Weight}, Dimensions: {Dimensions}";
         }
     }
 }

@@ -6,16 +6,15 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
 using ServiceMonitorEVK.Properties;
-using static Mysqlx.Crud.Order.Types;
 
-namespace ServiceMonitorEVK.Testing_Monitor
+namespace ServiceMonitorEVK.Source.Testing_Monitor
 {
     public sealed partial class TestOverlay : Form
     {
         private readonly Dictionary<Rectangle, Color> areaColors = new Dictionary<Rectangle, Color>();
 
-        private readonly List<Color> colors = new List<Color>
-        {
+        private readonly List<Color> colors =
+        [
             Color.Red,
             Color.Lime,
             Color.Yellow,
@@ -25,7 +24,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
             Color.Gray,
             Color.Black,
             Color.White
-        };
+        ];
 
         private int currentColorIndex;
         private Color currentMarkColor = Color.Red; // Default color for marking
@@ -116,7 +115,7 @@ namespace ServiceMonitorEVK.Testing_Monitor
 
         private void DrawLegend(Graphics g)
         {
-            const string legendText = "Red: Scratch, Blue: Dead Pixel, Yellow: Burn-in";
+            const string legendText = "Red: Rysy, Blue: Bad Pixel, Yellow: Odbarwienie";
             using (var font = new Font("Arial", 10, FontStyle.Bold))
             {
                 var textSize = g.MeasureString(legendText, font);
@@ -365,57 +364,60 @@ namespace ServiceMonitorEVK.Testing_Monitor
             {
                 case Keys.D1:
                 case Keys.NumPad1:
-                    customColor = Color.Red;
+                    SetOverlayColor(Color.Red);
                     break;
                 case Keys.D2:
                 case Keys.NumPad2:
-                    customColor = Color.Lime;
+                    SetOverlayColor(Color.Lime);
                     break;
                 case Keys.D3:
                 case Keys.NumPad3:
-                    customColor = Color.Yellow;
+                    SetOverlayColor(Color.Yellow);
                     break;
                 case Keys.D4:
                 case Keys.NumPad4:
-                    customColor = Color.Aqua;
+                    SetOverlayColor(Color.Aqua);
                     break;
                 case Keys.D5:
                 case Keys.NumPad5:
-                    customColor = Color.Magenta;
+                    SetOverlayColor(Color.Magenta);
                     break;
                 case Keys.D6:
                 case Keys.NumPad6:
-                    customColor = Color.Blue;
+                    SetOverlayColor(Color.Blue);
                     break;
                 case Keys.D7:
                 case Keys.NumPad7:
-                    customColor = Color.Gray;
+                    SetOverlayColor(Color.Gray);
                     break;
                 case Keys.D8:
                 case Keys.NumPad8:
-                    customColor = Color.Black;
+                    SetOverlayColor(Color.Black);
                     break;
                 case Keys.D9:
                 case Keys.NumPad9:
-                    customColor = Color.White;
+                    SetOverlayColor(Color.White);
                     break;
                 case Keys.Tab:
-                    if (colorDialog1.ShowDialog() == DialogResult.OK) customColor = colorDialog1.Color;
+                    if (colorDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        SetOverlayColor(colorDialog1.Color);
+                    }
                     break;
                 case Keys.Space:
                 case Keys.Right:
                     currentColorIndex = (currentColorIndex + 1) % colors.Count;
-                    customColor = colors[currentColorIndex];
+                    SetOverlayColor(colors[currentColorIndex]);
                     break;
                 case Keys.Left:
                     currentColorIndex = (currentColorIndex - 1 + colors.Count) % colors.Count;
-                    customColor = colors[currentColorIndex];
+                    SetOverlayColor(colors[currentColorIndex]);
                     break;
                 case Keys.Q:
-                    BackgroundImage = Resources.win_back;
+                    SetOverlayBackgroundImage(Resources.win_back);  // Устанавливаем другое изображение
                     break;
                 case Keys.W:
-                    BackgroundImage = Resources.color_pallete;
+                    SetOverlayBackgroundImage(Resources.pallete);  // Устанавливаем изображение
                     break;
                 case Keys.Control | Keys.S:
                     CaptureScreenshot($"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png");
@@ -448,7 +450,18 @@ namespace ServiceMonitorEVK.Testing_Monitor
             Invalidate();
         }
 
+        private void SetOverlayColor(Color color)
+        {
+            this.BackgroundImage = null;  // Сбрасываем изображение
+            customColor = color;       // Устанавливаем новый цвет
+            Invalidate();                 // Обновляем форму
+        }
 
+        private void SetOverlayBackgroundImage(Image backgroundImage)
+        {
+            this.BackgroundImage = backgroundImage;  // Устанавливаем фоновое изображение
+            Invalidate();                            // Обновляем форму
+        }
         private void TestOverlay_MouseWheel(object sender, MouseEventArgs e)
         {
             if (TestPattern == "Chessboard" || TestPattern == "Circles" || TestPattern == "Lines")

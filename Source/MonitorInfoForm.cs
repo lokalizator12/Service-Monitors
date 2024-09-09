@@ -1,20 +1,22 @@
-﻿using System;
+﻿using MaterialSkin.Controls;
+using Microsoft.Win32;
+using ServiceMonitorEVK.Source;
+using ServiceMonitorEVK.Source.Main;
+using ServiceMonitorEVK.Source.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Win32;
-using ServiceMonitorEVK.Main;
-using ServiceMonitorEVK.Source.Main;
-using ServiceMonitorEVK.Util_Managers;
 
 namespace ServiceMonitorEVK
 {
     public class MonitorInfoForm
     {
         private readonly Form1 _form1;
+        private readonly OpenAIService _openAiService;
 
         private readonly Dictionary<string, string> manufacturerDictionary =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -136,11 +138,12 @@ namespace ServiceMonitorEVK
                 { "WESTINGHOUSE", "Westinghouse" }
             };
 
-        private Dictionary<string, MonitorInfo> modelToMonitorInfoMap;
+
 
 
         public MonitorInfoForm(Form1 form1)
         {
+            _openAiService = new OpenAIService();
             _form1 = form1;
             var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
             Monitors = new MonitorInfo[searcher.Get().Count];
@@ -148,7 +151,47 @@ namespace ServiceMonitorEVK
             _ = InitializeAsync();
             SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
         }
+        private async Task<MonitorInfo[]> IntegrateAndUpdateMonitorInfoAsync(MonitorInfo[] monitors)
+        {
+            try
+            {
+                foreach (var monitorInfo in monitors)
+                {
+                    // Получение данных от OpenAI
+                    string monitorQuery = $"{monitorInfo.Manufacturer} {monitorInfo.Model}";
+                    string openAiResponse = await _openAiService.GetResponseAsync(monitorQuery, isInfoMonitors: true);
 
+                    if (!string.IsNullOrEmpty(openAiResponse))
+                    {
+                        var fields = openAiResponse.Split(',').Select(f => f.Trim()).ToArray();
+
+                        if (fields.Length >= 10)
+                        {
+                            // Приоритет данным от OpenAI
+                            monitorInfo.PanelType = fields[0];
+                            monitorInfo.Diagonal1 = double.Parse(fields[1]);
+                            monitorInfo.UpdateCableTypes(fields[2].Split(';').ToDictionary(c => c.Trim(), c => 1));
+                            monitorInfo.Resolution = fields[3];
+                            monitorInfo.AspectRatio = fields[4];
+                            monitorInfo.Brightness = fields[5];
+                            monitorInfo.ResponseTime = fields[6];
+                            monitorInfo.ViewingAngles = fields[7];
+                            monitorInfo.Frequency = int.Parse(fields[8].Replace("Hz", "").Trim());
+                            monitorInfo.Weight = fields[9];
+                            monitorInfo.Dimensions = fields[10];
+                        }
+                    }
+
+                }
+                // DisplayMonitorInfo(monitorInfo); // Обновление интерфейса
+
+            }
+            catch (Exception ex)
+            {
+                new MaterialSnackBar($"Error integrating OpenAI data: {ex.Message}");
+            }
+            return monitors;
+        }
         public MonitorInfo[] Monitors { get; set; }
 
         [DllImport("user32.dll")]
@@ -169,17 +212,17 @@ namespace ServiceMonitorEVK
             _form1.IsUpdatingComboBox = true;
             _form1.materialComboBoxMonitors.Items.Clear();
 
-            modelToMonitorInfoMap = new Dictionary<string, MonitorInfo>();
-
             Monitors = await GetMonitorInfosAsync();
 
             foreach (var monitor in Monitors)
             {
-                var modelName = string.IsNullOrWhiteSpace(monitor.Model)
-                    ? "Integrated Monitor/ no name"
-                    : monitor.Model;
-                modelToMonitorInfoMap[modelName] = monitor;
-                _form1.materialComboBoxMonitors.Items.Add(modelName);
+                if (string.IsNullOrWhiteSpace(monitor.Model))
+                {
+                    continue;
+                }
+
+                _form1.materialComboBoxMonitors.Items.Add(monitor.Model);
+                Console.WriteLine("add" + monitor.Model);
             }
 
             if (_form1.materialComboBoxMonitors.Items.Count > 0) _form1.materialComboBoxMonitors.SelectedIndex = 0;
@@ -189,50 +232,60 @@ namespace ServiceMonitorEVK
         public async Task<MonitorInfo[]> GetMonitorInfosAsync()
         {
             Monitors = await GetMonitorInfos1Async();
-            Monitors = await SetMonitorSizesAsync(Monitors);
+            foreach (var VARIABLE in Monitors)
+            {
+
+                Console.WriteLine("show" + VARIABLE);
+            }
+           // Monitors = await SetMonitorSizesAsync(Monitors);
+
+            foreach (var VARIABLE in Monitors)
+            {
+
+                Console.WriteLine("show1" + VARIABLE);
+            }
             return Monitors;
         }
 
 
         private async Task<MonitorInfo[]> GetMonitorInfos1Async()
         {
-            var monitorInfoList = new List<MonitorInfo>();
+            var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
+            var queryObjects = searcher.Get().Cast<ManagementObject>().ToArray();
+            var monitorInfoList = new MonitorInfo[queryObjects.Count()]; // Инициализируем массив с фиксированным размером
 
             await Task.Run(() =>
             {
-                var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
-                var queryObjects = searcher.Get().Cast<ManagementObject>();
 
-                Parallel.ForEach(queryObjects, queryObj =>
+
+                Parallel.ForEach(queryObjects, (queryObj, state, index) =>
                 {
                     var manufacturerNameFull = DecodeMonitorString((ushort[])queryObj["ManufacturerName"]);
                     var manufacturer = manufacturerDictionary.FirstOrDefault(entry =>
                         manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0).Value;
+                    var userFriendlyName = DecodeMonitorString((ushort[])queryObj["UserFriendlyName"]);
 
+                    if (string.IsNullOrWhiteSpace(userFriendlyName) || userFriendlyName.Length == 0)
+                    {
+                        return; // Пропускаем интегрированный монитор
+                    }
                     var monitorInfo = new MonitorInfo
                     {
                         YearOfProduction = queryObj["YearOfManufacture"].ToString(),
-                        MonthOfProduction =
-                            ConvertWeeksToMonths(Convert.ToInt16(queryObj["WeekOfManufacture"].ToString())),
-                        ProductCodeId =
-                            ((ushort[])queryObj["ProductCodeID"]).Aggregate("",
-                                (current, p) => current + p.ToString("X")),
+                        MonthOfProduction = ConvertWeeksToMonths(Convert.ToInt16(queryObj["WeekOfManufacture"].ToString())),
+                        ProductCodeId = ((ushort[])queryObj["ProductCodeID"]).Aggregate("", (current, p) => current + p.ToString("X")),
                         Manufacturer = manufacturer,
-                        Model = DecodeMonitorString((ushort[])queryObj["UserFriendlyName"]),
-                        SerialNumber = queryObj["SerialNumberID"] != null
-                            ? DecodeMonitorString((ushort[])queryObj["SerialNumberID"])
-                            : "N/A"
+                        Model = userFriendlyName,
+                        SerialNumber = queryObj["SerialNumberID"] != null ? DecodeMonitorString((ushort[])queryObj["SerialNumberID"]) : "N/A"
                     };
 
-                    lock (monitorInfoList)
-                    {
-                        monitorInfoList.Add(monitorInfo);
-                    }
+                    monitorInfoList[index] = monitorInfo; // Сохраняем объект по индексу, чтобы сохранить порядок
                 });
             });
 
-            return monitorInfoList.ToArray();
+            return monitorInfoList.Where(info => info != null).ToArray();
         }
+
 
         private async Task<MonitorInfo[]> SetMonitorSizesAsync(MonitorInfo[] monitors)
         {
@@ -399,7 +452,7 @@ namespace ServiceMonitorEVK
         }
 
 
-     
+
         private async void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
         {
             await RefreshMonitorInfoAsync();

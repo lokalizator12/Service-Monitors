@@ -5,8 +5,9 @@ using ServiceMonitorEVK.Database;
 using ServiceMonitorEVK.Localization;
 using ServiceMonitorEVK.Properties;
 using ServiceMonitorEVK.Source.Constants;
+using ServiceMonitorEVK.Source.Services;
+using ServiceMonitorEVK.Source.Testing_Monitor;
 using ServiceMonitorEVK.Source.Util_Managers;
-using ServiceMonitorEVK.Testing_Monitor;
 using ServiceMonitorEVK.Util_Managers;
 using ServiceMonitorEVK.Utils;
 using System;
@@ -14,9 +15,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Extensions.Configuration;
-using ServiceMonitorEVK.Source.Services;
 
 namespace ServiceMonitorEVK.Source.Main
 {
@@ -30,6 +30,7 @@ namespace ServiceMonitorEVK.Source.Main
         private DatabaseManager databaseManager;
         internal bool IsMonitorFormExist;
 
+        private readonly OpenAIService _openAiService;
         private int previousMonitorCount;
         private string selectedDisplayMode;
 
@@ -44,6 +45,7 @@ namespace ServiceMonitorEVK.Source.Main
 
         public Form1(string testerFromMain)
         {
+            _openAiService = new OpenAIService();
             uiUtil = new UiUtil(this);
             uiUtil.StartOpening();
             InitializeComponent();
@@ -70,7 +72,7 @@ namespace ServiceMonitorEVK.Source.Main
             UpdateResolutionComboBox();
 
             SetMaxResolutionForAllMonitors();
-            if (materialMultiLineTextBox2.Text.Length > 0) ShowFullInfo();
+
             var connectedMonitors = Screen.AllScreens.Length;
 
             if (connectedMonitors > 1 && autoEnableColorTest)
@@ -84,12 +86,13 @@ namespace ServiceMonitorEVK.Source.Main
             }
             if (checkBoxAutoChangeMode.Checked)
             {
+                ApplySelectedDisplayMode();
                 int currentMonitorCount = Screen.AllScreens.Length;
 
-                if (currentMonitorCount > previousMonitorCount)
-                {
-                    ApplySelectedDisplayMode();
-                }
+                /* if (currentMonitorCount > previousMonitorCount)
+                 {
+                     ApplySelectedDisplayMode();
+                 }*/
 
                 previousMonitorCount = currentMonitorCount;
             }
@@ -170,8 +173,6 @@ namespace ServiceMonitorEVK.Source.Main
         {
 
             MonitorComboBox.Items.Clear();
-
-            MonitorComboBox.Items.Clear();
             monitorNameToIdentifierMap = new Dictionary<string, string>();
 
             var monitorNames = resolutionManager.GetMonitorNames();
@@ -183,6 +184,10 @@ namespace ServiceMonitorEVK.Source.Main
             {
                 var identifier = monitorNames[i];
                 var friendlyName = friendlyNames[i];
+                if (string.IsNullOrWhiteSpace(friendlyName))
+                {
+                    continue;
+                }
                 monitorNameToIdentifierMap[friendlyName] = identifier;
                 MonitorComboBox.Items.Add(friendlyName);
             }
@@ -292,10 +297,10 @@ namespace ServiceMonitorEVK.Source.Main
 
 
 
-        private void showInfoPage_Enter(object sender, EventArgs e)
+        private async void showInfoPage_Enter(object sender, EventArgs e)
         {
             monitorInfo = new MonitorInfoForm(this);
-            FillPositionsInfo();
+            await FillPositionsInfo();
             if (checkBoxAutoShow.Checked)
                 if (textBoxSerial.Text != null)
                     SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
@@ -303,12 +308,30 @@ namespace ServiceMonitorEVK.Source.Main
 
         }
 
-        private void FillPositionsInfo()
+        private async Task FillPositionsInfo()
         {
+
             try
             {
-                SeedListView();
                 ShowSnackbar("Loading...");
+                await SeedListView();
+                if (materialComboBoxMonitors.SelectedIndex == -1 || monitors == null || monitors.Length == 0)
+                {
+                    ShowSnackbar("Please select a valid monitor.");
+                    return;
+                }
+
+                var monitorInformation = monitors[materialComboBoxMonitors.SelectedIndex];
+                foreach (var VARIABLE in monitors)
+                {
+
+                    Console.WriteLine("add1" + VARIABLE);
+                }
+                // Интеграция с OpenAI для получения дополнительной информации
+                await IntegrateWithOpenAiAsync(monitorInformation);
+
+                DisplayMonitorInfo(monitorInformation); // Обновление интерфейса
+                ShowSnackbar("Monitor information loaded.");
             }
             catch (Exception ex)
             {
@@ -323,7 +346,7 @@ namespace ServiceMonitorEVK.Source.Main
         }
 
 
-        private void SeedListView()
+        private async Task SeedListView()
         {
             monitors = monitorInfo.Monitors;
 
@@ -341,6 +364,39 @@ namespace ServiceMonitorEVK.Source.Main
             }
 
             DisplayMonitorInfo(monitors[materialComboBoxMonitors.SelectedIndex]);
+        }
+        private async Task IntegrateWithOpenAiAsync(MonitorInfo monitorInformation)
+        {
+            try
+            {
+                var monitorQuery = $"{monitorInformation.Manufacturer} {monitorInformation.Model}";
+                var openAiResponse = await _openAiService.GetResponseAsync(monitorQuery, isInfoMonitors: true);
+
+                if (!string.IsNullOrEmpty(openAiResponse))
+                {
+                    openAiResponse = openAiResponse.Trim('\'');
+                    var fields = openAiResponse.Split(',').Select(f => f.Trim()).ToArray();
+
+                    if (fields.Length >= 10)
+                    {
+                        monitorInformation.PanelType = fields[0];
+                        monitorInformation.Diagonal1 = double.Parse(fields[1]);
+                        UpdateCableInputs(fields[2]);
+                        monitorInformation.Resolution = fields[3];
+                        monitorInformation.AspectRatio = fields[4];
+                        monitorInformation.Brightness = fields[5];
+                        monitorInformation.ResponseTime = fields[6];
+                        monitorInformation.ViewingAngles = fields[7];
+                        monitorInformation.Frequency = int.Parse(fields[8].Replace("Hz", "").Trim());
+                        monitorInformation.Weight = fields[9];
+                        monitorInformation.Dimensions = fields[10];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowSnackbar($"Error integrating OpenAI data: {ex.Message}");
+            }
         }
 
         private void searchInfoPage_Enter(object sender, EventArgs e)
@@ -366,7 +422,7 @@ namespace ServiceMonitorEVK.Source.Main
         private void DisplayMonitorInfo(MonitorInfo monitorInformation)
         {
             materialLabelManufacturer.Text = monitorInformation.Manufacturer;
-            materialLabelModel.Text = monitorInformation.Model;
+            systemModelLabel.Text = monitorInformation.Model;
             textBoxSerial.Text = monitorInformation.SerialNumber;
             materialLabelYearOfProduction.Text = monitorInformation.YearOfProduction;
             materialLabelMonthOfProduction.Text = monitorInformation.MonthOfProduction;
@@ -377,13 +433,74 @@ namespace ServiceMonitorEVK.Source.Main
             materialLabelFrequency.Text = monitorInformation.Frequency.ToString();
             materialLabelPPI.Text = monitorInformation.PPI;
             materialLabelSizeMonitor.Text = monitorInformation.SizeMonitor;
+            materialLabelBrightness.Text = monitorInformation.Brightness;
+            materialLabelResponseTime.Text = monitorInformation.ResponseTime;
+            materialLabelViewingAngles.Text = monitorInformation.ViewingAngles;
+            materialLabelWeight.Text = monitorInformation.Weight;
+            materialLabelDimensions.Text = monitorInformation.Dimensions;
+            materialLabelWeightType.Text = monitorInformation.PanelType;
             textBoxIdEVK.Enabled = !string.IsNullOrEmpty(monitorInformation.Manufacturer) &
                                    !string.IsNullOrEmpty(monitorInformation.Model);
             textBoxIdEVK.Text = monitorInformation.IdEVK;
-
+            screenFormatLabel.Text = monitorInformation.AspectRatio;
             Refresh();
         }
+        private void UpdateCableInputs(string cableInfo)
+        {
+            ResetCableInputs();
+            Console.Write(cableInfo);
+            var cables = cableInfo.Split(';') // Split by semicolons
+                .Select(c => c.Trim())
+                .Where(c => !string.IsNullOrEmpty(c))
+                .ToDictionary(
+                    c => c.Split(' ')[0],
+                    c => int.Parse(c.Split('x')[1]));
 
+            // Обновление UI в зависимости от наличия кабелей
+            if (cables.ContainsKey("HDMI"))
+            {
+                checkBoxHDMI.Checked = true;
+                numericUpDownHdmi.Value = cables["HDMI"];
+            }
+
+            if (cables.ContainsKey("VGA"))
+            {
+                checkBoxVGA.Checked = true;
+                numericUpDownVga.Value = cables["VGA"];
+            }
+
+            if (cables.TryGetValue("DVI", out var cable))
+            {
+                checkBoxDVI.Checked = true;
+                numericUpDownDvi.Value = cable;
+            }
+
+            if (cables.ContainsKey("DisplayPort"))
+            {
+                checkBoxDisplayPort.Checked = true;
+                numericUpDownDisplayPort.Value = cables["DisplayPort"];
+            }
+        }
+
+        private void ResetCableInputs()
+        {
+            // Сбрасываем чекбоксы и отключаем числовые вводы
+            checkBoxHDMI.Checked = false;
+            numericUpDownHdmi.Value = 1;
+            numericUpDownHdmi.Enabled = false;
+
+            checkBoxVGA.Checked = false;
+            numericUpDownVga.Value = 1;
+            numericUpDownVga.Enabled = false;
+
+            checkBoxDVI.Checked = false;
+            numericUpDownDvi.Value = 1;
+            numericUpDownDvi.Enabled = false;
+
+            checkBoxDisplayPort.Checked = false;
+            numericUpDownDisplayPort.Value = 1;
+            numericUpDownDisplayPort.Enabled = false;
+        }
         private void sendButton_Click(object sender, EventArgs e)
         {
             SendMonitorInfoToDatabase();
@@ -690,7 +807,7 @@ namespace ServiceMonitorEVK.Source.Main
 
         private void pictureBox36_DoubleClick(object sender, EventArgs e)
         {
-            if (Tester.Equals("JS"))
+            if (Tester.Equals("YS"))
             {
                 materialSkinManager.ColorScheme = new ColorScheme(
                    materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
@@ -698,10 +815,10 @@ namespace ServiceMonitorEVK.Source.Main
                        : Primary.LightGreen800,
                    materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
                        ? Primary.Green800
-                       : Primary.LightGreen900,
+                       : Primary.Green700,
                    materialSkinManager.Theme == MaterialSkinManager.Themes.DARK
                        ? Primary.Green700
-                       : Primary.LightGreen500,
+                       : Primary.Green600,
                    Accent.Red400,
                    TextShade.WHITE);
                 rusLang.Visible = false;
@@ -829,11 +946,14 @@ namespace ServiceMonitorEVK.Source.Main
             comboBoxTypeScreen.Enabled = checkBoxAutoChangeMode.Checked;
         }
 
-        private  void aiButton_Click(object sender, EventArgs e)
+        private void aiButton_Click(object sender, EventArgs e)
         {
             new AiForm().Show();
         }
 
-      
+        private void showInfoPage_Leave(object sender, EventArgs e)
+        {
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
     }
 }
