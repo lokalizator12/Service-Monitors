@@ -134,7 +134,7 @@
             this.materialLabel3.Name = "materialLabel3";
             this.materialLabel3.Size = new System.Drawing.Size(49, 19);
             this.materialLabel3.TabIndex = 18;
-            this.materialLabel3.Text = "Model ";
+            this.materialLabel3.Text = "SystemModel ";
             // 
             // infoLabel1
             // 

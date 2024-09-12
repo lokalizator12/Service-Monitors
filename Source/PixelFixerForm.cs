@@ -7,12 +7,11 @@ using System.Windows.Forms;
 using MaterialSkin;
 using MaterialSkin.Controls;
 using Microsoft.Win32;
-using ServiceMonitorEVK.Main;
 using ServiceMonitorEVK.Source.Main;
+using ServiceMonitorEVK.Source.Util_Managers;
 using ServiceMonitorEVK.Testing_Monitor;
-using ServiceMonitorEVK.Util_Managers;
 
-namespace ServiceMonitorEVK
+namespace ServiceMonitorEVK.Source
 {
     public partial class PixelFixerForm : MaterialForm
     {

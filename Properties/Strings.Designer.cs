@@ -160,7 +160,7 @@ namespace ServiceMonitorEVK.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Model:.
+        ///   Looks up a localized string similar to SystemModel:.
         /// </summary>
         internal static string labelAsModel {
             get {
@@ -295,7 +295,7 @@ namespace ServiceMonitorEVK.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Model:.
+        ///   Looks up a localized string similar to SystemModel:.
         /// </summary>
         internal static string LabelModel {
             get {

@@ -409,6 +409,18 @@
     <Compile Include="Source\Constants\DisplayModeConstants.cs" />
     <Compile Include="Source\Constants\MonitorConstants.cs" />
     <Compile Include="Source\Database\DatabaseManager.cs" />
+    <Compile Include="Source\Forms\AssetInformationPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Source\Forms\AssetInformationPage.Designer.cs">
+      <DependentUpon>AssetInformationPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Source\Forms\NewUpdateMonitorPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Source\Forms\NewUpdateMonitorPage.Designer.cs">
+      <DependentUpon>NewUpdateMonitorPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Source\Main\InitialsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -500,6 +512,12 @@
     <Compile Include="Source\Utils\UserSecretsConfig.cs" />
     <EmbeddedResource Include="Source\AiForm.resx">
       <DependentUpon>AiForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Source\Forms\AssetInformationPage.resx">
+      <DependentUpon>AssetInformationPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Source\Forms\NewUpdateMonitorPage.resx">
+      <DependentUpon>NewUpdateMonitorPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Source\Main\Form1.be-by.resx">
       <DependentUpon>Form1.cs</DependentUpon>

@@ -158,7 +158,7 @@ namespace ServiceMonitorEVK
                 foreach (var monitorInfo in monitors)
                 {
                     // Получение данных от OpenAI
-                    string monitorQuery = $"{monitorInfo.Manufacturer} {monitorInfo.Model}";
+                    string monitorQuery = $"{monitorInfo.Manufacturer} {monitorInfo.SystemModel}";
                     string openAiResponse = await _openAiService.GetResponseAsync(monitorQuery, isInfoMonitors: true);
 
                     if (!string.IsNullOrEmpty(openAiResponse))
@@ -216,13 +216,13 @@ namespace ServiceMonitorEVK
 
             foreach (var monitor in Monitors)
             {
-                if (string.IsNullOrWhiteSpace(monitor.Model))
+                if (string.IsNullOrWhiteSpace(monitor.SystemModel))
                 {
                     continue;
                 }
 
-                _form1.materialComboBoxMonitors.Items.Add(monitor.Model);
-                Console.WriteLine("add" + monitor.Model);
+                _form1.materialComboBoxMonitors.Items.Add(monitor.SystemModel);
+                Console.WriteLine("add" + monitor.SystemModel);
             }
 
             if (_form1.materialComboBoxMonitors.Items.Count > 0) _form1.materialComboBoxMonitors.SelectedIndex = 0;
@@ -275,7 +275,7 @@ namespace ServiceMonitorEVK
                         MonthOfProduction = ConvertWeeksToMonths(Convert.ToInt16(queryObj["WeekOfManufacture"].ToString())),
                         ProductCodeId = ((ushort[])queryObj["ProductCodeID"]).Aggregate("", (current, p) => current + p.ToString("X")),
                         Manufacturer = manufacturer,
-                        Model = userFriendlyName,
+                        SystemModel = userFriendlyName,
                         SerialNumber = queryObj["SerialNumberID"] != null ? DecodeMonitorString((ushort[])queryObj["SerialNumberID"]) : "N/A"
                     };
 
@@ -438,7 +438,7 @@ namespace ServiceMonitorEVK
         private void DisplayMonitorInfo(MonitorInfo monitorInfo)
         {
             /* _form1.materialLabelManufacturer.Text = monitorInfo.Manufacturer;
-             _form1.materialLabelModel.Text = monitorInfo.Model;
+             _form1.materialLabelModel.Text = monitorInfo.SystemModel;
              _form1.materialLabelSerialNo.Text = monitorInfo.SerialNumber;
              _form1.materialLabelYearOfProduction.Text = monitorInfo.YearOfProduction;
              _form1.materialLabelMonthOfProduction.Text = monitorInfo.MonthOfProduction;

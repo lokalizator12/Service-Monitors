@@ -11,7 +11,7 @@ namespace ServiceMonitorEVK.Source
             ParametersMonitorList = new List<string>
             {
                 nameof(Manufacturer),
-                nameof(Model),
+                nameof(SystemModel),
                 nameof(SerialNumber),
                 nameof(YearOfProduction),
                 nameof(MonthOfProduction),
@@ -34,7 +34,7 @@ namespace ServiceMonitorEVK.Source
                 nameof(Dimensions)
             };
             Manufacturer = "Manufacturer";
-            Model = "Model";
+            SystemModel = "SystemModel";
             SerialNumber = "SerialNumber";
             YearOfProduction = "Year Of Production";
             MonthOfProduction = "Month Of Production";
@@ -56,11 +56,12 @@ namespace ServiceMonitorEVK.Source
         }
 
         public string Manufacturer { get; set; }
-        public string Model { get; set; }
+        public string SystemModel { get; set; }
         public string SerialNumber { get; set; }
         public string YearOfProduction { get; set; }
         public string MonthOfProduction { get; set; }
         public string ProductCodeId { get; set; }
+        public string EvkModel { get; set; }
         public double Diagonal1 { get; set; }
         public string Diagonal2 { get; set; }
         public string Resolution { get; set; }
@@ -98,11 +99,12 @@ namespace ServiceMonitorEVK.Source
             Diagonal1 = Math.Floor(diagonalInInches * 2) / 2;
         }
 
-        public void UpdateCableTypes(Dictionary<string, int> cables)
+        public string UpdateCableTypes(Dictionary<string, int> cables)
         {
-            CableTypes = string.Join(", ", cables
+            CableTypes = string.Join("; ", cables
                 .Where(kvp => kvp.Value > 0)
-                .Select(kvp => kvp.Value > 1 ? $"{kvp.Key} x{kvp.Value}" : kvp.Key));
+                .Select(kvp => kvp.Value >= 1 ? $"{kvp.Key} x{kvp.Value}" : kvp.Key));
+            return CableTypes;
         }
 
         public void UpdateResolutionAndFrequency(int width, int height, int frequency)
@@ -134,7 +136,7 @@ namespace ServiceMonitorEVK.Source
 
         public override string ToString()
         {
-            return $"Manufacturer: {Manufacturer}, Model: {Model}, SerialNumber: {SerialNumber}, " +
+            return $"Manufacturer: {Manufacturer}, SystemModel: {SystemModel}, SerialNumber: {SerialNumber}, " +
                    $"YearOfProduction: {YearOfProduction}, MonthOfProduction: {MonthOfProduction}, " +
                    $"ProductCodeID: {ProductCodeId}, Diagonal1: {Diagonal1}, Diagonal2: {Diagonal2}, " +
                    $"Resolution: {Resolution}, Frequency: {Frequency}, PPI: {PPI}, " +

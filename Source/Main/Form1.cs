@@ -1,10 +1,11 @@
 ﻿using MaterialSkin;
 using MaterialSkin.Controls;
 using Microsoft.Win32;
-using ServiceMonitorEVK.Database;
 using ServiceMonitorEVK.Localization;
 using ServiceMonitorEVK.Properties;
 using ServiceMonitorEVK.Source.Constants;
+using ServiceMonitorEVK.Source.Database;
+using ServiceMonitorEVK.Source.Forms;
 using ServiceMonitorEVK.Source.Services;
 using ServiceMonitorEVK.Source.Testing_Monitor;
 using ServiceMonitorEVK.Source.Util_Managers;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,7 +31,7 @@ namespace ServiceMonitorEVK.Source.Main
         private Color selectedAutoTestColor;
         private DatabaseManager databaseManager;
         internal bool IsMonitorFormExist;
-
+        private AssetInformationPage assetInformationPage;
         private readonly OpenAIService _openAiService;
         private int previousMonitorCount;
         private string selectedDisplayMode;
@@ -42,9 +44,11 @@ namespace ServiceMonitorEVK.Source.Main
         private MonitorInfo[] monitors;
         private readonly ResolutionDisplayManager resolutionManager;
         internal string Tester;
+        private MonitorInfo currentMonitor;
 
         public Form1(string testerFromMain)
         {
+            assetInformationPage = new AssetInformationPage();
             _openAiService = new OpenAIService();
             uiUtil = new UiUtil(this);
             uiUtil.StartOpening();
@@ -52,7 +56,7 @@ namespace ServiceMonitorEVK.Source.Main
             displayManager = new DisplayManager();
             monitorInfoManager = new MonitorInfoManager();
             resolutionManager = new ResolutionDisplayManager();
-            databaseManager = new DatabaseManager("localhost", "root", "moodle", "admin_asset");
+            databaseManager = new DatabaseManager();
             LocalizationHelper.ApplyLocalization(this);
             ///////////////////////
             materialSkinManager = MaterialSkinManager.Instance;
@@ -159,15 +163,26 @@ namespace ServiceMonitorEVK.Source.Main
                 info.Country = comboBoxCountry.SelectedItem?.ToString();
                 info.TesterInitials = textBoxTester.Text;
 
-                databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
-                await databaseManager.InsertMonitorInfoPostgres(info);
-                ShowSnackbar("Send to database successfully");
+                //databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
+                var monitorExists = await databaseManager.MonitorExistsInDatabase(info.Manufacturer, info.SystemModel);
+                if (!monitorExists)
+                {
+                    await databaseManager.InsertMonitorSpecs(info);
+                    ShowSnackbar("New monitor added to the database.");
+                }
+                else
+                {
+                    ShowSnackbar("Monitor already exists in the database.");
+                }
             }
             catch (Exception x)
             {
                 ShowSnackbar($"Error: {x.Message}");
             }
         }
+
+
+
 
         private void FillMonitorComboBox()
         {
@@ -303,7 +318,7 @@ namespace ServiceMonitorEVK.Source.Main
             await FillPositionsInfo();
             if (checkBoxAutoShow.Checked)
                 if (textBoxSerial.Text != null)
-                    SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
+                    assetInformationPage.SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
             databaseManager.FillCountryComboBox(comboBoxCountry);
 
         }
@@ -321,15 +336,35 @@ namespace ServiceMonitorEVK.Source.Main
                     return;
                 }
 
-                var monitorInformation = monitors[materialComboBoxMonitors.SelectedIndex];
-                foreach (var VARIABLE in monitors)
+                var monitorInformation = currentMonitor = monitors[materialComboBoxMonitors.SelectedIndex];
+                monitorInformation.EvkModel = labelEvkModel.Text = databaseManager.GetEvkModelFormSerialNumber(textBoxSerial.Text);
+
+                var monitorExists = await databaseManager.MonitorExistsInDatabase(monitorInformation.Manufacturer, monitorInformation.SystemModel, monitorInformation.EvkModel);
+                if (!monitorExists)
                 {
+                    await GetMonitorInfoFromOpenAi(monitorInformation);
 
-                    Console.WriteLine("add1" + VARIABLE);
+                    using var customMessageBox = new NewMonitorFormat(monitorInformation);
+                    var result = customMessageBox.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        monitorInformation = customMessageBox.monitor;
+
+                        // После закрытия формы сохраняем данные в базу
+                        await databaseManager.InsertOrUpdateMonitorSpecs(monitorInformation);
+                        ShowSnackbar("New monitor information saved in the database.");
+                    }
+                    else
+                    {
+                        ShowSnackbar("Action canceled.");
+                        return;
+                    }
                 }
-                // Интеграция с OpenAI для получения дополнительной информации
-                await IntegrateWithOpenAiAsync(monitorInformation);
 
+                string monitorData = await databaseManager.GetMonitorInfoFromDatabase(monitorInformation.Manufacturer, monitorInformation.SystemModel, monitorInformation.EvkModel);
+                ParseMonitorInfo(monitorInformation, monitorData);
+                ShowSnackbar("Monitor information loaded from the database.");
                 DisplayMonitorInfo(monitorInformation); // Обновление интерфейса
                 ShowSnackbar("Monitor information loaded.");
             }
@@ -338,6 +373,86 @@ namespace ServiceMonitorEVK.Source.Main
                 ShowSnackbar($"Error: {ex.Message}");
             }
         }
+
+        private void FillActualParameters()
+        {
+
+        }
+        /// <summary>
+        /// //////////////////////
+        /// ЭТО НУЖНО БУДЕТ КУДА-ТО ДЕТЬ
+        ///
+        ///
+        ///
+        ///
+        /// 
+        /// </summary>
+        /// <param name="monitorInfo"></param>
+        /// <returns></returns>
+
+
+
+
+
+
+        ////////////////////////
+        ///
+        ///
+        ///
+        ///
+        ///
+        ///
+
+
+        public void ParseMonitorInfo(MonitorInfo monitorInfo, string monitorData)
+        {
+            monitorData = monitorData.Trim().Trim('\'');
+            Console.WriteLine(monitorData);
+            if (string.IsNullOrEmpty(monitorData))
+            {
+                Console.WriteLine("No data to parse.");
+                return;
+            }
+
+            var fields = monitorData.Split(',').Select(f => f.Trim()).ToArray();
+
+            if (fields.Length >= 10)
+            {
+                monitorInfo.PanelType = fields[0]; // Тип панели (например, IPS)
+                monitorInfo.Diagonal1 = double.Parse(fields[1], CultureInfo.InvariantCulture); // Диагональ (например, 23.8)
+                monitorInfo.CableTypes = UpdateCableInputs(fields[2]); // Кабели (VGA, HDMI, DisplayPort)
+                monitorInfo.Resolution = fields[3]; // Разрешение (например, 1920x1080)
+                monitorInfo.AspectRatio = fields[4]; // Соотношение сторон (например, 16:9)
+                monitorInfo.Brightness = fields[5]; // Яркость (например, 250 nits)
+                monitorInfo.ResponseTime = fields[6]; // Время отклика (например, 5ms)
+                monitorInfo.ViewingAngles = fields[7]; // Углы обзора (например, 178/178)
+                monitorInfo.Frequency = int.Parse(fields[8].Replace("Hz", "").Trim()); // Частота обновления (например, 60Hz)
+                monitorInfo.Weight = fields[9]; // Вес (например, 4.5kg)
+                monitorInfo.Dimensions = fields[10]; // Размеры (например, 54.1x32.4x5.9 cm)
+            }
+            else
+            {
+                Console.WriteLine("Insufficient data to parse.");
+            }
+        }
+
+        private async Task GetMonitorInfoFromOpenAi(MonitorInfo monitorInfo)
+        {
+            /*var monitorQuery = $"{monitorInfo.Manufacturer}" + " " + $"{monitorInfo.EvkModel}" + " " +
+                               $"({monitorInfo.SystemModel})";*/
+            var monitorQuery =
+                               $"-Manufacturer: {monitorInfo.Manufacturer} \n" +
+                               $"-System Model: {monitorInfo.SystemModel} \n" +
+                               $"-Model from monitor: {monitorInfo.EvkModel} \n" +
+                               $"-Serial Number: {monitorInfo.SerialNumber}  \n" +
+                               $"-Year of Production: {monitorInfo.YearOfProduction}";
+
+            Console.WriteLine($"query chat: {monitorQuery}");
+            var openAiResponse = await _openAiService.GetResponseAsync(monitorQuery, isInfoMonitors: true);
+            ParseMonitorInfo(monitorInfo, openAiResponse);
+        }
+
+
 
         private void tabPage4_Enter(object sender, EventArgs e)
         {
@@ -365,39 +480,7 @@ namespace ServiceMonitorEVK.Source.Main
 
             DisplayMonitorInfo(monitors[materialComboBoxMonitors.SelectedIndex]);
         }
-        private async Task IntegrateWithOpenAiAsync(MonitorInfo monitorInformation)
-        {
-            try
-            {
-                var monitorQuery = $"{monitorInformation.Manufacturer} {monitorInformation.Model}";
-                var openAiResponse = await _openAiService.GetResponseAsync(monitorQuery, isInfoMonitors: true);
 
-                if (!string.IsNullOrEmpty(openAiResponse))
-                {
-                    openAiResponse = openAiResponse.Trim('\'');
-                    var fields = openAiResponse.Split(',').Select(f => f.Trim()).ToArray();
-
-                    if (fields.Length >= 10)
-                    {
-                        monitorInformation.PanelType = fields[0];
-                        monitorInformation.Diagonal1 = double.Parse(fields[1]);
-                        UpdateCableInputs(fields[2]);
-                        monitorInformation.Resolution = fields[3];
-                        monitorInformation.AspectRatio = fields[4];
-                        monitorInformation.Brightness = fields[5];
-                        monitorInformation.ResponseTime = fields[6];
-                        monitorInformation.ViewingAngles = fields[7];
-                        monitorInformation.Frequency = int.Parse(fields[8].Replace("Hz", "").Trim());
-                        monitorInformation.Weight = fields[9];
-                        monitorInformation.Dimensions = fields[10];
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowSnackbar($"Error integrating OpenAI data: {ex.Message}");
-            }
-        }
 
         private void searchInfoPage_Enter(object sender, EventArgs e)
         {
@@ -416,36 +499,35 @@ namespace ServiceMonitorEVK.Source.Main
             FillPositionsInfo();
             if (checkBoxAutoShow.Checked)
                 if (textBoxSerial.Text != null)
-                    SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
+                    assetInformationPage.SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
         }
 
         private void DisplayMonitorInfo(MonitorInfo monitorInformation)
         {
             materialLabelManufacturer.Text = monitorInformation.Manufacturer;
-            systemModelLabel.Text = monitorInformation.Model;
+            systemModelLabel.Text = monitorInformation.SystemModel;
             textBoxSerial.Text = monitorInformation.SerialNumber;
             materialLabelYearOfProduction.Text = monitorInformation.YearOfProduction;
             materialLabelMonthOfProduction.Text = monitorInformation.MonthOfProduction;
             materialLabelProductCodeID.Text = monitorInformation.ProductCodeId;
-            materialLabelDiagonal1.Text = monitorInformation.Diagonal1.ToString();
-            materialLabelDiagonal2.Text = monitorInformation.Diagonal2;
+            materialLabelDiagonal.Text = monitorInformation.Diagonal1.ToString();
+            //materialLabelDiagonal2.Text = monitorInformation.Diagonal2;
             materialLabelResolution.Text = monitorInformation.Resolution;
             materialLabelFrequency.Text = monitorInformation.Frequency.ToString();
-            materialLabelPPI.Text = monitorInformation.PPI;
-            materialLabelSizeMonitor.Text = monitorInformation.SizeMonitor;
+            materialLabelSizeMonitor.Text = monitorInformation.Dimensions;
             materialLabelBrightness.Text = monitorInformation.Brightness;
             materialLabelResponseTime.Text = monitorInformation.ResponseTime;
             materialLabelViewingAngles.Text = monitorInformation.ViewingAngles;
             materialLabelWeight.Text = monitorInformation.Weight;
-            materialLabelDimensions.Text = monitorInformation.Dimensions;
-            materialLabelWeightType.Text = monitorInformation.PanelType;
+            // materialLabelDimensions.Text = monitorInformation.Dimensions;
+            materialLabelTypeMatrix.Text = monitorInformation.PanelType;
             textBoxIdEVK.Enabled = !string.IsNullOrEmpty(monitorInformation.Manufacturer) &
-                                   !string.IsNullOrEmpty(monitorInformation.Model);
+                                   !string.IsNullOrEmpty(monitorInformation.SystemModel);
             textBoxIdEVK.Text = monitorInformation.IdEVK;
-            screenFormatLabel.Text = monitorInformation.AspectRatio;
+            labelScreenFormat.Text = monitorInformation.AspectRatio;
             Refresh();
         }
-        private void UpdateCableInputs(string cableInfo)
+        private string UpdateCableInputs(string cableInfo)
         {
             ResetCableInputs();
             Console.Write(cableInfo);
@@ -456,7 +538,7 @@ namespace ServiceMonitorEVK.Source.Main
                     c => c.Split(' ')[0],
                     c => int.Parse(c.Split('x')[1]));
 
-            // Обновление UI в зависимости от наличия кабелей
+
             if (cables.ContainsKey("HDMI"))
             {
                 checkBoxHDMI.Checked = true;
@@ -480,6 +562,8 @@ namespace ServiceMonitorEVK.Source.Main
                 checkBoxDisplayPort.Checked = true;
                 numericUpDownDisplayPort.Value = cables["DisplayPort"];
             }
+
+            return cableInfo;
         }
 
         private void ResetCableInputs()
@@ -548,111 +632,9 @@ namespace ServiceMonitorEVK.Source.Main
 
         private void searchAssetButton_Click(object sender, EventArgs e)
         {
-            if (textBoxIdEVK.Text != null && textBoxIdEVK.Text.Length > 6) SearchInfoFromAsset(textBoxIdEVK.Text);
+            if (textBoxIdEVK.Text != null && textBoxIdEVK.Text.Length > 6) assetInformationPage.SearchInfoFromAsset(textBoxIdEVK.Text);
         }
 
-        private void SearchInfoFromAsset(string searchValue, string searchBy = "IdEvk")
-        {
-            var whereClause = searchBy == "NumerSeryjny" ? "NumerSeryjny" : "IdEvk";
-
-            var query =
-                "SELECT aa.Marka, " +
-                "aa.Model, " +
-                "aa.NumerSeryjny, " +
-                "aa.KlasaEvk, " +
-                "aa.MiejsceMagazynowe, " +
-                "CONCAT(p1.Imie, ' ', p1.Nazwisko) AS TestowaniePracownik, " +
-                "aa.TestowanieData, " +
-                "CONCAT(p2.Imie, ' ', p2.Nazwisko) AS CzyszczeniePracownik, " +
-                "aa.CzyszczenieData, " +
-                "m.TypWyswietlacz AS Type, " +
-                "m.WielkoscMonitor AS Diagonal, " +
-                "c.CountryName AS Country, " +
-                "CASE WHEN aa.CzyTestowany = 1 THEN 'Yes' ELSE 'No' END AS CzyTestowany, " +
-                "CASE WHEN aa.CzyCzyszczony = 1 THEN 'Yes' ELSE 'No' END AS CzyCzyszczony, " +
-                "aa.IdEvk, " +
-                "aa.Zdjecia " +
-                "FROM admin_asset.sprzet AS aa " +
-                "LEFT JOIN admin_asset.pracownik AS p1 ON aa.EtapTestowanie = p1.IdPracownik " +
-                "LEFT JOIN admin_asset.pracownik AS p2 ON aa.EtapCzyszczenie = p2.IdPracownik " +
-                "LEFT JOIN admin_asset.monitor AS m ON aa.IdSprzet = m.IdSprzet " +
-                "LEFT JOIN admin_asset.slownikcountry AS c ON aa.IdCountry = c.IdCountry " +
-                $"WHERE aa.{whereClause} = '{searchValue}'";
-
-
-            var parameters = databaseManager.ExecuteQueryFindProductAndGet(query);
-
-            if (parameters == null || parameters.Count == 0)
-                ShowSnackbar($"No data found in the database for the provided {searchBy}: {searchValue}");
-            else
-                FillParametersToLabels(parameters);
-        }
-
-
-        private void FillParametersToLabels(Dictionary<string, string> parameters)
-        {
-            foreach (var kvp in parameters)
-                switch (kvp.Key)
-                {
-                    case "Manufacturer":
-                        labelAssetManufacturer.Text = kvp.Value;
-                        break;
-                    case "Model":
-                        labelAssetModel.Text = kvp.Value;
-                        break;
-                    case "SerialNumber":
-                        labelAssetSerialNumber.Text = kvp.Value;
-                        break;
-                    case "Class":
-                        labelAssetClass.Text = kvp.Value;
-                        break;
-                    case "TestowaniePracownik":
-                        labelAssetTester.Text = kvp.Value;
-                        break;
-                    case "TestowanieData":
-                        labelAssetDateTesting.Text = kvp.Value;
-                        break;
-                    case "CzyszczeniePracownik":
-                        labelAssetCleaner.Text = kvp.Value;
-                        break;
-                    case "CzyszczenieData":
-                        labelAssetDateCleaning.Text = kvp.Value;
-                        break;
-                    case "CzyTestowany":
-                        labelAssetIsTested.Text = kvp.Value;
-                        break;
-                    case "MiejsceMagazynowe":
-                        labelAssetPlace.Text = kvp.Value;
-                        break;
-                    case "CzyCzyszczony":
-                        labelAssetIsCleaned.Text = kvp.Value;
-                        break;
-                    case "IdEvk":
-                        labelAssetIdEvk.Text = kvp.Value;
-                        break;
-                    case "Zdjecia":
-                        labelAssetIsPictured.Text = CheckImageUrls(kvp.Value);
-                        break;
-                    case "Type":
-                        labelAssetType.Text = kvp.Value;
-                        break;
-                    case "Diagonal":
-                        labelAssetDiagonalDB.Text = kvp.Value;
-                        break;
-                    case "Country":
-                        labelAssetCountry.Text = kvp.Value;
-                        break;
-                }
-        }
-
-
-        private static string CheckImageUrls(string imageUrls)
-        {
-            var urls = imageUrls.Split(' ');
-            var y = urls.Select(t => t.Trim()).Count(url => !string.IsNullOrEmpty(url));
-
-            return $"Images available: {y}";
-        }
 
         private void ShowSnackbar(string message)
         {
@@ -668,7 +650,7 @@ namespace ServiceMonitorEVK.Source.Main
                 {
                     var barcode = textBoxIdEVK.Text.Trim();
 
-                    SearchInfoFromAsset(barcode);
+                    assetInformationPage.SearchInfoFromAsset(barcode);
 
                     textBoxIdEVK.Clear();
 
@@ -692,29 +674,8 @@ namespace ServiceMonitorEVK.Source.Main
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            if (textBoxSerial.Text != null) SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
+            if (textBoxSerial.Text != null) assetInformationPage.SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
         }
-
-        private void materialCheckbox17_CheckedChanged(object sender, EventArgs e)
-        {
-            numericUpDownDisplayPort.Enabled = checkBoxDisplayPort.Checked;
-        }
-
-        private void CheckBoxDVI_CheckedChanged(object sender, EventArgs e)
-        {
-            numericUpDownDvi.Enabled = checkBoxDVI.Checked;
-        }
-
-        private void CheckboxVGA_CheckedChanged(object sender, EventArgs e)
-        {
-            numericUpDownVga.Enabled = checkBoxVGA.Checked;
-        }
-
-        private void checkBoxHDMI_CheckedChanged(object sender, EventArgs e)
-        {
-            numericUpDownHdmi.Enabled = checkBoxHDMI.Checked;
-        }
-
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -845,10 +806,6 @@ namespace ServiceMonitorEVK.Source.Main
 
         }
 
-        private void materialCheckbox2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void textBoxSerial_KeyDown(object sender, KeyEventArgs e)
         {
@@ -859,7 +816,7 @@ namespace ServiceMonitorEVK.Source.Main
                 {
                     var barcode = textBoxSerial.Text.Trim();
 
-                    SearchInfoFromAsset(barcode);
+                    assetInformationPage.SearchInfoFromAsset(barcode);
 
                     // textBoxIdEVK.Clear();
 
@@ -954,6 +911,50 @@ namespace ServiceMonitorEVK.Source.Main
         private void showInfoPage_Leave(object sender, EventArgs e)
         {
             SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
+
+        private async void buttonChangeMonitor_Click(object sender, EventArgs e)
+        {
+            if (materialComboBoxMonitors.SelectedIndex == -1)
+            {
+                ShowSnackbar("Please select a valid monitor.");
+                return;
+            }
+
+
+            var monitorExists = await databaseManager.MonitorExistsInDatabase(currentMonitor.Manufacturer, currentMonitor.SystemModel);
+            if (monitorExists)
+            {
+                // Загружаем данные монитора из базы данных для редактирования
+                string monitorData = await databaseManager.GetMonitorInfoFromDatabase(currentMonitor.Manufacturer, currentMonitor.SystemModel, currentMonitor.EvkModel);
+                ParseMonitorInfo(currentMonitor, monitorData);
+
+                // Открываем форму для редактирования монитора
+                using var customMessageBox = new NewMonitorFormat(currentMonitor);
+                var result = customMessageBox.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    currentMonitor = customMessageBox.monitor;
+
+                    // Обновляем данные в базе после редактирования
+                    await databaseManager.InsertOrUpdateMonitorSpecs(currentMonitor);
+                    ShowSnackbar("Monitor information updated in the database.");
+                    monitorData = await databaseManager.GetMonitorInfoFromDatabase(currentMonitor.Manufacturer, currentMonitor.SystemModel, currentMonitor.EvkModel);
+                    ParseMonitorInfo(currentMonitor, monitorData);
+                    ShowSnackbar("Monitor information loaded from the database.");
+                    DisplayMonitorInfo(currentMonitor); // Обновление интерфейса
+                    ShowSnackbar("Monitor information loaded.");
+                }
+                else
+                {
+                    ShowSnackbar("Action canceled.");
+                }
+            }
+            else
+            {
+                ShowSnackbar("Monitor not found in the database.");
+            }
         }
     }
 }

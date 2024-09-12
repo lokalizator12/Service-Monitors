@@ -157,7 +157,7 @@
     <value>Producent:</value>
   </data>
   <data name="labelAsModel" xml:space="preserve">
-    <value>Model:</value>
+    <value>SystemModel:</value>
   </data>
   <data name="labelAsMonth" xml:space="preserve">
     <value>Miesiąc:</value>
@@ -202,7 +202,7 @@
     <value>Producent:</value>
   </data>
   <data name="labelModel" xml:space="preserve">
-    <value>Model:</value>
+    <value>SystemModel:</value>
   </data>
   <data name="labelMonitor" xml:space="preserve">
     <value>Ekran</value>

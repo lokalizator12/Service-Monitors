@@ -72,13 +72,14 @@ namespace ServiceMonitorEVK.Source.Services
                 // When the switch is on, the query is specifically for monitor information
                 chatRequest = new ChatRequest
                 {
-                    Model = "gpt-4o-mini",
+                    Model = "gpt-4o",
                     Messages = new[]
                     {
                         new ChatMessage(ChatMessageRole.System, """
 
-                                                                You are an assistant that provides detailed monitor specifications in a structured format.
-                                                                For each query, return the following information in the specified format:
+                                                                You are an assistant that provides **detailed monitor specifications** in a structured format. For each query, use information **primarily from the official manufacturer sources** or technical specification sheets from authorized sources. If no official source is found, refer to other credible sources such as review websites.
+                                                                
+                                                                Return the following information in the specified format:
                                                                 1. Panel type
                                                                 2. Screen size in inches
                                                                 3. Video input ports (separate each port with a semicolon `;`)
@@ -87,24 +88,29 @@ namespace ServiceMonitorEVK.Source.Services
                                                                 6. Brightness (in nits)
                                                                 7. Response time (in ms)
                                                                 8. Viewing angles (in degrees)
-                                                                9. Refresh rate (in Hz)
+                                                                9. Refresh rate (in Hz) (if there's a range, use the highest value in Hz)
                                                                 10. Weight (in kg)
-                                                                11. Dimensions (in cm)
-
+                                                                11. Dimensions with stand (in cm) (provide width, height, and depth, including the stand)
+                                                                
+                                                                For any missing data fields, use 'N/A' if information is unavailable. Ensure the response format follows the structure strictly.
+                                                                
                                                                 The response should be formatted as follows:
                                                                 'PanelType, ScreenSize, InputPorts, Resolution, AspectRatio, Brightness, ResponseTime, ViewingAngles, RefreshRate, Weight, Dimensions'.
-
-                                                                Use `;` to separate multiple video input ports in the 'InputPorts' field. 
-
+                                                                
+                                                                Use `;` to separate multiple video input ports in the 'InputPorts' field.
+                                                                
                                                                 Example:
-                                                                'IPS, 23, VGA x1; HDMI x2, 1920x1080, 16:9, 250 nits, 5ms, 178/178, 60Hz, 3.5kg, 52x31x18 cm'.
-
+                                                                IPS, 23, VGA x1; HDMI x2, 1920x1080, 16:9, 250 nits, 5ms, 178/178, 60Hz, 3.5kg, 52x31x18 cm
+                                                                
                                                                 No additional text.
+                                                                No dot in ends.
+                                                                
                                                                 """)
-                        ,                        new ChatMessage(ChatMessageRole.User, prompt)
+{
+                        },                        new ChatMessage(ChatMessageRole.User, prompt)
                     },
-                    MaxTokens = 80, // Limit the response length
-                    Temperature = 0.1, // Make responses deterministic
+                    MaxTokens = 1000, // Limit the response length
+                    Temperature = 0.0, // Make responses deterministic
                     NumChoicesPerMessage = 1
                 };
             }

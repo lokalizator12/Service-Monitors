@@ -1,4 +1,6 @@
-﻿using ServiceMonitorEVK.Source.Constants;
+﻿using MaterialSkin.Controls;
+using ServiceMonitorEVK.Source.Constants;
+using ServiceMonitorEVK.Source.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ServiceMonitorEVK.Util_Managers
+namespace ServiceMonitorEVK.Source.Util_Managers
 {
     public class MonitorInfoManager
     {
@@ -16,9 +18,9 @@ namespace ServiceMonitorEVK.Util_Managers
         private double maxVerticalSizeCm;
         private readonly Dictionary<string, string> monitorNameToIdentifierMap = new Dictionary<string, string>();
         private int resolutionHeight;
-
         private int resolutionWidth;
 
+        
         public async Task<string> GetMonitorNamesAsync()
         {
             var st = new StringBuilder();
@@ -218,7 +220,7 @@ namespace ServiceMonitorEVK.Util_Managers
                         var serialNumberId = queryObj["SerialNumberID"];
                         var productCodeId = queryObj["ProductCodeID"];
 
-                       
+
                         edidInfo.AppendLine("Month Of Manufacture: " +
                                             ConvertWeeksToMonths(Convert.ToInt16(weekOfManufacture)) + "\n");
 
@@ -253,7 +255,7 @@ namespace ServiceMonitorEVK.Util_Managers
                                      Where(entry => manufacturerNameFull.IndexOf(entry.Key, StringComparison.OrdinalIgnoreCase) >= 0))
                             manufacturer = entry.Value;
                         edidInfo.AppendLine("Manufacturer: " + manufacturer + Environment.NewLine);
-                        edidInfo.AppendLine("Model: " + userfrendlyNameFull + Environment.NewLine);
+                        edidInfo.AppendLine("SystemModel: " + userfrendlyNameFull + Environment.NewLine);
 
                         if (productCodeId is ushort[] productCode)
                             edidInfo.AppendLine("Product Code ID: " +
@@ -290,7 +292,7 @@ namespace ServiceMonitorEVK.Util_Managers
             return (int)Math.Round(weeks / weeksInMonth);
         }
 
-       
+
 
         private static string DecodeEdidString(ushort[] rawData)
         {
@@ -300,7 +302,7 @@ namespace ServiceMonitorEVK.Util_Managers
                     decodedString.Append((char)data);
             return decodedString.ToString();
         }
-      
+
 
         public List<string> GetFriendlyMonitorNames()
         {
@@ -326,7 +328,7 @@ namespace ServiceMonitorEVK.Util_Managers
             return friendlyNames;
         }
 
-      
+
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         public struct DISPLAY_DEVICE
@@ -388,5 +390,6 @@ namespace ServiceMonitorEVK.Util_Managers
             public uint dmPanningWidth;
             public uint dmPanningHeight;
         }
+
     }
 }

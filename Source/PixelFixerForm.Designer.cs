@@ -1,6 +1,6 @@
 ﻿
 
-namespace ServiceMonitorEVK
+namespace ServiceMonitorEVK.Source
 {
     partial class PixelFixerForm
     {
