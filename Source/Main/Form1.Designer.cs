@@ -59,6 +59,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.fullInfoPage = new System.Windows.Forms.TabPage();
             this.materialMultiLineTextBox2 = new MaterialSkin.Controls.MaterialMultiLineTextBox();
             this.showInfoPage = new System.Windows.Forms.TabPage();
+            this.buttonChangeMonitor = new MaterialSkin.Controls.MaterialButton();
             this.materialCard2 = new MaterialSkin.Controls.MaterialCard();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.materialLabelBrightness = new MaterialSkin.Controls.MaterialLabel();
@@ -172,7 +173,6 @@ namespace ServiceMonitorEVK.Source.Main
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.buttonChangeMonitor = new MaterialSkin.Controls.MaterialButton();
             this.materialTabControl1.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.materialCard4.SuspendLayout();
@@ -363,7 +363,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialTabControl1.Multiline = true;
             this.materialTabControl1.Name = "materialTabControl1";
             this.materialTabControl1.SelectedIndex = 0;
-            this.materialTabControl1.Size = new System.Drawing.Size(1563, 1300);
+            this.materialTabControl1.Size = new System.Drawing.Size(1564, 1317);
             this.materialTabControl1.TabIndex = 35;
             // 
             // tabPageMain
@@ -827,7 +827,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.fullInfoPage.Location = new System.Drawing.Point(4, 39);
             this.fullInfoPage.Name = "fullInfoPage";
             this.fullInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.fullInfoPage.Size = new System.Drawing.Size(1538, 1235);
+            this.fullInfoPage.Size = new System.Drawing.Size(1556, 1274);
             this.fullInfoPage.TabIndex = 3;
             this.fullInfoPage.Text = "Show full info";
             this.fullInfoPage.Enter += new System.EventHandler(this.tabPage4_Enter);
@@ -845,7 +845,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialMultiLineTextBox2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialMultiLineTextBox2.Name = "materialMultiLineTextBox2";
             this.materialMultiLineTextBox2.ReadOnly = true;
-            this.materialMultiLineTextBox2.Size = new System.Drawing.Size(1532, 1229);
+            this.materialMultiLineTextBox2.Size = new System.Drawing.Size(1550, 1268);
             this.materialMultiLineTextBox2.TabIndex = 30;
             this.materialMultiLineTextBox2.Text = "";
             // 
@@ -861,11 +861,34 @@ namespace ServiceMonitorEVK.Source.Main
             this.showInfoPage.Location = new System.Drawing.Point(4, 39);
             this.showInfoPage.Name = "showInfoPage";
             this.showInfoPage.Padding = new System.Windows.Forms.Padding(3);
-            this.showInfoPage.Size = new System.Drawing.Size(1555, 1257);
+            this.showInfoPage.Size = new System.Drawing.Size(1556, 1274);
             this.showInfoPage.TabIndex = 1;
             this.showInfoPage.Text = "Show info";
             this.showInfoPage.Enter += new System.EventHandler(this.showInfoPage_Enter);
             this.showInfoPage.Leave += new System.EventHandler(this.showInfoPage_Leave);
+            // 
+            // buttonChangeMonitor
+            // 
+            this.buttonChangeMonitor.AutoSize = false;
+            this.buttonChangeMonitor.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonChangeMonitor.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonChangeMonitor.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.buttonChangeMonitor.Depth = 0;
+            this.buttonChangeMonitor.HighEmphasis = true;
+            this.buttonChangeMonitor.Icon = null;
+            this.buttonChangeMonitor.Location = new System.Drawing.Point(617, 124);
+            this.buttonChangeMonitor.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.buttonChangeMonitor.MouseState = MaterialSkin.MouseState.HOVER;
+            this.buttonChangeMonitor.Name = "buttonChangeMonitor";
+            this.buttonChangeMonitor.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.buttonChangeMonitor.Size = new System.Drawing.Size(330, 90);
+            this.buttonChangeMonitor.TabIndex = 57;
+            this.buttonChangeMonitor.TabStop = false;
+            this.buttonChangeMonitor.Text = "Change monitor info";
+            this.buttonChangeMonitor.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.buttonChangeMonitor.UseAccentColor = false;
+            this.buttonChangeMonitor.UseVisualStyleBackColor = true;
+            this.buttonChangeMonitor.Click += new System.EventHandler(this.buttonChangeMonitor_Click);
             // 
             // materialCard2
             // 
@@ -982,7 +1005,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelBrightness.Location = new System.Drawing.Point(204, 607);
             this.materialLabelBrightness.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelBrightness.Name = "materialLabelBrightness";
-            this.materialLabelBrightness.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelBrightness.Size = new System.Drawing.Size(37, 19);
             this.materialLabelBrightness.TabIndex = 83;
             this.materialLabelBrightness.Text = "         ";
             // 
@@ -995,7 +1018,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.labelEvkModel.Location = new System.Drawing.Point(204, 81);
             this.labelEvkModel.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelEvkModel.Name = "labelEvkModel";
-            this.labelEvkModel.Size = new System.Drawing.Size(46, 24);
+            this.labelEvkModel.Size = new System.Drawing.Size(37, 19);
             this.labelEvkModel.TabIndex = 120;
             this.labelEvkModel.Text = "         ";
             // 
@@ -1047,7 +1070,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelViewingAngles.Location = new System.Drawing.Point(204, 582);
             this.materialLabelViewingAngles.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelViewingAngles.Name = "materialLabelViewingAngles";
-            this.materialLabelViewingAngles.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelViewingAngles.Size = new System.Drawing.Size(37, 19);
             this.materialLabelViewingAngles.TabIndex = 81;
             this.materialLabelViewingAngles.Text = "         ";
             // 
@@ -1060,7 +1083,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelWeight.Location = new System.Drawing.Point(204, 482);
             this.materialLabelWeight.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelWeight.Name = "materialLabelWeight";
-            this.materialLabelWeight.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelWeight.Size = new System.Drawing.Size(37, 19);
             this.materialLabelWeight.TabIndex = 82;
             this.materialLabelWeight.Text = "         ";
             // 
@@ -1086,7 +1109,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelResponseTime.Location = new System.Drawing.Point(204, 507);
             this.materialLabelResponseTime.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelResponseTime.Name = "materialLabelResponseTime";
-            this.materialLabelResponseTime.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelResponseTime.Size = new System.Drawing.Size(37, 19);
             this.materialLabelResponseTime.TabIndex = 106;
             this.materialLabelResponseTime.Text = "         ";
             // 
@@ -1307,7 +1330,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelManufacturer.Location = new System.Drawing.Point(204, 54);
             this.materialLabelManufacturer.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelManufacturer.Name = "materialLabelManufacturer";
-            this.materialLabelManufacturer.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelManufacturer.Size = new System.Drawing.Size(37, 19);
             this.materialLabelManufacturer.TabIndex = 39;
             this.materialLabelManufacturer.Text = "         ";
             this.materialLabelManufacturer.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1412,7 +1435,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelSizeMonitor.Location = new System.Drawing.Point(204, 432);
             this.materialLabelSizeMonitor.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelSizeMonitor.Name = "materialLabelSizeMonitor";
-            this.materialLabelSizeMonitor.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelSizeMonitor.Size = new System.Drawing.Size(37, 19);
             this.materialLabelSizeMonitor.TabIndex = 48;
             this.materialLabelSizeMonitor.Text = "         ";
             this.materialLabelSizeMonitor.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1426,7 +1449,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.systemModelLabel.Location = new System.Drawing.Point(204, 108);
             this.systemModelLabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.systemModelLabel.Name = "systemModelLabel";
-            this.systemModelLabel.Size = new System.Drawing.Size(46, 24);
+            this.systemModelLabel.Size = new System.Drawing.Size(37, 19);
             this.systemModelLabel.TabIndex = 40;
             this.systemModelLabel.Text = "         ";
             this.systemModelLabel.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1453,7 +1476,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelFrequency.Location = new System.Drawing.Point(204, 557);
             this.materialLabelFrequency.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelFrequency.Name = "materialLabelFrequency";
-            this.materialLabelFrequency.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelFrequency.Size = new System.Drawing.Size(37, 19);
             this.materialLabelFrequency.TabIndex = 47;
             this.materialLabelFrequency.Text = "         ";
             this.materialLabelFrequency.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1519,7 +1542,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelYearOfProduction.Location = new System.Drawing.Point(204, 532);
             this.materialLabelYearOfProduction.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelYearOfProduction.Name = "materialLabelYearOfProduction";
-            this.materialLabelYearOfProduction.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelYearOfProduction.Size = new System.Drawing.Size(37, 19);
             this.materialLabelYearOfProduction.TabIndex = 41;
             this.materialLabelYearOfProduction.Text = "         ";
             this.materialLabelYearOfProduction.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1533,7 +1556,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelMonthOfProduction.Location = new System.Drawing.Point(384, 532);
             this.materialLabelMonthOfProduction.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelMonthOfProduction.Name = "materialLabelMonthOfProduction";
-            this.materialLabelMonthOfProduction.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelMonthOfProduction.Size = new System.Drawing.Size(37, 19);
             this.materialLabelMonthOfProduction.TabIndex = 42;
             this.materialLabelMonthOfProduction.Text = "         ";
             this.materialLabelMonthOfProduction.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1573,7 +1596,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelDiagonal.Location = new System.Drawing.Point(204, 270);
             this.materialLabelDiagonal.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelDiagonal.Name = "materialLabelDiagonal";
-            this.materialLabelDiagonal.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelDiagonal.Size = new System.Drawing.Size(37, 19);
             this.materialLabelDiagonal.TabIndex = 44;
             this.materialLabelDiagonal.Text = "         ";
             this.materialLabelDiagonal.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1600,7 +1623,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelProductCodeID.Location = new System.Drawing.Point(204, 243);
             this.materialLabelProductCodeID.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelProductCodeID.Name = "materialLabelProductCodeID";
-            this.materialLabelProductCodeID.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelProductCodeID.Size = new System.Drawing.Size(37, 19);
             this.materialLabelProductCodeID.TabIndex = 43;
             this.materialLabelProductCodeID.Text = "         ";
             this.materialLabelProductCodeID.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1943,7 +1966,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelTypeMatrix.Location = new System.Drawing.Point(204, 189);
             this.materialLabelTypeMatrix.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelTypeMatrix.Name = "materialLabelTypeMatrix";
-            this.materialLabelTypeMatrix.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelTypeMatrix.Size = new System.Drawing.Size(37, 19);
             this.materialLabelTypeMatrix.TabIndex = 81;
             this.materialLabelTypeMatrix.Text = "         ";
             // 
@@ -1969,7 +1992,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.labelScreenFormat.Location = new System.Drawing.Point(204, 457);
             this.labelScreenFormat.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelScreenFormat.Name = "labelScreenFormat";
-            this.labelScreenFormat.Size = new System.Drawing.Size(46, 24);
+            this.labelScreenFormat.Size = new System.Drawing.Size(37, 19);
             this.labelScreenFormat.TabIndex = 44;
             this.labelScreenFormat.Text = "         ";
             this.labelScreenFormat.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -1996,7 +2019,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelResolution.Location = new System.Drawing.Point(204, 216);
             this.materialLabelResolution.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelResolution.Name = "materialLabelResolution";
-            this.materialLabelResolution.Size = new System.Drawing.Size(46, 24);
+            this.materialLabelResolution.Size = new System.Drawing.Size(37, 19);
             this.materialLabelResolution.TabIndex = 49;
             this.materialLabelResolution.Text = "         ";
             this.materialLabelResolution.Click += new System.EventHandler(this.labelAssetClass_Click);
@@ -2008,6 +2031,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.sendButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.sendButton.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.sendButton.Depth = 0;
+            this.sendButton.Enabled = false;
             this.sendButton.HighEmphasis = true;
             this.sendButton.Icon = null;
             this.sendButton.Location = new System.Drawing.Point(638, 288);
@@ -2116,7 +2140,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.testMonitorPage.Location = new System.Drawing.Point(4, 39);
             this.testMonitorPage.Name = "testMonitorPage";
             this.testMonitorPage.Padding = new System.Windows.Forms.Padding(3);
-            this.testMonitorPage.Size = new System.Drawing.Size(1538, 1235);
+            this.testMonitorPage.Size = new System.Drawing.Size(1556, 1274);
             this.testMonitorPage.TabIndex = 6;
             this.testMonitorPage.Text = "Service";
             this.testMonitorPage.UseVisualStyleBackColor = true;
@@ -2382,7 +2406,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.resolutionPage.Location = new System.Drawing.Point(4, 39);
             this.resolutionPage.Name = "resolutionPage";
             this.resolutionPage.Padding = new System.Windows.Forms.Padding(3);
-            this.resolutionPage.Size = new System.Drawing.Size(1538, 1235);
+            this.resolutionPage.Size = new System.Drawing.Size(1556, 1274);
             this.resolutionPage.TabIndex = 0;
             this.resolutionPage.Text = "Resolution";
             // 
@@ -2393,7 +2417,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.tabPage6.Location = new System.Drawing.Point(4, 39);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1538, 1235);
+            this.tabPage6.Size = new System.Drawing.Size(1556, 1274);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Knowlenge base";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -2598,10 +2622,10 @@ namespace ServiceMonitorEVK.Source.Main
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.mainLabelTester);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 1330);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 1331);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1563, 50);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1564, 50);
             this.flowLayoutPanel1.TabIndex = 47;
             // 
             // flowLayoutPanel2
@@ -2613,33 +2637,10 @@ namespace ServiceMonitorEVK.Source.Main
             this.flowLayoutPanel2.Size = new System.Drawing.Size(96, 31);
             this.flowLayoutPanel2.TabIndex = 47;
             // 
-            // buttonChangeMonitor
-            // 
-            this.buttonChangeMonitor.AutoSize = false;
-            this.buttonChangeMonitor.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonChangeMonitor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonChangeMonitor.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.buttonChangeMonitor.Depth = 0;
-            this.buttonChangeMonitor.HighEmphasis = true;
-            this.buttonChangeMonitor.Icon = null;
-            this.buttonChangeMonitor.Location = new System.Drawing.Point(617, 124);
-            this.buttonChangeMonitor.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.buttonChangeMonitor.MouseState = MaterialSkin.MouseState.HOVER;
-            this.buttonChangeMonitor.Name = "buttonChangeMonitor";
-            this.buttonChangeMonitor.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.buttonChangeMonitor.Size = new System.Drawing.Size(330, 90);
-            this.buttonChangeMonitor.TabIndex = 57;
-            this.buttonChangeMonitor.TabStop = false;
-            this.buttonChangeMonitor.Text = "Change monitor info";
-            this.buttonChangeMonitor.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.buttonChangeMonitor.UseAccentColor = false;
-            this.buttonChangeMonitor.UseVisualStyleBackColor = true;
-            this.buttonChangeMonitor.Click += new System.EventHandler(this.buttonChangeMonitor_Click);
-            // 
             // Form1
             // 
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1256, 1107);
+            this.ClientSize = new System.Drawing.Size(1570, 1384);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.flowLayoutPanel2);
             this.Controls.Add(this.materialTabControl1);

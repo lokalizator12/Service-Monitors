@@ -3,7 +3,6 @@ using MaterialSkin.Controls;
 using Microsoft.Win32;
 using ServiceMonitorEVK.Properties;
 using ServiceMonitorEVK.Source.Main;
-using ServiceMonitorEVK.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Management;
 using System.Text;
 using System.Windows.Forms;
+using ServiceMonitorEVK.Source.Utils;
 
 namespace ServiceMonitorEVK.Source.Testing_Monitor
 {

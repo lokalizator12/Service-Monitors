@@ -23,7 +23,7 @@ namespace ServiceMonitorEVK.Source
                 nameof(SizeMonitor),
                 nameof(IdEVK),
                 nameof(TesterInitials),
-                nameof(Country),
+                nameof(IdCountry),
                 nameof(CableTypes),
                 nameof(Brightness),
                 nameof(ResponseTime),
@@ -31,8 +31,10 @@ namespace ServiceMonitorEVK.Source
                 nameof(Weight),
                 nameof(AspectRatio),
                 nameof(PanelType),
-                nameof(Dimensions)
+                nameof(Dimensions),
+                nameof(IdSpecMonitor)
             };
+
             Manufacturer = "Manufacturer";
             SystemModel = "SystemModel";
             SerialNumber = "SerialNumber";
@@ -51,12 +53,13 @@ namespace ServiceMonitorEVK.Source
             Identifier = "DISPLAY";
             IdEVK = "";
             TesterInitials = "";
-            Country = "";
+            IdCountry = 0;
             CableTypes = "";
+            IdSpecMonitor = 0;
         }
-
         public string Manufacturer { get; set; }
         public string SystemModel { get; set; }
+        public int IdSpecMonitor { get; set; }
         public string SerialNumber { get; set; }
         public string YearOfProduction { get; set; }
         public string MonthOfProduction { get; set; }
@@ -74,7 +77,7 @@ namespace ServiceMonitorEVK.Source
         public string FriendlyName { get; set; }
         public string IdEVK { get; set; }
         public string TesterInitials { get; set; }
-        public string Country { get; set; }
+        public int IdCountry { get; set; }
         public string CableTypes { get; set; }
         public string Brightness { get; set; }
         public string ResponseTime { get; set; }
@@ -113,27 +116,6 @@ namespace ServiceMonitorEVK.Source
             Frequency = frequency;
         }
 
-        /*public void UpdateFromApiResponse(string apiResponse)
-        {
-            var fields = apiResponse.Split(',').Select(f => f.Trim()).ToArray();
-
-            if (fields.Length >= 13)
-            {
-                PanelType = fields[0];
-                Diagonal1 = double.Parse(fields[1]);
-                UpdateCableTypes(fields[2].Split(';').ToDictionary(c => c.Trim(), c => 1)); 
-                Resolution = fields[3];
-                AspectRatio = fields[4];
-                Brightness = fields[5];
-                ResponseTime = fields[6];
-                ViewingAngles = fields[7];
-                Frequency = int.Parse(fields[8].Replace("Hz", "").Trim());
-                Weight = fields[9];
-                Dimensions = fields[10];
-            }
-        }*/
-
-
         public override string ToString()
         {
             return $"Manufacturer: {Manufacturer}, SystemModel: {SystemModel}, SerialNumber: {SerialNumber}, " +
@@ -142,9 +124,10 @@ namespace ServiceMonitorEVK.Source
                    $"Resolution: {Resolution}, Frequency: {Frequency}, PPI: {PPI}, " +
                    $"SizeMonitor: {SizeMonitor}, MaxVerticalSize: {MaxVerticalSize}, " +
                    $"MaxHorizontalSize: {MaxHorizontalSize}, Identifier: {Identifier}, " +
-                   $"FriendlyName: {FriendlyName}, Country: {Country}, " +
+                   $"FriendlyName: {FriendlyName}, IdCountry: {IdCountry}, " +
                    $"CableTypes: {CableTypes}, Brightness: {Brightness}, ResponseTime: {ResponseTime}, " +
-                   $"ViewingAngles: {ViewingAngles}, Weight: {Weight}, Dimensions: {Dimensions}";
+                   $"ViewingAngles: {ViewingAngles}, Weight: {Weight}, Dimensions: {Dimensions}, " +
+                   $"IdSpecMonitor: {IdSpecMonitor}, IdEvk: {IdEVK}";
         }
     }
 }

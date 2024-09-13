@@ -10,7 +10,7 @@ using ServiceMonitorEVK.Source.Services;
 using ServiceMonitorEVK.Source.Testing_Monitor;
 using ServiceMonitorEVK.Source.Util_Managers;
 using ServiceMonitorEVK.Util_Managers;
-using ServiceMonitorEVK.Utils;
+using Sprache;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +19,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ServiceMonitorEVK.Source.Utils;
 
 namespace ServiceMonitorEVK.Source.Main
 {
@@ -143,24 +144,39 @@ namespace ServiceMonitorEVK.Source.Main
 
         private async void SendMonitorInfoToDatabase()
         {
-            if (materialComboBoxMonitors.SelectedIndex == null) return;
+            if (materialComboBoxMonitors.SelectedIndex == -1) return;
             try
             {
-               
-                currentMonitor.IdEVK = textBoxIdEVK.Text;
-                currentMonitor.Country = comboBoxCountry.SelectedItem?.ToString();
-                currentMonitor.TesterInitials = textBoxTester.Text;
 
-                var monitorExists = await databaseManager.MonitorExistsInDatabase(currentMonitor.Manufacturer, currentMonitor.SystemModel);
-                if (!monitorExists)
+                currentMonitor.IdEVK = textBoxIdEVK.Text;
+                if (comboBoxCountry.SelectedValue != null)
                 {
-                    await databaseManager.InsertMonitorSpecs(currentMonitor);
-                    ShowSnackbar("New monitor added to the database.");
+                    currentMonitor.IdCountry = int.Parse(comboBoxCountry.SelectedValue.ToString());
+                }
+                currentMonitor.TesterInitials = textBoxTester.Text;
+                Console.WriteLine(currentMonitor);
+                bool serialNumberExists = await databaseManager.CheckSerialNumberExists(currentMonitor.SerialNumber);
+
+                if (!serialNumberExists)
+                {
+                    // Если серийного номера нет в базе, уведомляем пользователя и делаем кнопку неактивной
+                    textBoxSerial.BackColor = Color.Yellow;
+                    sendButton.Enabled = false;
+                    ShowSnackbar("Serial number not found. Please enter a valid IdEVK.");
+                    if (textBoxIdEVK.Text.Length >= 7)
+                    {
+                        sendButton.Enabled = true;
+                        await databaseManager.InsertOrUpdateSprzetAsync(currentMonitor, true);
+                        ShowSnackbar("New monitor added to the database.");
+                    }
                 }
                 else
                 {
-                    ShowSnackbar("Monitor already exists in the database.");
+                    // Если серийный номер есть, можно продолжить добавление в базу данных
+                    await databaseManager.InsertOrUpdateSprzetAsync(currentMonitor, false);
+                    ShowSnackbar("New monitor added to the database.");
                 }
+
             }
             catch (Exception x)
             {
@@ -303,10 +319,11 @@ namespace ServiceMonitorEVK.Source.Main
         {
             monitorInfo = new MonitorInfoForm(this);
             await FillPositionsInfo();
+            databaseManager.FillCountryComboBox(comboBoxCountry);
             if (checkBoxAutoShow.Checked)
                 if (textBoxSerial.Text != null)
                     assetInformationPage.SearchInfoFromAsset(textBoxSerial.Text, "NumerSeryjny");
-            databaseManager.FillCountryComboBox(comboBoxCountry);
+
 
         }
 
@@ -324,8 +341,18 @@ namespace ServiceMonitorEVK.Source.Main
                 }
 
                 var monitorInformation = currentMonitor = monitors[materialComboBoxMonitors.SelectedIndex];
-                monitorInformation.EvkModel = labelEvkModel.Text = databaseManager.GetEvkModelFormSerialNumber(textBoxSerial.Text);
+                Console.WriteLine("AAAAAAAAAAAAAAAAAAA");
+                var evkInfo = databaseManager.GetEvkModelFormSerialNumber(textBoxSerial.Text);
+                Console.WriteLine("evk info" + evkInfo);
+                if (evkInfo.Count > 0)
+                {
+                    Console.WriteLine("FSDSDF" + evkInfo["Model"]);
 
+                    Console.WriteLine("FSDSDF" + evkInfo["IdEvk"]);
+                    monitorInformation.EvkModel = labelEvkModel.Text = evkInfo["Model"];
+                    textBoxIdEVK.Text = evkInfo["IdEvk"];
+                }
+                Console.WriteLine("dddddddddddddddddddddddd");
                 var monitorExists = await databaseManager.MonitorExistsInDatabase(monitorInformation.Manufacturer, monitorInformation.SystemModel, monitorInformation.EvkModel);
                 if (!monitorExists)
                 {
@@ -351,6 +378,7 @@ namespace ServiceMonitorEVK.Source.Main
 
                 string monitorData = await databaseManager.GetMonitorInfoFromDatabase(monitorInformation.Manufacturer, monitorInformation.SystemModel, monitorInformation.EvkModel);
                 ParseMonitorInfo(monitorInformation, monitorData);
+                Console.WriteLine("id spec in monitor info" + monitorInformation.IdSpecMonitor);
                 ShowSnackbar("Monitor information loaded from the database.");
                 DisplayMonitorInfo(monitorInformation); // Обновление интерфейса
                 ShowSnackbar("Monitor information loaded.");
@@ -403,8 +431,9 @@ namespace ServiceMonitorEVK.Source.Main
 
             var fields = monitorData.Split(',').Select(f => f.Trim()).ToArray();
 
-            if (fields.Length >= 10)
+            if (fields.Length >= 11)
             {
+                Console.WriteLine("len" + fields.Length);
                 monitorInfo.PanelType = fields[0]; // Тип панели (например, IPS)
                 monitorInfo.Diagonal1 = double.Parse(fields[1], CultureInfo.InvariantCulture); // Диагональ (например, 23.8)
                 monitorInfo.CableTypes = UpdateCableInputs(fields[2]); // Кабели (VGA, HDMI, DisplayPort)
@@ -416,6 +445,10 @@ namespace ServiceMonitorEVK.Source.Main
                 monitorInfo.Frequency = int.Parse(fields[8].Replace("Hz", "").Trim()); // Частота обновления (например, 60Hz)
                 monitorInfo.Weight = fields[9]; // Вес (например, 4.5kg)
                 monitorInfo.Dimensions = fields[10]; // Размеры (например, 54.1x32.4x5.9 cm)
+                if (fields.Length == 12)
+                {
+                    monitorInfo.IdSpecMonitor = int.Parse(fields[11]);
+                }
             }
             else
             {
@@ -513,6 +546,8 @@ namespace ServiceMonitorEVK.Source.Main
             textBoxIdEVK.Text = monitorInformation.IdEVK;
             labelScreenFormat.Text = monitorInformation.AspectRatio;
             Refresh();
+
+            if (currentMonitor != null) sendButton.Enabled = currentMonitor.IdSpecMonitor >= 0;
         }
         private string UpdateCableInputs(string cableInfo)
         {
@@ -579,8 +614,19 @@ namespace ServiceMonitorEVK.Source.Main
 
         private void textBoxIdEVK_TextChanged(object sender, EventArgs e)
         {
+            string input = textBoxIdEVK.Text;
             if (materialComboBoxMonitors.SelectedIndex != -1 && monitors != null && monitors.Length > 0)
-                monitors[materialComboBoxMonitors.SelectedIndex].IdEVK = textBoxIdEVK.Text;
+                monitors[materialComboBoxMonitors.SelectedIndex].IdEVK = input;
+            if (input.Length >= 7 && input.StartsWith("M"))
+            {
+                textBoxIdEVK.BackColor = Color.White;  // Возвращаем нормальный цвет поля
+                sendButton.Enabled = true;  // Делаем кнопку активной, если валидация пройдена
+            }
+            else
+            {
+                textBoxIdEVK.BackColor = Color.Red;  // Если невалидно, делаем поле красным
+                sendButton.Enabled = false;  // Отключаем кнопку
+            }
         }
 
         private void textBoxTester_TextChanged(object sender, EventArgs e)

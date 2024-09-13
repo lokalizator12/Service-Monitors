@@ -1,6 +1,6 @@
 ﻿using MaterialSkin.Controls;
 using ServiceMonitorEVK.Source.Database;
-using ServiceMonitorEVK.Utils;
+using ServiceMonitorEVK.Source.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -26,28 +26,29 @@ namespace ServiceMonitorEVK.Source.Forms
             var whereClause = searchBy == "NumerSeryjny" ? "NumerSeryjny" : "IdEvk";
 
             var query =
-                "SELECT aa.Marka, " +
-                "aa.Model, " +
+                "SELECT sp.*, " +
+                "aa.Marka AS Manufacturer, " +
+                "aa.Model AS EvkModel, " +
+                "aa.IdEvk, " +
                 "aa.NumerSeryjny, " +
+                "aa.NumerSeryjnyBIOS, " +
                 "aa.KlasaEvk, " +
                 "aa.MiejsceMagazynowe, " +
                 "CONCAT(p1.Imie, ' ', p1.Nazwisko) AS TestowaniePracownik, " +
                 "aa.TestowanieData, " +
                 "CONCAT(p2.Imie, ' ', p2.Nazwisko) AS CzyszczeniePracownik, " +
                 "aa.CzyszczenieData, " +
-                "m.TypWyswietlacz AS Type, " +
-                "m.WielkoscMonitor AS Diagonal, " +
                 "c.CountryName AS Country, " +
                 "CASE WHEN aa.CzyTestowany = 1 THEN 'Yes' ELSE 'No' END AS CzyTestowany, " +
                 "CASE WHEN aa.CzyCzyszczony = 1 THEN 'Yes' ELSE 'No' END AS CzyCzyszczony, " +
-                "aa.IdEvk, " +
                 "aa.Zdjecia " +
                 "FROM admin_asset.sprzet AS aa " +
                 "LEFT JOIN admin_asset.pracownik AS p1 ON aa.EtapTestowanie = p1.IdPracownik " +
                 "LEFT JOIN admin_asset.pracownik AS p2 ON aa.EtapCzyszczenie = p2.IdPracownik " +
-                "LEFT JOIN admin_asset.monitor AS m ON aa.IdSprzet = m.IdSprzet " +
                 "LEFT JOIN admin_asset.slownikcountry AS c ON aa.IdCountry = c.IdCountry " +
-            $"WHERE aa.{whereClause} = '{searchValue}'";
+                "LEFT JOIN admin_asset.monitor_specs AS sp ON aa.IdSpecs = sp.id_spec_monitor " +
+                $"WHERE aa.{whereClause} = '{searchValue}'";
+
 
 
             var parameters = databaseManager.ExecuteQueryFindProductAndGet(query);
@@ -62,6 +63,7 @@ namespace ServiceMonitorEVK.Source.Forms
         private void FillParametersToLabels(Dictionary<string, string> parameters)
         {
             foreach (var kvp in parameters)
+            {
                 switch (kvp.Key)
                 {
                     case "Manufacturer":
@@ -97,18 +99,56 @@ namespace ServiceMonitorEVK.Source.Forms
                     case "Zdjecia":
                         labelAssetIsPictured.Text = CheckImageUrls(kvp.Value);
                         break;
-                    case "Type":
-                        labelAssetType.Text = kvp.Value;
-                        break;
-                    case "Diagonal":
-                        labelAssetDiagonalDB.Text = kvp.Value;
+                    case "NumerSeryjnyBIOS":
+                        labelAsSerialBIOS.Text = kvp.Value;
                         break;
                     case "Country":
                         labelAssetCountry.Text = kvp.Value;
                         break;
+
+                    // Добавление полей из таблицы `monitor_specs`
+                    case "SystemModel":
+                        labelSystemModel.Text = kvp.Value;
+                        break;
+                    case "Diagonal":
+                        labelAssetDiagonalDB.Text = kvp.Value;
+                        break;
+                    case "Resolution":
+                        materialLabelResolution.Text = kvp.Value;
+                        break;
+                    case "Frequency":
+                        materialLabelFrequency.Text = kvp.Value;
+                        break;
+                    case "Brightness":
+                        materialLabelBrightness.Text = kvp.Value;
+                        break;
+                    case "ResponseTime":
+                        materialLabelResponseTime.Text = kvp.Value;
+                        break;
+                    case "ViewingAngles":
+                        materialLabelViewingAngles.Text = kvp.Value;
+                        break;
+                    case "Weight":
+                        materialLabelWeight.Text = kvp.Value;
+                        break;
+                    case "Dimensions":
+                        materialLabelSizeMonitor.Text = kvp.Value;
+                        break;
+                    case "PanelType":
+                        labelAssetType.Text = kvp.Value;
+                        break;
+                    case "AspectRatio":
+                        screenFormatLabel.Text = kvp.Value;
+                        break;
+                    case "CableTypes":
+                        labelAssetCables.Text = kvp.Value;
+                        break;
                 }
+            }
+
             this.ShowDialog();
         }
+
         private static string CheckImageUrls(string imageUrls)
         {
             var urls = imageUrls.Split(' ');
@@ -124,6 +164,22 @@ namespace ServiceMonitorEVK.Source.Forms
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void searchAssetButton_Click(object sender, System.EventArgs e)
+        {
+            if (textBoxIdEVK.Text.Length >= 7)
+            {
+                SearchInfoFromAsset(textBoxIdEVK.Text);
+            }
+        }
+
+        private void pictureBox2_Click(object sender, System.EventArgs e)
+        {
+            if (textBoxSerial.Text.Length >= 7)
+            {
+                SearchInfoFromAsset(textBoxSerial.Text);
+            }
         }
     }
 }

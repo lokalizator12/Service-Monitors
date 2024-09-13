@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewMonitorFormat));
-            this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxChangeHDMI = new MaterialSkin.Controls.MaterialCheckbox();
             this.numericUpDownChangeHdmi = new System.Windows.Forms.NumericUpDown();
@@ -57,7 +56,6 @@
             this.textBoxChangeSystemModel = new MaterialSkin.Controls.MaterialTextBox2();
             this.textBoxChangeBrightness = new MaterialSkin.Controls.MaterialTextBox2();
             this.textBoxChangeWeight = new MaterialSkin.Controls.MaterialTextBox2();
-            this.flowLayoutPanel7.SuspendLayout();
             this.flowLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownChangeHdmi)).BeginInit();
             this.flowLayoutPanel4.SuspendLayout();
@@ -68,25 +66,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownChangeDisplayPort)).BeginInit();
             this.SuspendLayout();
             // 
-            // flowLayoutPanel7
-            // 
-            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel3);
-            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel4);
-            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel6);
-            this.flowLayoutPanel7.Controls.Add(this.flowLayoutPanel13);
-            this.flowLayoutPanel7.Location = new System.Drawing.Point(6, 799);
-            this.flowLayoutPanel7.Name = "flowLayoutPanel7";
-            this.flowLayoutPanel7.Size = new System.Drawing.Size(407, 78);
-            this.flowLayoutPanel7.TabIndex = 124;
-            // 
             // flowLayoutPanel3
             // 
             this.flowLayoutPanel3.Controls.Add(this.checkBoxChangeHDMI);
             this.flowLayoutPanel3.Controls.Add(this.numericUpDownChangeHdmi);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(8, 808);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(82, 96);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(98, 90);
             this.flowLayoutPanel3.TabIndex = 80;
             // 
             // checkBoxChangeHDMI
@@ -132,12 +119,13 @@
             // 
             // flowLayoutPanel4
             // 
+            this.flowLayoutPanel4.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.flowLayoutPanel4.Controls.Add(this.checkBoxChangeVGA);
             this.flowLayoutPanel4.Controls.Add(this.numericUpDownChangeVga);
             this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(91, 3);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(394, 810);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(79, 96);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(87, 89);
             this.flowLayoutPanel4.TabIndex = 81;
             // 
             // checkBoxChangeVGA
@@ -186,16 +174,13 @@
             this.flowLayoutPanel6.Controls.Add(this.checkBoxChangeDVI);
             this.flowLayoutPanel6.Controls.Add(this.numericUpDownChangeDvi);
             this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(176, 3);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(127, 808);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(98, 96);
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(85, 90);
             this.flowLayoutPanel6.TabIndex = 81;
             // 
             // checkBoxChangeDVI
             // 
-            this.checkBoxChangeDVI.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxChangeDVI.AutoSize = true;
             this.checkBoxChangeDVI.Depth = 0;
             this.checkBoxChangeDVI.Location = new System.Drawing.Point(0, 0);
@@ -240,9 +225,9 @@
             this.flowLayoutPanel13.Controls.Add(this.checkBoxChangeDisplayPort);
             this.flowLayoutPanel13.Controls.Add(this.numericUpDownChangeDisplayPort);
             this.flowLayoutPanel13.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel13.Location = new System.Drawing.Point(280, 3);
+            this.flowLayoutPanel13.Location = new System.Drawing.Point(218, 808);
             this.flowLayoutPanel13.Name = "flowLayoutPanel13";
-            this.flowLayoutPanel13.Size = new System.Drawing.Size(122, 96);
+            this.flowLayoutPanel13.Size = new System.Drawing.Size(170, 90);
             this.flowLayoutPanel13.TabIndex = 82;
             // 
             // checkBoxChangeDisplayPort
@@ -304,7 +289,7 @@
             this.textBoxChangeManufacturer.HideSelection = true;
             this.textBoxChangeManufacturer.Hint = "Manufacturer";
             this.textBoxChangeManufacturer.LeadingIcon = null;
-            this.textBoxChangeManufacturer.Location = new System.Drawing.Point(6, 97);
+            this.textBoxChangeManufacturer.Location = new System.Drawing.Point(9, 97);
             this.textBoxChangeManufacturer.MaxLength = 32767;
             this.textBoxChangeManufacturer.MouseState = MaterialSkin.MouseState.OUT;
             this.textBoxChangeManufacturer.Name = "textBoxChangeManufacturer";
@@ -316,7 +301,7 @@
             this.textBoxChangeManufacturer.SelectionLength = 0;
             this.textBoxChangeManufacturer.SelectionStart = 0;
             this.textBoxChangeManufacturer.ShortcutsEnabled = true;
-            this.textBoxChangeManufacturer.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeManufacturer.Size = new System.Drawing.Size(473, 48);
             this.textBoxChangeManufacturer.TabIndex = 127;
             this.textBoxChangeManufacturer.TabStop = false;
             this.textBoxChangeManufacturer.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -347,7 +332,7 @@
             this.textBoxChangeEvkModel.SelectionLength = 0;
             this.textBoxChangeEvkModel.SelectionStart = 0;
             this.textBoxChangeEvkModel.ShortcutsEnabled = true;
-            this.textBoxChangeEvkModel.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeEvkModel.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeEvkModel.TabIndex = 128;
             this.textBoxChangeEvkModel.TabStop = false;
             this.textBoxChangeEvkModel.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -378,7 +363,7 @@
             this.textBoxChangeTypeMatrix.SelectionLength = 0;
             this.textBoxChangeTypeMatrix.SelectionStart = 0;
             this.textBoxChangeTypeMatrix.ShortcutsEnabled = true;
-            this.textBoxChangeTypeMatrix.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeTypeMatrix.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeTypeMatrix.TabIndex = 130;
             this.textBoxChangeTypeMatrix.TabStop = false;
             this.textBoxChangeTypeMatrix.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -409,7 +394,7 @@
             this.textBoxChangeDiagonal.SelectionLength = 0;
             this.textBoxChangeDiagonal.SelectionStart = 0;
             this.textBoxChangeDiagonal.ShortcutsEnabled = true;
-            this.textBoxChangeDiagonal.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeDiagonal.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeDiagonal.TabIndex = 131;
             this.textBoxChangeDiagonal.TabStop = false;
             this.textBoxChangeDiagonal.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -440,7 +425,7 @@
             this.textBoxChangeResponseTime.SelectionLength = 0;
             this.textBoxChangeResponseTime.SelectionStart = 0;
             this.textBoxChangeResponseTime.ShortcutsEnabled = true;
-            this.textBoxChangeResponseTime.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeResponseTime.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeResponseTime.TabIndex = 132;
             this.textBoxChangeResponseTime.TabStop = false;
             this.textBoxChangeResponseTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -471,7 +456,7 @@
             this.textBoxChangeResolution.SelectionLength = 0;
             this.textBoxChangeResolution.SelectionStart = 0;
             this.textBoxChangeResolution.ShortcutsEnabled = true;
-            this.textBoxChangeResolution.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeResolution.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeResolution.TabIndex = 133;
             this.textBoxChangeResolution.TabStop = false;
             this.textBoxChangeResolution.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -502,7 +487,7 @@
             this.textBoxChangeFrequency.SelectionLength = 0;
             this.textBoxChangeFrequency.SelectionStart = 0;
             this.textBoxChangeFrequency.ShortcutsEnabled = true;
-            this.textBoxChangeFrequency.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeFrequency.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeFrequency.TabIndex = 134;
             this.textBoxChangeFrequency.TabStop = false;
             this.textBoxChangeFrequency.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -533,7 +518,7 @@
             this.textBoxChangeViewAngles.SelectionLength = 0;
             this.textBoxChangeViewAngles.SelectionStart = 0;
             this.textBoxChangeViewAngles.ShortcutsEnabled = true;
-            this.textBoxChangeViewAngles.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeViewAngles.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeViewAngles.TabIndex = 135;
             this.textBoxChangeViewAngles.TabStop = false;
             this.textBoxChangeViewAngles.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -564,7 +549,7 @@
             this.textBoxChangeScreenFormat.SelectionLength = 0;
             this.textBoxChangeScreenFormat.SelectionStart = 0;
             this.textBoxChangeScreenFormat.ShortcutsEnabled = true;
-            this.textBoxChangeScreenFormat.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeScreenFormat.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeScreenFormat.TabIndex = 136;
             this.textBoxChangeScreenFormat.TabStop = false;
             this.textBoxChangeScreenFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -595,7 +580,7 @@
             this.textBoxChangeSizeMonitor.SelectionLength = 0;
             this.textBoxChangeSizeMonitor.SelectionStart = 0;
             this.textBoxChangeSizeMonitor.ShortcutsEnabled = true;
-            this.textBoxChangeSizeMonitor.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeSizeMonitor.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeSizeMonitor.TabIndex = 137;
             this.textBoxChangeSizeMonitor.TabStop = false;
             this.textBoxChangeSizeMonitor.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -611,7 +596,7 @@
             this.materialButton1.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.materialButton1.HighEmphasis = true;
             this.materialButton1.Icon = null;
-            this.materialButton1.Location = new System.Drawing.Point(32, 896);
+            this.materialButton1.Location = new System.Drawing.Point(52, 907);
             this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialButton1.Name = "materialButton1";
@@ -632,7 +617,7 @@
             this.materialButton2.Depth = 0;
             this.materialButton2.HighEmphasis = true;
             this.materialButton2.Icon = null;
-            this.materialButton2.Location = new System.Drawing.Point(246, 896);
+            this.materialButton2.Location = new System.Drawing.Point(282, 907);
             this.materialButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialButton2.Name = "materialButton2";
@@ -669,7 +654,7 @@
             this.textBoxChangeSystemModel.SelectionLength = 0;
             this.textBoxChangeSystemModel.SelectionStart = 0;
             this.textBoxChangeSystemModel.ShortcutsEnabled = true;
-            this.textBoxChangeSystemModel.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeSystemModel.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeSystemModel.TabIndex = 129;
             this.textBoxChangeSystemModel.TabStop = false;
             this.textBoxChangeSystemModel.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -700,7 +685,7 @@
             this.textBoxChangeBrightness.SelectionLength = 0;
             this.textBoxChangeBrightness.SelectionStart = 0;
             this.textBoxChangeBrightness.ShortcutsEnabled = true;
-            this.textBoxChangeBrightness.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeBrightness.Size = new System.Drawing.Size(476, 48);
             this.textBoxChangeBrightness.TabIndex = 140;
             this.textBoxChangeBrightness.TabStop = false;
             this.textBoxChangeBrightness.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -731,7 +716,7 @@
             this.textBoxChangeWeight.SelectionLength = 0;
             this.textBoxChangeWeight.SelectionStart = 0;
             this.textBoxChangeWeight.ShortcutsEnabled = true;
-            this.textBoxChangeWeight.Size = new System.Drawing.Size(407, 48);
+            this.textBoxChangeWeight.Size = new System.Drawing.Size(477, 48);
             this.textBoxChangeWeight.TabIndex = 141;
             this.textBoxChangeWeight.TabStop = false;
             this.textBoxChangeWeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -744,7 +729,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.materialButton1;
-            this.ClientSize = new System.Drawing.Size(422, 950);
+            this.ClientSize = new System.Drawing.Size(489, 958);
+            this.Controls.Add(this.flowLayoutPanel13);
+            this.Controls.Add(this.flowLayoutPanel6);
+            this.Controls.Add(this.flowLayoutPanel4);
+            this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.textBoxChangeWeight);
             this.Controls.Add(this.textBoxChangeBrightness);
             this.Controls.Add(this.materialButton2);
@@ -760,7 +749,6 @@
             this.Controls.Add(this.textBoxChangeSystemModel);
             this.Controls.Add(this.textBoxChangeEvkModel);
             this.Controls.Add(this.textBoxChangeManufacturer);
-            this.Controls.Add(this.flowLayoutPanel7);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -768,7 +756,6 @@
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New monitor / update";
-            this.flowLayoutPanel7.ResumeLayout(false);
             this.flowLayoutPanel3.ResumeLayout(false);
             this.flowLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownChangeHdmi)).EndInit();
@@ -786,7 +773,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel7;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private MaterialSkin.Controls.MaterialCheckbox checkBoxChangeHDMI;
         private System.Windows.Forms.NumericUpDown numericUpDownChangeHdmi;

@@ -16,7 +16,7 @@ namespace ServiceMonitorEVK.Source.Database
             using (var connection = new MySqlConnection(connectionStringMysql))
             {
                 await connection.OpenAsync();
-                var query = "SELECT COUNT(*) FROM monitor_specs WHERE LOWER(manufacturer) = LOWER(@manufacturer) AND (LOWER(system_model) = LOWER(@systemModel) AND LOWER(evk_model) = LOWER(@evkModel))";
+                var query = "SELECT COUNT(*) FROM monitor_specs WHERE LOWER(manufacturer) = LOWER(@manufacturer) AND (LOWER(system_model) = LOWER(@systemModel) OR LOWER(evk_model) = LOWER(@evkModel))";
                 var command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@manufacturer", manufacturer);
                 command.Parameters.AddWithValue("@systemModel", systemModel);
@@ -39,7 +39,7 @@ namespace ServiceMonitorEVK.Source.Database
                              (manufacturer, system_model, evk_model, diagonal, resolution, frequency, brightness, response_time, viewing_angles, weight, dimensions, panel_type, aspect_ratio, cable_types)
                              VALUES (@manufacturer, @system_model, @evk_model, @diagonal, @resolution, @frequency, @brightness, @response_time, @viewing_angles, @weight, @dimensions, @panel_type, @aspect_ratio, @cable_types)
                              ON DUPLICATE KEY UPDATE 
-                             evk_model = @evk_model, resolution = @resolution, frequency = @frequency, brightness = @brightness, response_time = @response_time, viewing_angles = @viewing_angles, weight = @weight, 
+                             evk_model = @evk_model, diagonal = @diagonal, resolution = @resolution, frequency = @frequency, brightness = @brightness, response_time = @response_time, viewing_angles = @viewing_angles, weight = @weight, 
                              dimensions = @dimensions, panel_type = @panel_type, aspect_ratio = @aspect_ratio, cable_types = @cable_types
                              """;
 
@@ -60,8 +60,8 @@ namespace ServiceMonitorEVK.Source.Database
                 command.Parameters.AddWithValue("@panel_type", monitorInfo.PanelType);
                 command.Parameters.AddWithValue("@aspect_ratio", monitorInfo.AspectRatio);
                 command.Parameters.AddWithValue("@cable_types", monitorInfo.CableTypes);
-
-                await command.ExecuteNonQueryAsync();
+                Console.WriteLine(query);
+                await command.ExecuteScalarAsync();
             }
         }
 
@@ -82,30 +82,72 @@ namespace ServiceMonitorEVK.Source.Database
                 return count > 0;
             }
         }
-        public async Task InsertMonitorSpecs(MonitorInfo monitorInfo)
+        public async Task InsertOrUpdateSprzetAsync(MonitorInfo monitorInfo, bool withSerial)
         {
             using (var connection = new MySqlConnection(connectionStringMysql))
             {
                 await connection.OpenAsync();
-                var query = @"INSERT INTO monitor_specs (manufacturer, model, diagonal, resolution, frequency, brightness, response_time, viewing_angles, weight, dimensions, panel_type, aspect_ratio) 
-                      VALUES (@manufacturer,  @product_code_id, @diagonal, @resolution, @frequency, @brightness, @response_time, @viewing_angles, @weight, @dimensions, @panel_type, @aspect_ratio)";
+                string query = "";
+                if (withSerial)
+                {
+                    query = """
+                            
+                                        UPDATE admin_asset.sprzet
+                            SET idCountry = @idCountry, 
+                                IdSpecs = @idSpecs, 
+                                NumerSeryjnyBIOS = @serialNumber, 
+                                Inicjaly = @testerInitials
+                            WHERE NumerSeryjny = @serialNumber;
+
+                            """;
+                }
+                else
+                {
+                    query = """
+
+
+                            UPDATE admin_asset.sprzet
+                            SET idCountry = @idCountry, 
+                                IdSpecs = @idSpecs, 
+                                NumerSeryjnyBIOS = @serialNumber, 
+                                Inicjaly = @testerInitials
+                            WHERE IdEvk = @idEvk;
+                                                                 
+                            """;
+
+                }
+
                 var command = new MySqlCommand(query, connection);
 
-                command.Parameters.AddWithValue("@manufacturer", monitorInfo.Manufacturer);
-                command.Parameters.AddWithValue("@model", monitorInfo.SystemModel);
-                command.Parameters.AddWithValue("@diagonal", monitorInfo.Diagonal1);
-                command.Parameters.AddWithValue("@resolution", monitorInfo.Resolution);
-                command.Parameters.AddWithValue("@frequency", monitorInfo.Frequency);
-                command.Parameters.AddWithValue("@code_of_product", monitorInfo.ProductCodeId);
-                command.Parameters.AddWithValue("@brightness", monitorInfo.Brightness);
-                command.Parameters.AddWithValue("@response_time", monitorInfo.ResponseTime);
-                command.Parameters.AddWithValue("@viewing_angles", monitorInfo.ViewingAngles);
-                command.Parameters.AddWithValue("@weight", monitorInfo.Weight);
-                command.Parameters.AddWithValue("@dimensions", monitorInfo.Dimensions);
-                command.Parameters.AddWithValue("@panel_type", monitorInfo.PanelType);
-                command.Parameters.AddWithValue("@aspect_ratio", monitorInfo.AspectRatio);
+                command.Parameters.AddWithValue("@idCountry", monitorInfo.IdCountry);
+                command.Parameters.AddWithValue("@idSpecs", monitorInfo.IdSpecMonitor);
+                command.Parameters.AddWithValue("@serialNumber", monitorInfo.SerialNumber);
+                command.Parameters.AddWithValue("@testerInitials", monitorInfo.TesterInitials);
+                command.Parameters.AddWithValue("@idEvk", monitorInfo.IdEVK);
+                string fullQuery = query
+                    .Replace("@idCountry", monitorInfo.IdCountry.ToString())
+                    .Replace("@idSpecs", monitorInfo.IdSpecMonitor.ToString())
+                    .Replace("@serialNumber", $"'{monitorInfo.SerialNumber}'")
+                    .Replace("@testerInitials", $"'{monitorInfo.TesterInitials}'")
+                    .Replace("@idEvk", $"'{monitorInfo.IdEVK}'");
 
+                // Логирование строки с данными
+                Console.WriteLine("SQL Query: " + fullQuery);
                 await command.ExecuteNonQueryAsync();
+            }
+        }
+
+        public async Task<bool> CheckSerialNumberExists(string serialNumber)
+        {
+            using (var connection = new MySqlConnection(connectionStringMysql))
+            {
+                await connection.OpenAsync();
+                var query = "SELECT COUNT(*) FROM admin_asset.sprzet WHERE NumerSeryjny = @serialNumber";
+                var command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@serialNumber", serialNumber);
+
+                var count = Convert.ToInt32(await command.ExecuteScalarAsync());
+                return count > 0;
             }
         }
 
@@ -150,7 +192,7 @@ namespace ServiceMonitorEVK.Source.Database
                                 // Собираем строку с данными, аналогичную строке из OpenAI
                                 result = $"{reader["panel_type"]}, {reader["diagonal"]}, {reader["cable_types"]}, {reader["resolution"]}, " +
                                          $"{reader["aspect_ratio"]}, {reader["brightness"]}, {reader["response_time"]}, {reader["viewing_angles"]}, " +
-                                         $"{reader["frequency"]}Hz, {reader["weight"]}, {reader["dimensions"]}";
+                                         $"{reader["frequency"]}Hz, {reader["weight"]}, {reader["dimensions"]}, {reader["id_spec_monitor"]}";
                             }
                         }
                     }
@@ -203,14 +245,23 @@ namespace ServiceMonitorEVK.Source.Database
             return result;
         }
 
-        internal string GetEvkModelFormSerialNumber(string searchValue)
+        internal Dictionary<string, string> GetEvkModelFormSerialNumber(string searchValue)
         {
             var query =
-                "SELECT aa.Model " +
+                "SELECT aa.Model, aa.IdEvk " +
                 "FROM admin_asset.sprzet AS aa " +
                 $"WHERE aa.NumerSeryjny = '{searchValue}'";
 
-            return ExecuteQueryWithSingleParametrFindProductAndGet(query);
+            var resultDictionary = ExecuteQueryAndGetResultsAsDictionary(query);
+
+
+            if (resultDictionary.Count > 0)
+            {
+                Console.WriteLine(@"Model: " + resultDictionary["Model"]);
+                Console.WriteLine(@"IdEvk: " + resultDictionary["IdEvk"]);
+            }
+
+            return resultDictionary;
         }
 
         internal string ExecuteQueryWithSingleParametrFindProductAndGet(string query)
@@ -243,6 +294,40 @@ namespace ServiceMonitorEVK.Source.Database
             return model;
         }
 
+        internal Dictionary<string, string> ExecuteQueryAndGetResultsAsDictionary(string query)
+        {
+            var resultDictionary = new Dictionary<string, string>();
+
+            using (var connection = new MySqlConnection(connectionStringMysql))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (var command = new MySqlCommand(query, connection))
+                    {
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())  // Читаем первую строку результата
+                            {
+                                for (int i = 0; i < reader.FieldCount; i++)
+                                {
+                                    var columnName = reader.GetName(i);  // Получаем название колонки
+                                    var columnValue = reader.IsDBNull(i) ? null : reader[i].ToString();  // Получаем значение
+                                    resultDictionary[columnName] = columnValue;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("Ошибка запроса: " + ex.Message);
+                }
+            }
+
+            return resultDictionary;
+        }
 
         internal Dictionary<string, string> ExecuteQueryFindProductAndGet(string query)
         {
@@ -267,9 +352,10 @@ namespace ServiceMonitorEVK.Source.Database
                                 : "No Data";
                         ParametersStrings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                         {
-                            { "Manufacturer", reader["Marka"].ToString() },
-                            { "Model", reader["Model"].ToString() },
+                            { "Manufacturer", reader["Manufacturer"].ToString() },
+                            { "Model", reader["EvkModel"].ToString() },
                             { "SerialNumber", reader["NumerSeryjny"].ToString() },
+                            { "SerialNumberBIOS", reader["NumerSeryjnyBIOS"].ToString() },
                             { "Class", reader["KlasaEvk"].ToString() },
                             { "TestowaniePracownik", reader["TestowaniePracownik"].ToString() },
                             {
@@ -286,9 +372,20 @@ namespace ServiceMonitorEVK.Source.Database
                             { "MiejsceMagazynowe", reader["MiejsceMagazynowe"].ToString() },
                             { "IdEvk", reader["IdEvk"].ToString() },
                             { "Zdjecia", reader["Zdjecia"].ToString() },
-                            { "Type", reader["Type"].ToString() },
-                            { "Diagonal", reader["Diagonal"].ToString() },
-                            { "Country", reader["Country"].ToString() }
+                            { "Country", reader["Country"].ToString() },
+
+                            { "SystemModel", reader["system_model"].ToString() },
+                        { "Diagonal", reader["diagonal"].ToString() },
+                        { "Resolution", reader["resolution"].ToString() },
+                        { "Frequency", reader["frequency"].ToString() },
+                        { "Brightness", reader["brightness"].ToString() },
+                        { "ResponseTime", reader["response_time"].ToString() },
+                        { "ViewingAngles", reader["viewing_angles"].ToString() },
+                        { "Weight", reader["weight"].ToString() },
+                        { "Dimensions", reader["dimensions"].ToString() },
+                        { "PanelType", reader["panel_type"].ToString() },
+                        { "AspectRatio", reader["aspect_ratio"].ToString() },
+                        { "CableTypes", reader["cable_types"].ToString() }
                         };
                     }
                 }
@@ -303,19 +400,29 @@ namespace ServiceMonitorEVK.Source.Database
         }
 
 
-        internal void FillCountryComboBox(ComboBox comboBox)
+        internal Dictionary<int, string> FillCountryComboBox(ComboBox comboBox)
         {
+            var countries = new Dictionary<int, string>();
             using (var connection = new MySqlConnection(connectionStringMysql))
             {
                 try
                 {
                     connection.Open();
-                    var query = "SELECT CountryName FROM slownikcountry ORDER BY CountryName ASC";
+                    var query = "SELECT * FROM slownikcountry ORDER BY CountryName ASC";
                     var command = new MySqlCommand(query, connection);
                     var reader = command.ExecuteReader();
+                    var countryList = new List<KeyValuePair<string, string>>();
 
-                    while (reader.Read()) comboBox.Items.Add(reader["CountryName"].ToString());
-
+                    while (reader.Read())
+                    {
+                        countryList.Add(new KeyValuePair<string, string>(
+                            reader["IdCountry"].ToString(),
+                            reader["CountryName"].ToString()
+                        ));
+                    }
+                    comboBox.DataSource = countryList;
+                    comboBox.DisplayMember = "Value";
+                    comboBox.ValueMember = "Key";
                     comboBox.DropDownStyle = ComboBoxStyle.DropDown;
                     comboBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                     comboBox.AutoCompleteSource = AutoCompleteSource.ListItems;
@@ -325,6 +432,8 @@ namespace ServiceMonitorEVK.Source.Database
                     Console.WriteLine(@"Ошибка загрузки стран: " + ex.Message);
                 }
             }
+
+            return countries;
         }
 
 

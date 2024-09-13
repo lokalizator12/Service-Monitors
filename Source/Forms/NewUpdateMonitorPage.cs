@@ -1,11 +1,12 @@
 ﻿using MaterialSkin.Controls;
-using ServiceMonitorEVK.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using ServiceMonitorEVK.Source.Main;
+using System.Threading.Tasks;
+using ServiceMonitorEVK.Source.Utils;
 
 namespace ServiceMonitorEVK.Source.Forms
 {
@@ -21,16 +22,27 @@ namespace ServiceMonitorEVK.Source.Forms
             UiUtil uiUtil = new UiUtil(this);
             uiUtil.InitializeTheme();
             monitor = monitorInfo;
-            FillTextBoxFromMonitor();
+            LoadBasicInfo();
+                // FillTextBoxFromMonitor();
         }
-
-        private void FillTextBoxFromMonitor()
+        private void LoadBasicInfo()
         {
-            textBoxChangeDiagonal.Text = monitor.Diagonal1.ToString(CultureInfo.InvariantCulture);
             textBoxChangeManufacturer.Text = monitor.Manufacturer;
             textBoxChangeEvkModel.Text = monitor.EvkModel;
             textBoxChangeSystemModel.Text = monitor.SystemModel;
             textBoxChangeTypeMatrix.Text = monitor.PanelType;
+        }
+
+        protected override async void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            // Загружаем остальные данные асинхронно
+            await LoadDetailsAsync();
+        }
+
+        private async Task LoadDetailsAsync()
+        {
+            textBoxChangeDiagonal.Text = monitor.Diagonal1.ToString(CultureInfo.InvariantCulture);
             textBoxChangeResponseTime.Text = monitor.ResponseTime;
             textBoxChangeResolution.Text = monitor.Resolution;
             textBoxChangeFrequency.Text = monitor.Frequency.ToString();
@@ -40,47 +52,43 @@ namespace ServiceMonitorEVK.Source.Forms
             textBoxChangeBrightness.Text = monitor.Brightness;
             textBoxChangeWeight.Text = monitor.Weight;
 
+            // Обработка кабелей
             UpdateCableInputs(monitor.CableTypes);
         }
+       
+        private void EnableCableInput(Dictionary<string, int> cables, string cableType, CheckBox checkBox, NumericUpDown numericUpDown)
+        {
+            if (cables.ContainsKey(cableType))
+            {
+                checkBox.Checked = true;
+                numericUpDown.Value = cables[cableType];
+                numericUpDown.Enabled = true;
+            }
+            else
+            {
+                checkBox.Checked = false;
+                numericUpDown.Enabled = false;
+            }
+        }
 
-        private string UpdateCableInputs(string cableInfo)
+        private void UpdateCableInputs(string cableInfo)
         {
             ResetCableInputs();
-            Console.Write(cableInfo);
-            var cables = cableInfo.Split(';') // Split by semicolons
+            if (string.IsNullOrWhiteSpace(cableInfo)) return;
+
+            var cables = cableInfo.Split(';')
                 .Select(c => c.Trim())
                 .Where(c => !string.IsNullOrEmpty(c))
                 .ToDictionary(
                     c => c.Split(' ')[0],
                     c => int.Parse(c.Split('x')[1]));
 
-
-            if (cables.ContainsKey("HDMI"))
-            {
-                checkBoxChangeHDMI.Checked = true;
-                numericUpDownChangeHdmi.Value = cables["HDMI"];
-            }
-
-            if (cables.ContainsKey("VGA"))
-            {
-                checkBoxChangeVGA.Checked = true;
-                numericUpDownChangeVga.Value = cables["VGA"];
-            }
-
-            if (cables.TryGetValue("DVI", out var cable))
-            {
-                checkBoxChangeDVI.Checked = true;
-                numericUpDownChangeDvi.Value = cable;
-            }
-
-            if (cables.ContainsKey("DisplayPort"))
-            {
-                checkBoxChangeDisplayPort.Checked = true;
-                numericUpDownChangeDisplayPort.Value = cables["DisplayPort"];
-            }
-
-            return cableInfo;
+            EnableCableInput(cables, "HDMI", checkBoxChangeHDMI, numericUpDownChangeHdmi);
+            EnableCableInput(cables, "VGA", checkBoxChangeVGA, numericUpDownChangeVga);
+            EnableCableInput(cables, "DVI", checkBoxChangeDVI, numericUpDownChangeDvi);
+            EnableCableInput(cables, "DisplayPort", checkBoxChangeDisplayPort, numericUpDownChangeDisplayPort);
         }
+        
 
         private void ResetCableInputs()
         {
@@ -127,7 +135,7 @@ namespace ServiceMonitorEVK.Source.Forms
             if (checkBoxChangeDisplayPort.Checked)
                 cables.Add("DisplayPort", (int)numericUpDownChangeDisplayPort.Value);
             monitor.CableTypes = monitor.UpdateCableTypes(cables);
-            Console.WriteLine($"result update string: {monitor.CableTypes}");
+            Console.WriteLine($"result update string: {monitor}");
 
 
         }
@@ -144,7 +152,7 @@ namespace ServiceMonitorEVK.Source.Forms
             DialogResult = DialogResult.Cancel;
             if (Application.OpenForms["Form1"] is Form1 mainForm)
             {
-                mainForm.materialTabControl1.SelectedTab = mainForm.tabPageMain; // Переключаемся на главную вкладку
+                mainForm.materialTabControl1.SelectedTab = mainForm.tabPageMain;
             }
 
             this.Close();

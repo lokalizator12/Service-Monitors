@@ -89,7 +89,7 @@ namespace ServiceMonitorEVK.Source.Services
                                                                 7. Response time (in ms)
                                                                 8. Viewing angles (in degrees)
                                                                 9. Refresh rate (in Hz) (if there's a range, use the highest value in Hz)
-                                                                10. Weight (in kg)
+                                                                10. Weight (only double)
                                                                 11. Dimensions with stand (in cm) (provide width, height, and depth, including the stand)
                                                                 
                                                                 For any missing data fields, use 'N/A' if information is unavailable. Ensure the response format follows the structure strictly.
@@ -100,7 +100,7 @@ namespace ServiceMonitorEVK.Source.Services
                                                                 Use `;` to separate multiple video input ports in the 'InputPorts' field.
                                                                 
                                                                 Example:
-                                                                IPS, 23, VGA x1; HDMI x2, 1920x1080, 16:9, 250 nits, 5ms, 178/178, 60Hz, 3.5kg, 52x31x18 cm
+                                                                IPS, 23, VGA x1; HDMI x2, 1920x1080, 16:9, 250 nits, 5ms, 178/178, 60Hz, 3.5, 52x31x18
                                                                 
                                                                 No additional text.
                                                                 No dot in ends.
