@@ -982,9 +982,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelBrightness.Location = new System.Drawing.Point(204, 607);
             this.materialLabelBrightness.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelBrightness.Name = "materialLabelBrightness";
-            this.materialLabelBrightness.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelBrightness.Size = new System.Drawing.Size(46, 24);
             this.materialLabelBrightness.TabIndex = 83;
-            this.materialLabelBrightness.Text = "44";
+            this.materialLabelBrightness.Text = "         ";
             // 
             // labelEvkModel
             // 
@@ -995,9 +995,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.labelEvkModel.Location = new System.Drawing.Point(204, 81);
             this.labelEvkModel.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelEvkModel.Name = "labelEvkModel";
-            this.labelEvkModel.Size = new System.Drawing.Size(19, 19);
+            this.labelEvkModel.Size = new System.Drawing.Size(46, 24);
             this.labelEvkModel.TabIndex = 120;
-            this.labelEvkModel.Text = "44";
+            this.labelEvkModel.Text = "         ";
             // 
             // labelAsResolutionPr
             // 
@@ -1047,9 +1047,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelViewingAngles.Location = new System.Drawing.Point(204, 582);
             this.materialLabelViewingAngles.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelViewingAngles.Name = "materialLabelViewingAngles";
-            this.materialLabelViewingAngles.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelViewingAngles.Size = new System.Drawing.Size(46, 24);
             this.materialLabelViewingAngles.TabIndex = 81;
-            this.materialLabelViewingAngles.Text = "44";
+            this.materialLabelViewingAngles.Text = "         ";
             // 
             // materialLabelWeight
             // 
@@ -1060,9 +1060,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelWeight.Location = new System.Drawing.Point(204, 482);
             this.materialLabelWeight.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelWeight.Name = "materialLabelWeight";
-            this.materialLabelWeight.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelWeight.Size = new System.Drawing.Size(46, 24);
             this.materialLabelWeight.TabIndex = 82;
-            this.materialLabelWeight.Text = "44";
+            this.materialLabelWeight.Text = "         ";
             // 
             // pictureBox4
             // 
@@ -1086,9 +1086,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelResponseTime.Location = new System.Drawing.Point(204, 507);
             this.materialLabelResponseTime.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelResponseTime.Name = "materialLabelResponseTime";
-            this.materialLabelResponseTime.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelResponseTime.Size = new System.Drawing.Size(46, 24);
             this.materialLabelResponseTime.TabIndex = 106;
-            this.materialLabelResponseTime.Text = "44";
+            this.materialLabelResponseTime.Text = "         ";
             // 
             // textBoxSerial
             // 
@@ -1307,9 +1307,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelManufacturer.Location = new System.Drawing.Point(204, 54);
             this.materialLabelManufacturer.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelManufacturer.Name = "materialLabelManufacturer";
-            this.materialLabelManufacturer.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelManufacturer.Size = new System.Drawing.Size(46, 24);
             this.materialLabelManufacturer.TabIndex = 39;
-            this.materialLabelManufacturer.Text = "44";
+            this.materialLabelManufacturer.Text = "         ";
             this.materialLabelManufacturer.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // labelCountryPr
@@ -1412,9 +1412,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelSizeMonitor.Location = new System.Drawing.Point(204, 432);
             this.materialLabelSizeMonitor.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelSizeMonitor.Name = "materialLabelSizeMonitor";
-            this.materialLabelSizeMonitor.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelSizeMonitor.Size = new System.Drawing.Size(46, 24);
             this.materialLabelSizeMonitor.TabIndex = 48;
-            this.materialLabelSizeMonitor.Text = "44";
+            this.materialLabelSizeMonitor.Text = "         ";
             this.materialLabelSizeMonitor.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // systemModelLabel
@@ -1426,9 +1426,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.systemModelLabel.Location = new System.Drawing.Point(204, 108);
             this.systemModelLabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.systemModelLabel.Name = "systemModelLabel";
-            this.systemModelLabel.Size = new System.Drawing.Size(19, 19);
+            this.systemModelLabel.Size = new System.Drawing.Size(46, 24);
             this.systemModelLabel.TabIndex = 40;
-            this.systemModelLabel.Text = "44";
+            this.systemModelLabel.Text = "         ";
             this.systemModelLabel.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // labelFrequencyPr
@@ -1453,9 +1453,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelFrequency.Location = new System.Drawing.Point(204, 557);
             this.materialLabelFrequency.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelFrequency.Name = "materialLabelFrequency";
-            this.materialLabelFrequency.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelFrequency.Size = new System.Drawing.Size(46, 24);
             this.materialLabelFrequency.TabIndex = 47;
-            this.materialLabelFrequency.Text = "44";
+            this.materialLabelFrequency.Text = "         ";
             this.materialLabelFrequency.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // labelSerialPr
@@ -1519,9 +1519,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelYearOfProduction.Location = new System.Drawing.Point(204, 532);
             this.materialLabelYearOfProduction.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelYearOfProduction.Name = "materialLabelYearOfProduction";
-            this.materialLabelYearOfProduction.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelYearOfProduction.Size = new System.Drawing.Size(46, 24);
             this.materialLabelYearOfProduction.TabIndex = 41;
-            this.materialLabelYearOfProduction.Text = "44";
+            this.materialLabelYearOfProduction.Text = "         ";
             this.materialLabelYearOfProduction.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // materialLabelMonthOfProduction
@@ -1533,9 +1533,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelMonthOfProduction.Location = new System.Drawing.Point(384, 532);
             this.materialLabelMonthOfProduction.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelMonthOfProduction.Name = "materialLabelMonthOfProduction";
-            this.materialLabelMonthOfProduction.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelMonthOfProduction.Size = new System.Drawing.Size(46, 24);
             this.materialLabelMonthOfProduction.TabIndex = 42;
-            this.materialLabelMonthOfProduction.Text = "44";
+            this.materialLabelMonthOfProduction.Text = "         ";
             this.materialLabelMonthOfProduction.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // labelDatePr
@@ -1573,9 +1573,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelDiagonal.Location = new System.Drawing.Point(204, 270);
             this.materialLabelDiagonal.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelDiagonal.Name = "materialLabelDiagonal";
-            this.materialLabelDiagonal.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelDiagonal.Size = new System.Drawing.Size(46, 24);
             this.materialLabelDiagonal.TabIndex = 44;
-            this.materialLabelDiagonal.Text = "44";
+            this.materialLabelDiagonal.Text = "         ";
             this.materialLabelDiagonal.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // pictureBox33
@@ -1600,9 +1600,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelProductCodeID.Location = new System.Drawing.Point(204, 243);
             this.materialLabelProductCodeID.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelProductCodeID.Name = "materialLabelProductCodeID";
-            this.materialLabelProductCodeID.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelProductCodeID.Size = new System.Drawing.Size(46, 24);
             this.materialLabelProductCodeID.TabIndex = 43;
-            this.materialLabelProductCodeID.Text = "44";
+            this.materialLabelProductCodeID.Text = "         ";
             this.materialLabelProductCodeID.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // labelDiagonalPr
@@ -1943,9 +1943,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelTypeMatrix.Location = new System.Drawing.Point(204, 189);
             this.materialLabelTypeMatrix.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelTypeMatrix.Name = "materialLabelTypeMatrix";
-            this.materialLabelTypeMatrix.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelTypeMatrix.Size = new System.Drawing.Size(46, 24);
             this.materialLabelTypeMatrix.TabIndex = 81;
-            this.materialLabelTypeMatrix.Text = "44";
+            this.materialLabelTypeMatrix.Text = "         ";
             // 
             // labelSizePr
             // 
@@ -1969,9 +1969,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.labelScreenFormat.Location = new System.Drawing.Point(204, 457);
             this.labelScreenFormat.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelScreenFormat.Name = "labelScreenFormat";
-            this.labelScreenFormat.Size = new System.Drawing.Size(19, 19);
+            this.labelScreenFormat.Size = new System.Drawing.Size(46, 24);
             this.labelScreenFormat.TabIndex = 44;
-            this.labelScreenFormat.Text = "33";
+            this.labelScreenFormat.Text = "         ";
             this.labelScreenFormat.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // pictureBox30
@@ -1996,9 +1996,9 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialLabelResolution.Location = new System.Drawing.Point(204, 216);
             this.materialLabelResolution.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabelResolution.Name = "materialLabelResolution";
-            this.materialLabelResolution.Size = new System.Drawing.Size(19, 19);
+            this.materialLabelResolution.Size = new System.Drawing.Size(46, 24);
             this.materialLabelResolution.TabIndex = 49;
-            this.materialLabelResolution.Text = "44";
+            this.materialLabelResolution.Text = "         ";
             this.materialLabelResolution.Click += new System.EventHandler(this.labelAssetClass_Click);
             // 
             // sendButton
@@ -2010,12 +2010,12 @@ namespace ServiceMonitorEVK.Source.Main
             this.sendButton.Depth = 0;
             this.sendButton.HighEmphasis = true;
             this.sendButton.Icon = null;
-            this.sendButton.Location = new System.Drawing.Point(249, 5);
+            this.sendButton.Location = new System.Drawing.Point(638, 288);
             this.sendButton.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.sendButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.sendButton.Name = "sendButton";
             this.sendButton.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.sendButton.Size = new System.Drawing.Size(191, 49);
+            this.sendButton.Size = new System.Drawing.Size(306, 221);
             this.sendButton.TabIndex = 54;
             this.sendButton.TabStop = false;
             this.sendButton.Text = "Send";
@@ -2040,11 +2040,11 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialComboBoxMonitors.Hint = "Choose monitor";
             this.materialComboBoxMonitors.IntegralHeight = false;
             this.materialComboBoxMonitors.ItemHeight = 43;
-            this.materialComboBoxMonitors.Location = new System.Drawing.Point(20, 5);
+            this.materialComboBoxMonitors.Location = new System.Drawing.Point(617, 38);
             this.materialComboBoxMonitors.MaxDropDownItems = 4;
             this.materialComboBoxMonitors.MouseState = MaterialSkin.MouseState.OUT;
             this.materialComboBoxMonitors.Name = "materialComboBoxMonitors";
-            this.materialComboBoxMonitors.Size = new System.Drawing.Size(222, 49);
+            this.materialComboBoxMonitors.Size = new System.Drawing.Size(330, 49);
             this.materialComboBoxMonitors.StartIndex = 0;
             this.materialComboBoxMonitors.TabIndex = 31;
             this.materialComboBoxMonitors.TabStop = false;
@@ -2059,7 +2059,7 @@ namespace ServiceMonitorEVK.Source.Main
             this.materialButton1.Depth = 0;
             this.materialButton1.HighEmphasis = true;
             this.materialButton1.Icon = null;
-            this.materialButton1.Location = new System.Drawing.Point(448, 33);
+            this.materialButton1.Location = new System.Drawing.Point(737, 245);
             this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialButton1.Name = "materialButton1";
@@ -2622,15 +2622,15 @@ namespace ServiceMonitorEVK.Source.Main
             this.buttonChangeMonitor.Depth = 0;
             this.buttonChangeMonitor.HighEmphasis = true;
             this.buttonChangeMonitor.Icon = null;
-            this.buttonChangeMonitor.Location = new System.Drawing.Point(448, 5);
+            this.buttonChangeMonitor.Location = new System.Drawing.Point(617, 124);
             this.buttonChangeMonitor.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.buttonChangeMonitor.MouseState = MaterialSkin.MouseState.HOVER;
             this.buttonChangeMonitor.Name = "buttonChangeMonitor";
             this.buttonChangeMonitor.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.buttonChangeMonitor.Size = new System.Drawing.Size(150, 24);
+            this.buttonChangeMonitor.Size = new System.Drawing.Size(330, 90);
             this.buttonChangeMonitor.TabIndex = 57;
             this.buttonChangeMonitor.TabStop = false;
-            this.buttonChangeMonitor.Text = "Change monitor";
+            this.buttonChangeMonitor.Text = "Change monitor info";
             this.buttonChangeMonitor.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.buttonChangeMonitor.UseAccentColor = false;
             this.buttonChangeMonitor.UseVisualStyleBackColor = true;

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AssetInformationPage));
             this.labelAssetClass = new MaterialSkin.Controls.MaterialLabel();
             this.pictureBox14 = new System.Windows.Forms.PictureBox();
             this.pictureBox17 = new System.Windows.Forms.PictureBox();
@@ -1332,10 +1333,12 @@
             this.ClientSize = new System.Drawing.Size(435, 716);
             this.Controls.Add(this.tableLayoutPanel2);
             this.FormStyle = MaterialSkin.Controls.MaterialForm.FormStyles.ActionBar_None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AssetInformationPage";
             this.Padding = new System.Windows.Forms.Padding(3, 24, 3, 3);
+            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Asset Information";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox14)).EndInit();

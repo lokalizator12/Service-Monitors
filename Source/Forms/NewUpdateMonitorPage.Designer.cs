@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewMonitorFormat));
             this.flowLayoutPanel7 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.checkBoxChangeHDMI = new MaterialSkin.Controls.MaterialCheckbox();
@@ -136,7 +137,7 @@
             this.flowLayoutPanel4.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel4.Location = new System.Drawing.Point(91, 3);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(76, 96);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(79, 96);
             this.flowLayoutPanel4.TabIndex = 81;
             // 
             // checkBoxChangeVGA
@@ -185,9 +186,9 @@
             this.flowLayoutPanel6.Controls.Add(this.checkBoxChangeDVI);
             this.flowLayoutPanel6.Controls.Add(this.numericUpDownChangeDvi);
             this.flowLayoutPanel6.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel6.Location = new System.Drawing.Point(173, 3);
+            this.flowLayoutPanel6.Location = new System.Drawing.Point(176, 3);
             this.flowLayoutPanel6.Name = "flowLayoutPanel6";
-            this.flowLayoutPanel6.Size = new System.Drawing.Size(76, 96);
+            this.flowLayoutPanel6.Size = new System.Drawing.Size(98, 96);
             this.flowLayoutPanel6.TabIndex = 81;
             // 
             // checkBoxChangeDVI
@@ -239,7 +240,7 @@
             this.flowLayoutPanel13.Controls.Add(this.checkBoxChangeDisplayPort);
             this.flowLayoutPanel13.Controls.Add(this.numericUpDownChangeDisplayPort);
             this.flowLayoutPanel13.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel13.Location = new System.Drawing.Point(255, 3);
+            this.flowLayoutPanel13.Location = new System.Drawing.Point(280, 3);
             this.flowLayoutPanel13.Name = "flowLayoutPanel13";
             this.flowLayoutPanel13.Size = new System.Drawing.Size(122, 96);
             this.flowLayoutPanel13.TabIndex = 82;
@@ -760,9 +761,11 @@
             this.Controls.Add(this.textBoxChangeEvkModel);
             this.Controls.Add(this.textBoxChangeManufacturer);
             this.Controls.Add(this.flowLayoutPanel7);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NewMonitorFormat";
+            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New monitor / update";
             this.flowLayoutPanel7.ResumeLayout(false);

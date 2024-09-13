@@ -146,28 +146,15 @@ namespace ServiceMonitorEVK.Source.Main
             if (materialComboBoxMonitors.SelectedIndex == null) return;
             try
             {
-                var info = monitors[materialComboBoxMonitors.SelectedIndex];
-                var cables = new Dictionary<string, int>();
+               
+                currentMonitor.IdEVK = textBoxIdEVK.Text;
+                currentMonitor.Country = comboBoxCountry.SelectedItem?.ToString();
+                currentMonitor.TesterInitials = textBoxTester.Text;
 
-
-                if (checkBoxHDMI.Checked)
-                    cables.Add("HDMI", (int)numericUpDownHdmi.Value);
-                if (checkBoxVGA.Checked)
-                    cables.Add("VGA", (int)numericUpDownVga.Value);
-                if (checkBoxDVI.Checked)
-                    cables.Add("DVI", (int)numericUpDownDvi.Value);
-                if (checkBoxDisplayPort.Checked)
-                    cables.Add("DisplayPort", (int)numericUpDownDisplayPort.Value);
-                info.UpdateCableTypes(cables);
-                info.IdEVK = textBoxIdEVK.Text;
-                info.Country = comboBoxCountry.SelectedItem?.ToString();
-                info.TesterInitials = textBoxTester.Text;
-
-                //databaseManager = new DatabaseManager("localhost", "postgres", "moodle", "test_asset");
-                var monitorExists = await databaseManager.MonitorExistsInDatabase(info.Manufacturer, info.SystemModel);
+                var monitorExists = await databaseManager.MonitorExistsInDatabase(currentMonitor.Manufacturer, currentMonitor.SystemModel);
                 if (!monitorExists)
                 {
-                    await databaseManager.InsertMonitorSpecs(info);
+                    await databaseManager.InsertMonitorSpecs(currentMonitor);
                     ShowSnackbar("New monitor added to the database.");
                 }
                 else
