@@ -4,14 +4,14 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных со сборкой.
-[assembly: AssemblyTitle("EVK Monitor Service")]
+[assembly: AssemblyTitle("*** Monitor Service")]
 [assembly:
     AssemblyDescription(
         "Appilication for testing monitor, fixing bad pixel and sending information for company structure")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("EVK")]
-[assembly: AssemblyProduct("EVK Monitor testing")]
-[assembly: AssemblyCopyright("Copyright ©EVK, AF  2024")]
+[assembly: AssemblyCompany("***")]
+[assembly: AssemblyProduct("*** Monitor testing")]
+[assembly: AssemblyCopyright("Copyright ©***, AF  2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
