@@ -1,0 +1,654 @@
+﻿using MaterialSkin;
+using MaterialSkin.Controls;
+using Microsoft.Win32;
+using ServiceMonitorEVK.Properties;
+using ServiceMonitorEVK.Source.Main;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Management;
+using System.Text;
+using System.Windows.Forms;
+using ServiceMonitorEVK.Source.Utils;
+
+namespace ServiceMonitorEVK.Source.Testing_Monitor
+{
+    public partial class MonitorTestForm : MaterialForm
+    {
+        public bool AutoCycle = true;
+
+        private readonly List<Color> colors = new List<Color>
+        {
+            Color.Red,
+            Color.Lime,
+            Color.Yellow,
+            Color.Aqua,
+            Color.Magenta,
+            Color.Blue,
+            Color.Silver,
+            Color.Black,
+            Color.White
+        };
+
+        private int currentColorIndex;
+        private TestOverlay currentTestOverlay;
+        private Color customColor = Color.Blue;
+        private readonly Form1 form1;
+        private bool isPinned;
+        private MaterialSkinManager materialSkinManager;
+        private readonly UiUtil uiUtil;
+        private Point originalPosition;
+        private readonly Dictionary<PictureBox, Color> pictureBoxColors = new Dictionary<PictureBox, Color>();
+        private Point pinnedPosition;
+        private PictureBox previousPictureBox;
+        private Screen selectedScreen;
+        private string testMode = "Default";
+        private string testPattern = "Default";
+        private int previousMonitorCount = Screen.AllScreens.Length;
+
+
+        public MonitorTestForm(Form1 form)
+        {
+            form1 = form;
+            InitializeComponent();
+            uiUtil = new UiUtil(this);
+            FillMonitorComboBox();
+            InitializeCustomForm();
+
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+        }
+
+
+        private void OnDisplaySettingsChanged(object sender, EventArgs e)
+        {
+
+            //currentTestOverlay?.Close();
+            InitializeCustomForm();
+            FillMonitorComboBox();
+            // Закрываем текущее окно, если монитор был отключен
+            if (currentTestOverlay != null)
+            {
+                currentTestOverlay.Hide();
+                currentTestOverlay = null;
+            }
+
+            var screens = Screen.AllScreens;
+
+            // Проверяем, если новый монитор был подключен
+            if (screens.Length > 1)
+            {
+                // Автоматически выбираем последний монитор
+                selectedScreen = screens.Last();
+                Console.WriteLine("ddd" + screens.Last());
+
+                StartOrUpdateTestOverlay(customColor);  // Появится на новом экране
+            }
+            else
+            {
+                // Если остался только один монитор, показываем на основном
+                selectedScreen = screens.First(); // Основной монитор
+                StartOrUpdateTestOverlay(customColor);  // Появится на основном экране
+            }
+        }
+
+        private void StartOrUpdateTestOverlay(Color selectedColor)
+        {
+            if (currentTestOverlay == null || currentTestOverlay.IsDisposed)
+            {
+                // Если TestOverlay ещё не создан или был закрыт, создаём новый
+                currentTestOverlay = new TestOverlay(selectedColor)
+                {
+                    StartPosition = FormStartPosition.Manual,
+                    Location = selectedScreen.Bounds.Location,  // Устанавливаем на выбранный экран
+                    Size = selectedScreen.Bounds.Size,          // Полный размер экрана
+                    FormBorderStyle = FormBorderStyle.None,
+                    WindowState = FormWindowState.Maximized,
+                    BackColor = selectedColor
+                };
+
+                currentTestOverlay.Show();
+            }
+            else
+            {
+                // Если TestOverlay уже существует, просто обновляем его цвет
+                currentTestOverlay.UpdateColor(selectedColor);
+            }
+        }
+
+        public void InitializeCustomForm()
+        {
+
+            foreach (Control control in flowLayoutPanel1.Controls)
+                if (control is PictureBox pictureBox)
+                    pictureBoxColors[pictureBox] = pictureBox.BackColor;
+            foreach (var entry in pictureBoxColors) entry.Key.BackColor = entry.Value;
+            materialSkinManager = MaterialSkinManager.Instance;
+
+            uiUtil.InitializeTheme();
+            UiUtil.RegisterLogoForThemeChange(form1.pictureBoxLogo);
+            DrawerAutoShow = true;
+        }
+
+
+
+
+        private void testModeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (testModeComboBox1.SelectedItem.ToString() == "Custom Pattern")
+            {
+                testPatternComboBox1.Enabled = true;
+                selectColorButton.Enabled = true;
+            }
+            else
+            {
+                testPatternComboBox1.Enabled = false;
+                selectColorButton.Enabled = false;
+            }
+        }
+
+        private void selectColorButton_Click(object sender, EventArgs e)
+        {
+            if (colorDialog2.ShowDialog() == DialogResult.OK)
+            {
+                colorChangeTimer.Stop();
+                if (currentTestOverlay != null)
+                    currentTestOverlay.BackColor = colorDialog2.Color;
+                else
+                    TestMonitor(testMode, testPattern, colorDialog2.Color);
+
+                AutoCycle = false;
+            }
+        }
+
+        private void StartTest()
+        {
+            if (currentTestOverlay != null)
+            {
+                currentTestOverlay.Close();
+                currentTestOverlay = null;
+            }
+
+            testMode = testModeComboBox1.SelectedItem.ToString();
+            testPattern = testPatternComboBox1.SelectedItem == null
+                ? "Default"
+                : testPatternComboBox1.SelectedItem.ToString();
+            TestMonitor(testMode, testPattern, customColor);
+        }
+
+        private TestOverlay TestMonitor(string testMode, string testPattern, Color customColor)
+        {
+            var selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex + 1];
+            currentTestOverlay = new TestOverlay(testMode, testPattern, customColor)
+            {
+                StartPosition = FormStartPosition.Manual,
+                Location = selectedScreen.Bounds.Location,
+                Size = selectedScreen.Bounds.Size,
+                FormBorderStyle = FormBorderStyle.None,
+                WindowState = FormWindowState.Maximized,
+                BackColor = customColor
+            };
+
+            currentTestOverlay.Show();
+            return currentTestOverlay;
+        }
+
+        private void FillMonitorComboBox()
+        {
+            monitorComboBox1.Items.Clear();
+
+            var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
+            var queryObjects = searcher.Get().Cast<ManagementObject>();
+
+            bool foundNonIntegratedMonitor = false;
+
+            foreach (var queryObj in queryObjects)
+            {
+                var model = DecodeMonitorString((ushort[])queryObj["UserFriendlyName"]);
+                if (string.IsNullOrWhiteSpace(model))
+                {
+                    continue;
+                }
+                else
+                {
+                    foundNonIntegratedMonitor = true;
+                }
+
+                monitorComboBox1.Items.Add(model);
+            }
+
+            // Если мы нашли неинтегрированный монитор, выбираем его
+            if (foundNonIntegratedMonitor)
+            {
+                for (int i = 0; i < monitorComboBox1.Items.Count; i++)
+                {
+                    if (monitorComboBox1.Items[i].ToString() != "Integrated Monitor")
+                    {
+                        monitorComboBox1.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            else if (monitorComboBox1.Items.Count > 0)
+            {
+                // Если не найден неинтегрированный монитор, выбираем первый
+                monitorComboBox1.SelectedIndex = 0;
+            }
+        }
+
+
+        private static string DecodeMonitorString(ushort[] data)
+        {
+            if (data == null) return string.Empty;
+
+            var result = new StringBuilder();
+            foreach (var code in data)
+            {
+                if (code == 0) break;
+                result.Append((char)code);
+            }
+
+            return result.ToString();
+        }
+
+        private TestOverlay TestMonitor(Color customColor)
+        {
+            var selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
+            currentTestOverlay = new TestOverlay(customColor)
+            {
+                StartPosition = FormStartPosition.Manual,
+                Location = selectedScreen.Bounds.Location,
+                Size = selectedScreen.Bounds.Size,
+                FormBorderStyle = FormBorderStyle.None,
+                WindowState = FormWindowState.Maximized,
+                BackColor = customColor
+            };
+
+            currentTestOverlay.Show();
+            return currentTestOverlay;
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            PictureBox currentPictureBox = null;
+            switch (keyData)
+            {
+                case Keys.D1:
+                case Keys.NumPad1:
+                    currentPictureBox = pictureBoxRed;
+                    changeColorFromPanel(Color.Red);
+                    currentColorIndex = 0;
+                    return true;
+                case Keys.D2:
+                case Keys.NumPad2:
+                    changeColorFromPanel(Color.Lime);
+                    currentPictureBox = pictureBoxLime;
+                    currentColorIndex = 1;
+                    return true;
+                case Keys.D3:
+                case Keys.NumPad3:
+                    changeColorFromPanel(Color.Yellow);
+                    currentPictureBox = pictureBoxYellow;
+                    currentColorIndex = 2;
+                    return true;
+                case Keys.D4:
+                case Keys.NumPad4:
+                    changeColorFromPanel(Color.Aqua);
+                    currentPictureBox = pictureBoxAqua;
+                    currentColorIndex = 3;
+                    return true;
+                case Keys.D5:
+                case Keys.NumPad5:
+                    changeColorFromPanel(Color.Magenta);
+                    currentPictureBox = pictureBoxMagneta;
+                    currentColorIndex = 4;
+                    return true;
+                case Keys.D6:
+                case Keys.NumPad6:
+                    changeColorFromPanel(Color.Blue);
+                    currentPictureBox = pictureBoxBlue;
+                    currentColorIndex = 5;
+                    return true;
+                case Keys.D7:
+                case Keys.NumPad7:
+                    changeColorFromPanel(Color.Silver);
+                    currentPictureBox = pictureBoxSilver;
+                    currentColorIndex = 6;
+                    return true;
+                case Keys.D8:
+                case Keys.NumPad8:
+                    changeColorFromPanel(Color.White);
+                    currentPictureBox = pictureBoxWhite;
+                    currentColorIndex = 8;
+                    return true;
+                case Keys.D9:
+                case Keys.NumPad9:
+                    changeColorFromPanel(Color.Black);
+                    currentPictureBox = pictureBoxBlack;
+                    currentColorIndex = 9;
+                    return true;
+                case Keys.Tab:
+                    if (colorDialog2.ShowDialog() == DialogResult.OK)
+                    {
+                        currentPictureBox = pictureBoxChoose;
+                        changeColorFromPanel(colorDialog2.Color);
+                    }
+
+                    return true;
+                case Keys.Space:
+                case Keys.Right:
+                    currentColorIndex = (currentColorIndex + 1) % colors.Count;
+                    changeColorFromPanel(colors[currentColorIndex]);
+                    currentPictureBox = GetPictureBoxByIndex(currentColorIndex);
+                    return true;
+                case Keys.Left:
+                    currentColorIndex = (currentColorIndex - 1 + colors.Count) % colors.Count;
+                    customColor = colors[currentColorIndex];
+                    currentPictureBox = GetPictureBoxByIndex(currentColorIndex);
+                    return true;
+                case Keys.Q:
+                    SetOverlayBackgroundFromPictureBox(pictureBox5);
+                    return true;
+                case Keys.W:
+                    SetOverlayBackgroundFromPictureBox(pictureBox6);
+                    return true;
+                case Keys.Control | Keys.S:
+                    SaveImage();
+                    return true;
+                case Keys.X:
+                    if (currentTestOverlay != null) currentTestOverlay.ClearMarks();
+                    return true;
+                case Keys.A:
+                    SetMark(Color.Yellow);
+                    return true;
+                case Keys.S:
+                    SetMark(Color.DeepSkyBlue);
+                    return true;
+                case Keys.D:
+                    SetMark(Color.Red);
+                    return true;
+                case Keys.Escape:
+                    Close();
+                    return true;
+            }
+
+            if (previousPictureBox != null) previousPictureBox.BorderStyle = BorderStyle.FixedSingle;
+
+            if (currentPictureBox != null)
+            {
+                currentPictureBox.BorderStyle = BorderStyle.Fixed3D;
+                previousPictureBox = currentPictureBox;
+            }
+
+            Invalidate();
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+
+        private PictureBox GetPictureBoxByIndex(int index)
+        {
+            switch (index)
+            {
+                case 0: return pictureBoxRed;
+                case 1: return pictureBoxLime;
+                case 2: return pictureBoxYellow;
+                case 3: return pictureBoxAqua;
+                case 4: return pictureBoxMagneta;
+                case 5: return pictureBoxBlue;
+                case 6: return pictureBoxSilver;
+                case 7: return pictureBoxBlack;
+                case 8: return pictureBoxWhite;
+                default: return null;
+            }
+        }
+
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.Red);
+        }
+
+        private void pictureBoxLime_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.Lime);
+        }
+
+        private void pictureBoxYellow_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.Yellow);
+        }
+
+        private void pictureBoxAqua_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.Aqua);
+        }
+
+        private void pictureBoxMagneta_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.Magenta);
+        }
+
+        private void pictureBoxBlue_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.Blue);
+        }
+
+        private void pictureBoxSilver_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.Silver);
+        }
+
+        private void pictureBoxWhite_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.White);
+        }
+
+        private void pictureBoxBlack_Click(object sender, EventArgs e)
+        {
+            changeColorFromPanel(Color.Black);
+        }
+
+        private void changeColorFromPanel(Color color)
+        {
+            if (currentTestOverlay != null)
+            {
+                var tmp = currentTestOverlay;
+                currentTestOverlay.Close();
+                currentTestOverlay = !currentTestOverlay.TestMode.Equals("Default")
+                    ? TestMonitor("Default", "Default", color)
+                    : TestMonitor(tmp.TestMode, tmp.TestPattern, color);
+            }
+            else
+            {
+                currentTestOverlay = TestMonitor("Default", "Default", color);
+            }
+        }
+
+        private void pictureBoxChoose_Click(object sender, EventArgs e)
+        {
+            if (colorDialog2.ShowDialog() == DialogResult.OK)
+            {
+                if (currentTestOverlay != null)
+                    currentTestOverlay.BackColor = colorDialog2.Color;
+                else
+                    TestMonitor(testMode, testPattern, colorDialog2.Color);
+
+                AutoCycle = false;
+            }
+        }
+
+        private void materialSliderOpasity_onValueChanged(object sender, int newValue)
+        {
+            if (newValue > 1)
+            {
+                Opacity = newValue / 100.0;
+                Invalidate();
+            }
+        }
+
+        private void testModeComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            testMode = testModeComboBox1.SelectedIndex.ToString();
+            StartTest();
+        }
+
+        private void testPatternComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            testPattern = testPatternComboBox1.SelectedIndex.ToString();
+            StartTest();
+        }
+
+        private void pictureBox1_Click_1(object sender, EventArgs e)
+        {
+            SetMark(Color.Red);
+        }
+
+        private void pictureBox10_Click(object sender, EventArgs e)
+        {
+            Clean();
+        }
+
+        private void pictureBox9_Click(object sender, EventArgs e)
+        {
+            SaveImage();
+        }
+
+        private void SetMark(Color color)
+        {
+            Cursor = Cursors.Cross;
+            if (currentTestOverlay != null) currentTestOverlay.SetMarkColor(color);
+            Cursor = Cursors.Default;
+        }
+
+        private void Clean()
+        {
+            if (currentTestOverlay != null) currentTestOverlay.ClearMarks();
+        }
+
+        private void SaveImage()
+        {
+            if (currentTestOverlay != null)
+            {
+                var fileName = $"screenshot_{DateTime.Now:yyyyMMdd_HHmmss}.png";
+                currentTestOverlay.CaptureScreenshot(fileName);
+            }
+        }
+
+        private void pictureBox7_Click(object sender, EventArgs e)
+        {
+            SetMark(Color.DeepSkyBlue);
+        }
+
+        private void pictureBox8_Click(object sender, EventArgs e)
+        {
+            SetMark(Color.Yellow);
+        }
+
+
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+            SetOverlayBackgroundFromPictureBox(pictureBox6);
+        }
+
+
+        private void SetOverlayBackgroundFromPictureBox(PictureBox pictureBox)
+        {
+            if (pictureBox.BackgroundImage != null)
+            {
+                if (currentTestOverlay != null)
+                {
+                    currentTestOverlay.BackgroundImage = pictureBox.BackgroundImage;
+                    currentTestOverlay.BackgroundImageLayout = pictureBox.BackgroundImageLayout;
+                }
+                else
+                {
+                    TestMonitorWithBackgroundImage(pictureBox.BackgroundImage, pictureBox.BackgroundImageLayout);
+                }
+            }
+            else
+            {
+                var selectedColor = pictureBox.BackColor;
+                if (currentTestOverlay != null)
+                    currentTestOverlay.BackColor = selectedColor;
+                else
+                    TestMonitor(testMode, testPattern, selectedColor);
+            }
+        }
+
+
+        private TestOverlay TestMonitorWithBackgroundImage(Image backgroundImage, ImageLayout layout)
+        {
+            var selectedScreen = Screen.AllScreens[monitorComboBox1.SelectedIndex];
+            currentTestOverlay = new TestOverlay(testMode, testPattern, customColor)
+            {
+                StartPosition = FormStartPosition.Manual,
+                Location = selectedScreen.Bounds.Location,
+                Size = selectedScreen.Bounds.Size,
+                FormBorderStyle = FormBorderStyle.None,
+                WindowState = FormWindowState.Maximized,
+                BackgroundImage = backgroundImage,
+                BackgroundImageLayout = layout
+            };
+
+            currentTestOverlay.Show();
+            return currentTestOverlay;
+        }
+
+
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            SetOverlayBackgroundFromPictureBox(pictureBox5);
+        }
+
+        private void MonitorTestForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (currentTestOverlay != null)
+            {
+                currentTestOverlay.Close();
+                currentTestOverlay = null;
+            }
+            form1.IsMonitorFormExist = false;
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+        }
+
+        private void MonitorTestForm_Load(object sender, EventArgs e)
+        {
+            RoundPictureBoxCorners(pictureBoxSilver, cornerRadius);
+            RoundPictureBoxCorners(pictureBoxBlack, cornerRadius);
+        }
+
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            isPinned = !isPinned;
+
+            if (isPinned)
+            {
+                pictureBox2.Image = Resources.pinOut;
+                originalPosition = Location;
+
+                Location = new Point(
+                    Screen.PrimaryScreen.WorkingArea.Width - Width,
+                    Screen.PrimaryScreen.WorkingArea.Height - Height
+                );
+            }
+            else
+            {
+                pictureBox2.Image = Resources.push_pin;
+                Location = originalPosition;
+            }
+        }
+
+        private void pictureBox2_Move(object sender, EventArgs e)
+        {
+            if (isPinned) Location = pinnedPosition;
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            if (currentTestOverlay != null) currentTestOverlay.Close();
+        }
+
+
+    }
+}
